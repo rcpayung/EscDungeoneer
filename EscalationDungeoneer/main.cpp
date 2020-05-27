@@ -27,7 +27,6 @@ int main(int argc, char* argv[]) {
 
 		if (framedelay > frameTime)
 			SDL_Delay(framedelay - frameTime);
-		game->FPSis(FPS-frameTime);
 	}
 
 	game->cleanup();

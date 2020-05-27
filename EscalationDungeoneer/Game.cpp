@@ -15,8 +15,11 @@ Game::Game(const char *title, int w, int h, int flags) {
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 		std::cout << "Done Init." << std::endl;
-		this->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN);
+		this->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREENWIDTH, SCREENHEIGHT, SDL_WINDOW_SHOWN);
 		this->rd = SDL_CreateRenderer(win, -1, 0);
+		SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+		SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
 		this->running = true;
 		/* SET WINDOW ICON */ {
 			SDL_Surface* icon = IMG_Load("assets/appicon.bmp");
@@ -50,9 +53,9 @@ Game::Game(const char *title, int w, int h, int flags) {
 		SDL_Color L_RED{ 150, 25, 25 };
 		SDL_Color D_GRE{  20, 50, 20 };
 
-		tex = new Text(rd, "Hello World", 25, WBOLD, WHITE, Vector2F(250, 250), Vector2F());
-		player = new GameObject(rd,"player",50,50,64,128,1.0f,"assets/player.png");
-		player->addAnimation(100, 1, 0, 0, true);
+
+		WORLD = new Scene(rd, 0, "Sauresgald", 0, 0, 1000, 1000, SCREENWIDTH, SCREENHEIGHT, 1.0f);
+		activeScene = WORLD;
 	}
 
 }
@@ -67,7 +70,11 @@ bool Game::isRunning() {
 
 void Game::update() {
 	// Handle all game updates here.
-	player->update(false);
+	
+	if (activeScene != nullptr) {
+		activeScene->update(paused);
+	}
+
 	tick++;
 }
 
@@ -75,52 +82,53 @@ void Game::render() {
 	SDL_RenderClear(rd);
 	SDL_RenderSetViewport(rd, &worldPort);
 	// Render World Elements Here:
-
-	player->render(0.0f);
-
+	if (activeScene != nullptr) {
+		activeScene->render();
+	}
 
 
 	// UI ELEMENT RENDERER:
 	SDL_RenderSetViewport(rd, &UIViewPort);
 	// Render UI Elements here:
 
-	tex->render();
 
-	SDL_SetRenderDrawColor(rd, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(rd, 100,100,100, 255);
 	SDL_RenderPresent(rd);
 }
 
 void Game::handleEvents() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+		if (activeScene != nullptr) {
+			activeScene->pollevents(event);
+		}
 		switch (event.type) {
 		case SDL_KEYDOWN:
+
 			switch (event.key.keysym.sym) {
 			default:
 				break;
 			};
 			break;
+
 		case SDL_KEYUP:
+
 			switch (event.key.keysym.sym) {
 			case SDLK_ESCAPE:
-				running = false;
-				break;
-			case SDLK_w:
-				player->playAnimation(0, false);
-				break;
-			case SDLK_a:
-				break;
-			case SDLK_s:
-				break;
-			case SDLK_d:
+
+				if (paused) paused = false;
+				else paused = true;
+
 				break;
 			default:
 				break;
 			};
 			break;
+
 		case SDL_QUIT:
 			running = false;
 			break;
+
 		default:
 			break;
 		}
@@ -131,15 +139,11 @@ void Game::cleanup() {
 	SDL_DestroyWindow(win);
 	SDL_DestroyRenderer(rd);
 
-	tex->clean();
-	player->clean();
+	WORLD->clean();
 
+	
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 	SteamAPI_Shutdown();
-}
-
-void Game::FPSis(float FPS) {
-	this->FPS = FPS;
 }
