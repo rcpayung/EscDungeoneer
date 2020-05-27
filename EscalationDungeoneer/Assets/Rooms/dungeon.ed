@@ -1,0 +1,39 @@
+<dungeon>
+	<metrics>
+		<type>
+			1
+		</type>
+		<tier>
+			1
+		</tier>
+		<nRoom>
+			9
+		</nRoom>
+		<tRoom>
+			1
+		</tRoom>
+		<maxMobs>
+		
+		</maxMobs>
+	</metrics>
+	<rooms>
+		1	1	{2}
+		2	2	{0,1}
+		3	2	{0,2}
+		4	2	{0,3}
+		5	2	{0,3}
+		6	2	{0,2}
+		7	2	{0,1}
+		8	5	{0,1}
+		9	6	{1}
+	</rooms>
+	<mobs>
+		9	mongolian_
+		
+	</mobs>
+
+	<objects>
+	
+	</objects>
+
+</dungeon>

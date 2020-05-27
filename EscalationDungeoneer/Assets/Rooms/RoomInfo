@@ -1,0 +1,34 @@
+rooms:
+
+ID	T	E
+0	0	{0,1}
+1	1	{1,0}
+2	1
+3	2
+4	2
+5	2
+6	3
+7	3
+8	5
+9	6
+10	3
+11	4
+12	4
+13	4
+14	4
+15	1
+
+T:
+0 - Entrance
+1 - Normal (Variant 1) *SQUARE
+2 - Normal (Variant 2) *SQUARE
+3 - Normal (Variant 3) *LONG (Cannot have exits on LEFT:1 and RIGHT:3)
+4 - Normal (Variant 4) *WIDE (Cannot have exits on TOP:2 and BOTTOM:0)
+5 - Treasure Room (Mini-Boss Room)
+6 - Boss Room
+
+E: These are exits
+0: Bottom
+1: Left
+2: Top
+3: Right
