@@ -142,13 +142,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="UIComponent.cpp" />
     <ClCompile Include="Vector2F.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -156,12 +159,15 @@
     <ClInclude Include="..\..\..\rapidxml\rapidxml_iterators.hpp" />
     <ClInclude Include="..\..\..\rapidxml\rapidxml_print.hpp" />
     <ClInclude Include="..\..\..\rapidxml\rapidxml_utils.hpp" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="UIComponent.h" />
     <ClInclude Include="Vector2F.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

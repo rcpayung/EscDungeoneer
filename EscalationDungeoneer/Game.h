@@ -7,21 +7,30 @@
 #include "Text.h"
 #include "GameObject.h"
 #include "Scene.h"
+#include "Button.h"
+#include "Menu.h"
+
 
 class Game {
 private:
-	bool running = false, paused = false;
 	SDL_Renderer* rd;
 	SDL_Window* win;
+
 	float tick;
-	// View Ports and Camera
-	SDL_Rect worldPort, UIViewPort;
+	SDL_Rect worldPort;
+
 	Scene* activeScene;
 	std::vector<Scene*> scenes;
 	Scene* WORLD;
+
+	Button *exitbutton, *resume;
+	Menu* pause;
+
 	const int SCREENWIDTH = 1080;
 	const int SCREENHEIGHT = 720;
 public:
+	static bool running;
+	static bool paused;
 	Game(const char *title, int w, int h, int flags);
 	~Game();
 
@@ -30,5 +39,7 @@ public:
 	void render();
 	void handleEvents();
 	void cleanup();
+	static void setRunning();
+	static void Pause();
 };
 

@@ -29,6 +29,7 @@ private:
 	float rotation, scale;
 	bool paused;
 public:
+	static int ID;
 	GameObject(SDL_Renderer* rd, std::string name, int x, int y, int w, int h, float scale, std::string path);
 	
 	// Animation Functions
@@ -49,5 +50,7 @@ public:
 	Vector2F getPosition();
 	Vector2F getSize();
 	float getTheta();
+	
+	static int getID();
 };
 

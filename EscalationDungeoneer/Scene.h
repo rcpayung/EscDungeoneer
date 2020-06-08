@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Player.h"
+#include <fstream>
 
 enum Tiles {
 	GRA_DIR_UP_LT,
@@ -22,11 +23,15 @@ private:
 	int** tileMap;
 	int** logicMap;
 	Player* player;
-	int SCREENWIDTH, SCREENHEIGHT;
+	int SCREENWIDTH, SCREENHEIGHT, SCENEWIDTH, SCENEHEIGHT;
+	float scale;
 public:
 	Scene(SDL_Renderer* rd, int id, std::string name, int openx, int openy, int SceneWidth, int SceneHeight, int SCREENWIDTH, int SCREENHEIGHT, float scale);
 	bool loadScene();
-	bool saveScene();
+	bool saveScene(const char* path);
+	void addObject(GameObject* obj);
+
+	void setScale(float scale);
 
 	void update(bool paused);
 	void render();

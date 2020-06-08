@@ -4,6 +4,7 @@ Text::Text(SDL_Renderer* rd, std::string message, short fontSize, int fontWeight
 	this->rd = rd;
 	this->color = color;
 	this->fontSize = fontSize;
+	this->message = message;
 	switch (fontWeight) {
 	case WNORMAL:
 		font = TTF_OpenFont("assets/fonts/Font/N.ttf", fontSize);
@@ -25,7 +26,7 @@ Text::Text(SDL_Renderer* rd, std::string message, short fontSize, int fontWeight
 		printf("Error: %s\n", SDL_GetError());
 	}
 
-	tex = loadTexture(message, color);
+	tex = loadTexture(this->message, color);
 
 	pos.x = p.X;
 	pos.y = p.Y;
@@ -38,11 +39,14 @@ void Text::render() {
 
 void Text::setColor(SDL_Color color) {
 	this->color = color;
+	clean();
+	tex = loadTexture(this->message,this->color);
 }
 
 void Text::setText(std::string message) {
 	clean();
-	tex = loadTexture(message, this->color);
+	this->message = message;
+	tex = loadTexture(this->message, this->color);
 }
 
 SDL_Texture* Text::loadTexture(std::string message, SDL_Color color) {
@@ -59,6 +63,7 @@ SDL_Texture* Text::loadTexture(std::string message, SDL_Color color) {
 	if (surf == NULL) {
 		printf("Error in loading surface\n");
 	}
+
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(rd, surf);
 	SDL_FreeSurface(this->surf);
 	return texture;
@@ -72,6 +77,11 @@ void Text::clean() {
 void Text::setCenter() {
 	pos.x = bounds.x + (bounds.w / 2) - (pos.w / 2);
 }
+
+void Text::setMiddle() {
+	pos.y = bounds.y + (bounds.h / 2) - (pos.h / 2);
+}
+
 void Text::setBounds(int x, int y, int w, int h) {
 	this->bounds = { x, y, w, h };
 }

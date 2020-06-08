@@ -1,12 +1,14 @@
 #include "GameObject.h"
 
+int GameObject::ID = 0;
+
 GameObject::GameObject(SDL_Renderer* rd, std::string name, int x, int y, int w, int h, float scale, std::string path) {
 	this->sprite = new Sprite(rd, path, x, y, w, h, scale);
 	this->position = Vector2F(x, y);
 	this->size = Vector2F(w, h);
 	this->rotation = 0.0f;
 	this->scale = scale;
-
+	ID++;
 }
 // Play an existing animation with the current id. If over is set to true, it will override any currently playing animation.
 void GameObject::playAnimation(int id, bool over) {
@@ -116,4 +118,8 @@ void GameObject::setRotation(float theta) {
 
 float GameObject::getTheta() {
 	return this->rotation;
+}
+
+int GameObject::getID() {
+	return GameObject::ID;
 }

@@ -14,25 +14,6 @@ enum weight {
 	WBITALIC
 };
 
-enum color {
-	WHITE,
-	LIGHTGRAY,
-	GRAY,
-	DARKGRAY,
-	BLACK,
-	RED,
-	ORANGE,
-	YELLOW,
-	GREEN,
-	BLUE,
-	INDIGO,
-	VIOLET,
-	PURPLE,
-	PINK,
-	BROWN,
-	L_BROWN
-};
-
 class Text {
 private:
 	TTF_Font* font;
@@ -42,7 +23,7 @@ private:
 	SDL_Renderer* rd;
 	SDL_Surface* surf;
 	short fontSize;
-	
+	std::string message;
 public:
 	Text(SDL_Renderer* rd, std::string message, short fontsize, int fontWeight, SDL_Color color, Vector2F pos, Vector2F size);
 	void render();
@@ -51,6 +32,13 @@ public:
 	SDL_Texture* loadTexture(std::string message, SDL_Color color);
 	void setText(std::string message);
 	void setCenter();
+	void setMiddle();
 	void setBounds(int x, int y, int w, int h);
+
+	SDL_Color WHITE{ 255,255,255,255 };
+	SDL_Color BLACK{ 0,0,0,255 };
+	SDL_Color D_BLU{ 0,0,50,255 };
+	SDL_Color L_BLU{ 0,0,200,255 };
+
 };
 

@@ -1,5 +1,2 @@
-﻿  GameObject.cpp
-  Scene.cpp
-C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\Scene.cpp(19,29): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
+﻿  Scene.cpp
   escalationdungeoneer.vcxproj -> C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\x64\Debug\escalationdungeoneer.exe
