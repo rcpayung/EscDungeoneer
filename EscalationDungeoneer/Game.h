@@ -23,8 +23,8 @@ private:
 	std::vector<Scene*> scenes;
 	Scene* WORLD;
 
-	Button *exitbutton, *resume;
-	Menu* pause;
+	Button *exitbutton, *resume, *savegame, *loadgame, *options;
+	Menu* pause, *mainmenu;
 
 	const int SCREENWIDTH = 1080;
 	const int SCREENHEIGHT = 720;

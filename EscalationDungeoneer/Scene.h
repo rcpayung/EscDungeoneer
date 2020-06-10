@@ -3,16 +3,6 @@
 #include "Player.h"
 #include <fstream>
 
-enum Tiles {
-	GRA_DIR_UP_LT,
-	GRA_DIR_UP_CE,
-	GRA_DIR_UP_RT,
-	GRA_DIR_PENN_UP,
-	GRA_DIR_PENN_LE,
-	GRA_DIR_PENN_RI,
-
-};
-
 class Scene {
 private:
 	int id;

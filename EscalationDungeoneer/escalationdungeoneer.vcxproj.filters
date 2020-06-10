@@ -12,84 +12,117 @@
     <Filter Include="Renderables">
       <UniqueIdentifier>{85590e17-427b-4d78-956f-33265209387b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\engine.ui">
+      <UniqueIdentifier>{e0312142-404d-4e94-acc0-dad0e1074615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine.entity">
+      <UniqueIdentifier>{05ff95e5-f669-4bf5-b11d-86d9d90c7267}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine.dependencies">
+      <UniqueIdentifier>{56ba2774-53e5-40ad-b2d1-019e59670296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\escdun">
+      <UniqueIdentifier>{b07362ba-59e1-4fb1-92d4-b72fad059a7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine.scenes">
+      <UniqueIdentifier>{10eacbce-d876-4191-b178-bd8ed0375fdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine.utility">
+      <UniqueIdentifier>{197a46ce-f199-40f9-bdb1-93d8c1e914d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine.ui">
+      <UniqueIdentifier>{94b61a61-d801-4520-a5c9-1e4a375fea53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine.entity">
+      <UniqueIdentifier>{011e2153-481b-4d0a-be1e-395184bf631b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine.scenes">
+      <UniqueIdentifier>{49c59708-e37f-4dc8-a4d8-5ca62a1c9ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine.utility">
+      <UniqueIdentifier>{8142a1b4-2fb3-48c7-b6d6-dc0647867da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\escdun">
+      <UniqueIdentifier>{e2ae5d25-8f98-4394-a592-188e8e0feea0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\engine.ui</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2F.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\escdun</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\engine.entity</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UIComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\escdun</Filter>
     </ClCompile>
     <ClCompile Include="Menu.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\engine.ui</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\engine.entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\engine.scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\engine.entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Files\engine.ui</Filter>
+    </ClCompile>
+    <ClCompile Include="UIComponent.cpp">
+      <Filter>Source Files\engine.ui</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2F.cpp">
+      <Filter>Source Files\engine.utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2F.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\rapidxml\rapidxml_iterators.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\rapidxml\rapidxml_print.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\rapidxml\rapidxml_utils.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\rapidxml\rapidxml.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UIComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\engine.ui</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\engine.ui</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files\engine.ui</Filter>
+    </ClInclude>
+    <ClInclude Include="UIComponent.h">
+      <Filter>Header Files\engine.ui</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\engine.entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\engine.entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files\engine.entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\rapidxml\rapidxml_utils.hpp">
+      <Filter>Header Files\engine.dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\rapidxml\rapidxml.hpp">
+      <Filter>Header Files\engine.dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\rapidxml\rapidxml_iterators.hpp">
+      <Filter>Header Files\engine.dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\rapidxml\rapidxml_print.hpp">
+      <Filter>Header Files\engine.dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\escdun</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\engine.scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2F.h">
+      <Filter>Header Files\engine.utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

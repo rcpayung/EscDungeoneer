@@ -95,7 +95,7 @@ void Button::handleEvents(SDL_Event* e) {
 		case SDL_BUTTON_LEFT:
 			if (x > this->getPosition().X&& x < (this->getPosition().X + this->getSize().X)
 				&& y > this->getPosition().Y&& y < (this->getPosition().Y + this->getSize().Y)) {
-				m_callback();
+				if (m_callback != nullptr) m_callback();
 			}
 			break;
 		default:

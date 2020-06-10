@@ -47,7 +47,7 @@ Game::Game(const char *title, int w, int h, int flags) {
 		// Text Colors	  R   G   B
 		SDL_Color WHITE{ 255,255,255, 255 };
 		SDL_Color GREEN{ 100,200,100, 255 };
-		SDL_Color LGRAY{ 220,220,220, 255 };
+		SDL_Color LGRAY{ 200,200,200, 255 };
 		SDL_Color L_BLU{  20, 90,150, 255 };
 		SDL_Color L_RED{ 150, 25, 25, 255 };
 		SDL_Color GRAY { 140,140,140, 255 };
@@ -57,23 +57,48 @@ Game::Game(const char *title, int w, int h, int flags) {
 
 		WORLD = new Scene(rd, 0, "Sauresgald", 0, 0, 1000, 1000, SCREENWIDTH, SCREENHEIGHT, 1.0f);
 		pause = new Menu(rd, SCREENWIDTH, SCREENHEIGHT,"Paused");
-		
-		exitbutton = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 - 25, 200, 50, "Exit Game");
-		resume = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 - 100, 200, 50, "Resume Game");
+		mainmenu = new Menu(rd, SCREENWIDTH, SCREENHEIGHT, "MainMenu");
+
+		resume = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 - 95, 200, 30, "Resume Game");
+		savegame = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 - 55, 200, 30, "Save Game");
+		loadgame = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 - 15, 200, 30, "Load Game");
+		options = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 + 25, 200, 30, "Options");
+		exitbutton = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 + 65, 200, 30, "Quit");
 
 		resume->setForeground(BLACK);
-		resume->setBackground(GRAY);
+		resume->setBackground(LGRAY);
 		resume->setHover(GREEN, DGRAY);
 		resume->setStroke(2, GREEN);
 		resume->setAction(Game::Pause); // problem with this function. possibly even the menu class.
 		pause->addComponent(resume);
 
 		exitbutton->setForeground(BLACK);
-		exitbutton->setBackground(GRAY);
+		exitbutton->setBackground(LGRAY);
 		exitbutton->setHover(GREEN, DGRAY);
 		exitbutton->setStroke(2, GREEN);
 		exitbutton->setAction(Game::setRunning);
 		pause->addComponent(exitbutton);
+
+		savegame->setForeground(BLACK);
+		savegame->setBackground(LGRAY);
+		savegame->setHover(GREEN, DGRAY);
+		savegame->setStroke(2, GREEN);
+		//savegame->setAction();
+		pause->addComponent(savegame);
+
+		loadgame->setForeground(BLACK);
+		loadgame->setBackground(LGRAY);
+		loadgame->setHover(GREEN, DGRAY);
+		loadgame->setStroke(2, GREEN);
+		//loadgame->setAction();
+		pause->addComponent(loadgame);
+
+		options->setForeground(BLACK);
+		options->setBackground(LGRAY);
+		options->setHover(GREEN, DGRAY);
+		options->setStroke(2, GREEN);
+		//options->setAction();
+		pause->addComponent(options);
 
 		activeScene = WORLD;
 	}
