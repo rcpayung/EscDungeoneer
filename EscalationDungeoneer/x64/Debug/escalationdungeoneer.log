@@ -1,13 +1,2 @@
-﻿  Button.cpp
-  Game.cpp
-  GameObject.cpp
-  main.cpp
-  Menu.cpp
-  Player.cpp
-  Scene.cpp
-  Sprite.cpp
-  Text.cpp
-  UIComponent.cpp
-  Vector2F.cpp
-  Generating Code...
+﻿  MainMenu.cpp
   escalationdungeoneer.vcxproj -> C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\x64\Debug\escalationdungeoneer.exe

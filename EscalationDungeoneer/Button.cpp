@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "GameManager.h"
 
 Button::Button(SDL_Renderer* rd, int x, int y, int w, int h, const char* label) : UIComponent(rd, x, y, w, h, 1.0f) {
 	// Default color black.
@@ -9,12 +10,22 @@ Button::Button(SDL_Renderer* rd, int x, int y, int w, int h, const char* label) 
 	sc = { 255,255,255,0 };
 
 	borderset = false;
-	this->label = new Text(rd, label, 15, WNORMAL, f, Vector2F(x, y), Vector2F(w, h));
 	inside = false;
-	this->label->setBounds(x, y, w, h);
-	this->label->setCenter();
-	this->label->setMiddle();
+	moving = false;
+	borderwidth = 0;
+	mx = 0;
+	my = 0;
+	if (label != nullptr) {
+		this->label = new Text(rd, label, 15, WNORMAL, f, Vector2F(x, y), Vector2F(w, h));
+		this->label->setBounds(x, y, w, h);
+		this->label->setCenter();
+		this->label->setMiddle();
+	}
 	this->m_callback = nullptr;
+}
+
+void Button::setLabel(const char* label) {
+	this->label->setText(label);
 }
 
 void Button::setForeground(SDL_Color color) {
@@ -49,6 +60,9 @@ void Button::render() {
 		SDL_RenderFillRect(rd, &dest);
 		label->setColor(fh);
 		label->render();
+		if (tip != nullptr) {
+			if (tooltipvisible) tip->render();
+		}
 	} else {
 		// No Hover
 		SDL_SetRenderDrawColor(rd, sc.r, sc.g, sc.b, sc.a);
@@ -59,6 +73,7 @@ void Button::render() {
 		label->render();
 	}
 	SDL_SetRenderDrawColor(rd, 0, 0, 0, 255);
+	
 }
 // Virtual function, mostly for inheritance
 void Button::setAction(void (ptr) ()) {
@@ -66,24 +81,42 @@ void Button::setAction(void (ptr) ()) {
 }
 
 void Button::update() {
+	SDL_GetMouseState(&mx, &my);
+	if (moving) {
+		this->setPosition(mx, my);
+	}
 	if (borderset) {
 		border = { dest.x - borderwidth, dest.y - borderwidth, dest.w + 2 * borderwidth, dest.h + 2 * borderwidth };
+	}
+	if (!inside) {
+		this->count = 0;
+		this->tooltipvisible = false;
+	}
+	else {
+		this->count++;
+		if (count > 30) {
+			this->tooltipvisible = true;
+			if (tip != nullptr) {
+				this->tip->update();
+				this->tip->setPosition(mx, my + 30);
+			}
+		}
 	}
 }
 
 void Button::clean() {
 	__super::clean();
 	label->clean();
+	if (tip != nullptr)
+		tip->clean();
 }
 
 void Button::handleEvents(SDL_Event* e) {
-	int x, y;
-	SDL_GetMouseState(&x, &y);
 	switch (e->type) {
 	case SDL_MOUSEMOTION:
-		
-		if (x > this->getPosition().X&& x < (this->getPosition().X + this->getSize().X) 
-			&& y > this->getPosition().Y&& y < (this->getPosition().Y + this->getSize().Y)) {
+		// If within the bounds of the button
+		if (mx > this->getPosition().X&& mx < (this->getPosition().X + this->getSize().X) 
+			&& my > this->getPosition().Y&& my < (this->getPosition().Y + this->getSize().Y)) {
 			inside = true;
 		}
 		else {
@@ -93,17 +126,48 @@ void Button::handleEvents(SDL_Event* e) {
 	case SDL_MOUSEBUTTONUP:
 		switch (e->button.button) {
 		case SDL_BUTTON_LEFT:
-			if (x > this->getPosition().X&& x < (this->getPosition().X + this->getSize().X)
-				&& y > this->getPosition().Y&& y < (this->getPosition().Y + this->getSize().Y)) {
+			if (inside) {
 				if (m_callback != nullptr) m_callback();
 			}
+			break;
+		case SDL_BUTTON_RIGHT:
+			moving = false;
 			break;
 		default:
 			break;
 		}
 		break;
-
+	case SDL_MOUSEBUTTONDOWN:
+		switch (e->button.button) {
+		case SDL_BUTTON_RIGHT:
+			if (inside && GameManager::devMode) moving = true;
+			break;
+		default:
+			break;
+		}
+		break;
 	default:
 		break;
 	}
+}
+
+void Button::setPosition(int x, int y) {
+	__super::setPosition(x, y);
+	this->label->setBounds(this->getPosition().X, this->getPosition().Y, this->getSize().X,this->getSize().Y);
+	this->label->setCenter();
+	this->label->setMiddle();
+	this->tip->setPosition(x, y+20);
+}
+
+
+void Button::setPosition(Vector2F p) {
+	__super::setPosition(p);
+	this->label->setBounds(p.X,p.Y, this->getSize().X, this->getSize().Y);
+	this->label->setCenter();
+	this->label->setMiddle();
+	this->tip->setPosition(p.X, p.Y + 20);
+}
+
+void Button::setTooltip(std::string tip) {
+	this->tip = new Tooltip(rd, 12, tip, WNORMAL, WHITE, DGRAY, mx, my+30);
 }

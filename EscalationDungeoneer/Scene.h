@@ -10,8 +10,8 @@ private:
 	std::vector<GameObject*> objects;
 	SDL_Rect camera;
 	bool isPaused = false;
-	int** tileMap;
-	int** logicMap;
+	int** tileMap; // two dimensional tilemap
+	int** logicMap; // two dimensional logical map. All walls will be considered here.
 	Player* player;
 	int SCREENWIDTH, SCREENHEIGHT, SCENEWIDTH, SCENEHEIGHT;
 	float scale;

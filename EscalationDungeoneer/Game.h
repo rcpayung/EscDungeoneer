@@ -9,28 +9,31 @@
 #include "Scene.h"
 #include "Button.h"
 #include "Menu.h"
+#include "MainMenu.h"
+#include "PauseMenu.h"
 
 
 class Game {
 private:
-	SDL_Renderer* rd;
-	SDL_Window* win;
+	SDL_Renderer* rd; // renderer, render all elements to this
+	SDL_Window* win; // window, this is what the renderer renders to
 
-	float tick;
-	SDL_Rect worldPort;
+	SDL_Rect worldPort;	// this is the viewport
 
-	Scene* activeScene;
-	std::vector<Scene*> scenes;
-	Scene* WORLD;
+	std::string ascene;
+	Scene* activeScene; // Currently active scene.
+	std::vector<Scene*> scenes; // Scene archive.
+	Scene* WORLD; // World scene
 
-	Button *exitbutton, *resume, *savegame, *loadgame, *options;
-	Menu* pause, *mainmenu;
+	Button *exitbutton, *resume, *savegame, *loadgame, *options; // menu buttons.
+	PauseMenu* pausemenu; // menus
+	MainMenu *mainmenu;
 
-	const int SCREENWIDTH = 1080;
-	const int SCREENHEIGHT = 720;
+	int SCREENWIDTH;
+	int SCREENHEIGHT;
+
 public:
-	static bool running;
-	static bool paused;
+
 	Game(const char *title, int w, int h, int flags);
 	~Game();
 
@@ -39,7 +42,5 @@ public:
 	void render();
 	void handleEvents();
 	void cleanup();
-	static void setRunning();
-	static void Pause();
 };
 

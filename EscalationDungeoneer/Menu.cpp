@@ -1,10 +1,9 @@
 #include "Menu.h"
 
-Menu::Menu(SDL_Renderer* rd, int SCREENWIDTH, int SCREENHEIGHT, const char * title) {
+Menu::Menu(SDL_Renderer* rd, int SCREENWIDTH, int SCREENHEIGHT) {
 	this->rd = rd;
 	this->SCREENWIDTH = SCREENWIDTH;
 	this->SCREENHEIGHT = SCREENHEIGHT;
-	this->setTitle(title);
 }
 
 void Menu::addComponent(UIComponent* c) {
@@ -21,22 +20,19 @@ void Menu::setTitle(const char* title) {
 }
 
 void Menu::render() {
-	SDL_SetRenderDrawColor(rd, 100, 100, 100, 100);
-	SDL_RenderFillRect(rd, new SDL_Rect{ 0,0,SCREENWIDTH,SCREENHEIGHT });
-	for (Text* c : labels) {
-		c->render();
+	for (int i = labels.size()-1; i >= 0; i--) {
+		labels[i]->render();
 	}
-	for (UIComponent* c : options) {
-		c->render();
+	for (int i = options.size()-1; i >= 0; i--) {
+		options[i]->render();
 	}
 }
 
 void Menu::update() {
-	for (UIComponent* c : options) {
-		c->update();
+	for (int i = options.size()-1; i >= 0; i--) {
+		options[i]->update();
 	}
 }
-
 
 void Menu::clean() {
 	for (Text* c : labels) {

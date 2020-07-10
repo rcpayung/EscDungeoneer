@@ -5,9 +5,11 @@
 class Button : public UIComponent {
 private:
 	Text* label;
+	Tooltip* tip;
 	SDL_Color f, b, fh, bh, sc;
-	bool borderset, inside;
-	int borderwidth;
+	bool borderset, inside, moving, tooltipvisible;
+	int count;
+	int borderwidth, mx, my;
 	SDL_Rect border;
 	// Action function
 	void (*m_callback) ();
@@ -26,6 +28,10 @@ public:
 	void handleEvents(SDL_Event* e) override;
 
 	void setAction(void (ptr) ());
+	void setLabel(const char* label);
+	void setPosition(int x, int y);
+	void setPosition(Vector2F p);
+	void setTooltip(std::string tip);
 
 };
 

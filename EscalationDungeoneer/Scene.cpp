@@ -9,8 +9,8 @@ Scene::Scene(SDL_Renderer* rd, int id, std::string name, int openx, int openy, i
 	camera = {
 		openx,
 		openy,
-		1080,
-		720
+		SCREENWIDTH,
+		SCREENHEIGHT
 	};
 
 	this->SCREENWIDTH = SCREENWIDTH;

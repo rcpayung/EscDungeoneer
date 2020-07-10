@@ -8,7 +8,7 @@
 Game* game;
 
 int main(int argc, char* argv[]) {
-	game = new Game("Escalation Dungeoneer", 1080, 720, 0);
+	game = new Game("Escalation Dungeoneer by Vestinius Games, LLC", 1536, 864, 0);
 	
 	const float FPS = 60.0;
 	const int framedelay = 1000 / FPS;
