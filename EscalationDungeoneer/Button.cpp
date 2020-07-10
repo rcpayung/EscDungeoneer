@@ -22,10 +22,19 @@ Button::Button(SDL_Renderer* rd, int x, int y, int w, int h, const char* label) 
 		this->label->setMiddle();
 	}
 	this->m_callback = nullptr;
+	count = 0;
+	border = {};
+	tip = nullptr;
+	tooltipvisible = false;
+	this->labelstring = label;
 }
 
 void Button::setLabel(const char* label) {
 	this->label->setText(label);
+}
+
+std::string Button::getLabel() {
+	return this->labelstring;
 }
 
 void Button::setForeground(SDL_Color color) {
@@ -60,8 +69,8 @@ void Button::render() {
 		SDL_RenderFillRect(rd, &dest);
 		label->setColor(fh);
 		label->render();
-		if (tip != nullptr) {
-			if (tooltipvisible) tip->render();
+		if (tip != nullptr && tooltipvisible) {
+			tip->render();
 		}
 	} else {
 		// No Hover
@@ -97,8 +106,19 @@ void Button::update() {
 		if (count > 30) {
 			this->tooltipvisible = true;
 			if (tip != nullptr) {
+				if (mx + 10 + tip->getWidth() > GameManager::SCREENWIDTH) {
+					if (my + 50 > GameManager::SCREENHEIGHT) {
+						this->tip->setPosition(GameManager::SCREENWIDTH - tip->getWidth() - 2, my - 40);
+					}
+					else {
+						this->tip->setPosition(GameManager::SCREENWIDTH - tip->getWidth() - 2, my + 20);
+					}
+				}
+				else if (my + 60 > GameManager::SCREENHEIGHT)
+					this->tip->setPosition(mx + 10, my - 40);
+				else
+					this->tip->setPosition(mx + 10, my + 20);
 				this->tip->update();
-				this->tip->setPosition(mx, my + 30);
 			}
 		}
 	}
@@ -128,6 +148,7 @@ void Button::handleEvents(SDL_Event* e) {
 		case SDL_BUTTON_LEFT:
 			if (inside) {
 				if (m_callback != nullptr) m_callback();
+				inside = false;
 			}
 			break;
 		case SDL_BUTTON_RIGHT:
@@ -168,6 +189,6 @@ void Button::setPosition(Vector2F p) {
 	this->tip->setPosition(p.X, p.Y + 20);
 }
 
-void Button::setTooltip(std::string tip) {
-	this->tip = new Tooltip(rd, 12, tip, WNORMAL, WHITE, DGRAY, mx, my+30);
+void Button::setTooltip(std::string tip, int size, SDL_Color fore, SDL_Color back) {
+	this->tip = new Tooltip(rd, size, tip, WNORMAL, fore, back, this->mx,this->my+50);
 }

@@ -7,7 +7,7 @@ private:
 protected:
 
 public:
-	PauseMenu(SDL_Renderer* rd, int SCREENWIDTH, int SCREENHEIGHT, const char* title);
+	PauseMenu(SDL_Renderer* rd, const char* title);
 	void update();
 	void render();
 	void clean();

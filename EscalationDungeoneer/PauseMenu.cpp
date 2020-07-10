@@ -1,49 +1,55 @@
 #include "PauseMenu.h"
 
-PauseMenu::PauseMenu(SDL_Renderer* rd, int SCREENWIDTH, int SCREENHEIGHT, const char* title) : Menu(rd, SCREENWIDTH, SCREENHEIGHT) {
-	this->setTitle(title);
+PauseMenu::PauseMenu(SDL_Renderer* rd, const char* title) : Menu(rd) {
+	setTitle(title);
 
 	// Create the buttons of the pause menu
 
-	resume = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 - 95, 200, 30, "Resume Game");
-	savegame = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 - 55, 200, 30, "Save Game");
-	loadgame = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 - 15, 200, 30, "Load Game");
-	optionsmenu = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 + 25, 200, 30, "Settings");
-	exitToMenu = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 + 65, 200, 30, "Quit to Menu");
-	quitgame = new Button(rd, SCREENWIDTH / 2 - 100, SCREENHEIGHT / 2 + 105, 200, 30, "Quit to Desktop");
+	resume = new Button(rd, GameManager::SCREENWIDTH / 2 - 100, GameManager::SCREENHEIGHT / 2 - 95, 200, 30, "Resume Game");
+	savegame = new Button(rd, GameManager::SCREENWIDTH / 2 - 100, GameManager::SCREENHEIGHT / 2 - 55, 200, 30, "Save Game");
+	loadgame = new Button(rd, GameManager::SCREENWIDTH / 2 - 100, GameManager::SCREENHEIGHT / 2 - 15, 200, 30, "Load Game");
+	optionsmenu = new Button(rd, GameManager::SCREENWIDTH / 2 - 100, GameManager::SCREENHEIGHT / 2 + 25, 200, 30, "Settings");
+	exitToMenu = new Button(rd, GameManager::SCREENWIDTH / 2 - 100, GameManager::SCREENHEIGHT / 2 + 65, 200, 30, "Quit to Menu");
+	quitgame = new Button(rd, GameManager::SCREENWIDTH / 2 - 100, GameManager::SCREENHEIGHT / 2 + 105, 200, 30, "Quit to Desktop");
 
-	resume->setForeground(BLACK);
-	resume->setBackground(LGRAY);
-	resume->setHover(GREEN, DGRAY);
-	resume->setStroke(2, GREEN);
+	resume->setForeground(GameManager::LGRAY);
+	resume->setBackground(GameManager::DGRAY);
+	resume->setHover(GameManager::BLACK, GameManager::GRAY);
+	resume->setStroke(2, GameManager::Gray20);
 	resume->setAction(GameManager::Pause);
+	resume->setTooltip("Get back in there!", 12, GameManager::GOLD, GameManager::DGRAY);
 
-	savegame->setForeground(BLACK);
-	savegame->setBackground(LGRAY);
-	savegame->setHover(GREEN, DGRAY);
-	savegame->setStroke(2, GREEN);
+	savegame->setForeground(GameManager::LGRAY);
+	savegame->setBackground(GameManager::DGRAY);
+	savegame->setHover(GameManager::BLACK, GameManager::GRAY);
+	savegame->setStroke(2, GameManager::Gray20);
+	savegame->setTooltip("Save the current game.", 12, GameManager::GOLD, GameManager::DGRAY);
 
-	loadgame->setForeground(BLACK);
-	loadgame->setBackground(LGRAY);
-	loadgame->setHover(GREEN, DGRAY);
-	loadgame->setStroke(2, GREEN);
+	loadgame->setForeground(GameManager::LGRAY);
+	loadgame->setBackground(GameManager::DGRAY);
+	loadgame->setHover(GameManager::BLACK, GameManager::GRAY);
+	loadgame->setStroke(2, GameManager::Gray20);
+	loadgame->setTooltip("Load another game. Your current game will be saved.", 12, GameManager::GOLD, GameManager::DGRAY);
 
-	optionsmenu->setForeground(BLACK);
-	optionsmenu->setBackground(LGRAY);
-	optionsmenu->setHover(GREEN, DGRAY);
-	optionsmenu->setStroke(2, GREEN);
+	optionsmenu->setForeground(GameManager::LGRAY);
+	optionsmenu->setBackground(GameManager::DGRAY);
+	optionsmenu->setHover(GameManager::BLACK, GameManager::GRAY);
+	optionsmenu->setStroke(2, GameManager::Gray20);
+	optionsmenu->setTooltip("Change Audio, Video, and Game Settings", 12, GameManager::GOLD, GameManager::DGRAY);
 
-	exitToMenu->setForeground(BLACK);
-	exitToMenu->setBackground(LGRAY);
-	exitToMenu->setHover(GREEN, DGRAY);
-	exitToMenu->setStroke(2, GREEN);
+	exitToMenu->setForeground(GameManager::LGRAY);
+	exitToMenu->setBackground(GameManager::DGRAY);
+	exitToMenu->setHover(GameManager::BLACK, GameManager::GRAY);
+	exitToMenu->setStroke(2, GameManager::Gray20);
 	exitToMenu->setAction(GameManager::setPlaying);
+	exitToMenu->setTooltip("Quit to Main Menu. Your current game will be saved.", 12, GameManager::GOLD, GameManager::DGRAY);
 
-	quitgame->setForeground(BLACK);
-	quitgame->setBackground(LGRAY);
-	quitgame->setHover(GREEN, DGRAY);
-	quitgame->setStroke(2, GREEN);
+	quitgame->setForeground(GameManager::LGRAY);
+	quitgame->setBackground(GameManager::DGRAY);
+	quitgame->setHover(GameManager::BLACK, GameManager::GRAY);
+	quitgame->setStroke(2, GameManager::Gray20);
 	quitgame->setAction(GameManager::setRunning);
+	quitgame->setTooltip("Quit to Desktop. Your current game will be saved.", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	addComponent(resume);
 	addComponent(savegame);

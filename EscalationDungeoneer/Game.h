@@ -29,9 +29,6 @@ private:
 	PauseMenu* pausemenu; // menus
 	MainMenu *mainmenu;
 
-	int SCREENWIDTH;
-	int SCREENHEIGHT;
-
 public:
 
 	Game(const char *title, int w, int h, int flags);

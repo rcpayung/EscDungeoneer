@@ -13,6 +13,7 @@ private:
 	SDL_Rect border;
 	// Action function
 	void (*m_callback) ();
+	std::string labelstring;
 protected:
 
 public:
@@ -28,10 +29,11 @@ public:
 	void handleEvents(SDL_Event* e) override;
 
 	void setAction(void (ptr) ());
+	std::string getLabel();
 	void setLabel(const char* label);
 	void setPosition(int x, int y);
 	void setPosition(Vector2F p);
-	void setTooltip(std::string tip);
+	void setTooltip(std::string tip, int size, SDL_Color fore, SDL_Color back);
 
 };
 

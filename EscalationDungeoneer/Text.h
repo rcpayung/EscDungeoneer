@@ -35,10 +35,5 @@ public:
 	void setMiddle();
 	void setBounds(int x, int y, int w, int h);
 
-	SDL_Color WHITE{ 255,255,255,255 };
-	SDL_Color BLACK{ 0,0,0,255 };
-	SDL_Color D_BLU{ 0,0,50,255 };
-	SDL_Color L_BLU{ 0,0,200,255 };
-
 };
 

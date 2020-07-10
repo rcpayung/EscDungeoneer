@@ -1,9 +1,7 @@
 #include "Menu.h"
 
-Menu::Menu(SDL_Renderer* rd, int SCREENWIDTH, int SCREENHEIGHT) {
+Menu::Menu(SDL_Renderer* rd) {
 	this->rd = rd;
-	this->SCREENWIDTH = SCREENWIDTH;
-	this->SCREENHEIGHT = SCREENHEIGHT;
 }
 
 void Menu::addComponent(UIComponent* c) {
@@ -20,6 +18,7 @@ void Menu::setTitle(const char* title) {
 }
 
 void Menu::render() {
+	// Rendered backwards to properly show the tooltip, however, thinking about making this into a z-index renderer.
 	for (int i = labels.size()-1; i >= 0; i--) {
 		labels[i]->render();
 	}

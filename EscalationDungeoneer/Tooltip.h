@@ -10,7 +10,7 @@ private:
 	SDL_Renderer* rd;
 	Text* text;
 	Vector2F position;
-	SDL_Rect dest;
+	SDL_Rect dest, border;
 public:
 	Tooltip(SDL_Renderer* rd, int fontsize, std::string tip, int fontWeight, SDL_Color fore, SDL_Color back, int x, int y);
 	void setTip(std::string tip);
@@ -18,6 +18,8 @@ public:
 	void setPosition(int x, int y);
 	void update();
 	void render();
+	int getWidth();
+	Vector2F getPosition();
 	void clean();
 };
 

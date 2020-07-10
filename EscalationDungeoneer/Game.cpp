@@ -7,13 +7,13 @@ Game::Game(const char *title, int w, int h, int flags) {
 	SteamAPI_Init() ? printf("Steam initialization complete\n") : printf("Steam init failed");
 
 	// set the screen width and height:
-	this->SCREENWIDTH = w;
-	this->SCREENHEIGHT = h;
+	GameManager::SCREENWIDTH = w;
+	GameManager::SCREENHEIGHT = h;
 
 	// Intialize SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 		// Create the window and renderer.
-		this->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->SCREENWIDTH, this->SCREENHEIGHT, SDL_WINDOW_SHOWN);
+		this->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, GameManager::SCREENWIDTH, GameManager::SCREENHEIGHT, SDL_WINDOW_SHOWN);
 		this->rd = SDL_CreateRenderer(win, -1, 0);
 
 		if (win && rd) {
@@ -40,12 +40,12 @@ Game::Game(const char *title, int w, int h, int flags) {
 
 		worldPort.x = 0;
 		worldPort.y = 0;
-		worldPort.w = SCREENWIDTH;
-		worldPort.h = SCREENHEIGHT;
+		worldPort.w = GameManager::SCREENWIDTH;
+		worldPort.h = GameManager::SCREENHEIGHT;
 
-		WORLD = new Scene(rd, 0, "Sauresgald", 0, 0, 1000, 1000, SCREENWIDTH, SCREENHEIGHT, 1.0f);
-		mainmenu = new MainMenu(rd, SCREENWIDTH, SCREENHEIGHT,"assets/escalationDungeoneerBackground.png");
-		pausemenu = new PauseMenu(rd, SCREENWIDTH, SCREENHEIGHT, "Paused");
+		WORLD = new Scene(rd, 0, "Sauresgald", 0, 0, 1000, 1000, GameManager::SCREENWIDTH, GameManager::SCREENHEIGHT, 1.0f);
+		mainmenu = new MainMenu(rd, "assets/escalationDungeoneerBackground.png");
+		pausemenu = new PauseMenu(rd, "Paused");
 	}
 
 }

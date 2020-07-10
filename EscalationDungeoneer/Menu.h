@@ -9,24 +9,10 @@ class Menu {
 private:
 	std::vector<UIComponent*> options;
 	std::vector<Text*> labels;
-	SDL_Renderer* rd;
-	int SCREENWIDTH, SCREENHEIGHT;
 protected:
-	
+	SDL_Renderer* rd;
 public:
-
-	// Text Colors	  R   G   B
-	SDL_Color WHITE{ 255,255,255, 255 };
-	SDL_Color GREEN{ 100,200,100, 255 };
-	SDL_Color LGRAY{ 200,200,200, 255 };
-	SDL_Color L_BLU{ 20, 90,150, 255 };
-	SDL_Color L_RED{ 150, 25, 25, 255 };
-	SDL_Color GRAY{ 140,140,140, 255 };
-	SDL_Color D_GRE{ 20, 50, 20, 255 };
-	SDL_Color DGRAY{ 25, 25, 25, 255 };
-	SDL_Color BLACK{ 0,  0,  0, 255 };
-
-	Menu(SDL_Renderer* rd, int SCREENWIDTH, int SCREENHEIGHT);
+	Menu(SDL_Renderer* rd);
 	void addComponent(UIComponent* c);
 	void addComponent(Text* tex);
 	void setTitle(const char* title);
