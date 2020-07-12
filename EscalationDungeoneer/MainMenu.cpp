@@ -18,31 +18,35 @@ MainMenu::MainMenu(SDL_Renderer* rd, const char * backgroundLoc) : Menu(rd) {
 	play->setBackground(GameManager::DGRAY);
 	play->setHover(GameManager::BLACK, GameManager::GRAY);
 	play->setStroke(2, GameManager::Gray20);
-	play->setAction(GameManager::setPlaying);
+	play->setAction(GameManager::pushCommand,"G:LOAD:_NEWGM");
 	play->setTooltip("Play a new game of Escalation Dungeoneer", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	loadlast->setForeground(GameManager::LGRAY);
 	loadlast->setBackground(GameManager::DGRAY);
 	loadlast->setHover(GameManager::BLACK, GameManager::GRAY);
 	loadlast->setStroke(2, GameManager::Gray20);
+	loadlast->setAction(GameManager::pushCommand, "G:LOAD:LASTGM");
 	loadlast->setTooltip("Resume your last game", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	loadother->setForeground(GameManager::LGRAY);
 	loadother->setBackground(GameManager::DGRAY);
 	loadother->setHover(GameManager::BLACK, GameManager::GRAY);
 	loadother->setStroke(2, GameManager::Gray20);
+	loadother->setAction(GameManager::pushCommand, "G:LOAD:OTHEGM");
 	loadother->setTooltip("Load a previous game", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	optionsmenu->setForeground(GameManager::LGRAY);
 	optionsmenu->setBackground(GameManager::DGRAY);
 	optionsmenu->setHover(GameManager::BLACK, GameManager::GRAY);
 	optionsmenu->setStroke(2, GameManager::Gray20);
+	optionsmenu->setAction(GameManager::pushCommand, "M:OPEN:SETTIN");
 	optionsmenu->setTooltip("Change Audio, Video, and Game Settings",12, GameManager::GOLD, GameManager::DGRAY);
 
 	credits->setForeground(GameManager::LGRAY);
 	credits->setBackground(GameManager::DGRAY);
 	credits->setHover(GameManager::BLACK, GameManager::GRAY);
 	credits->setStroke(2, GameManager::Gray20);
+	credits->setAction(GameManager::pushCommand, "M:OPEN:CREDITS");
 	credits->setTooltip("Credits of Escalation Dungeoneer", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	quit->setForeground(GameManager::LGRAY);
@@ -56,12 +60,14 @@ MainMenu::MainMenu(SDL_Renderer* rd, const char * backgroundLoc) : Menu(rd) {
 	dev_tE->setBackground(GameManager::DGRAY);
 	dev_tE->setHover(GameManager::BLACK, GameManager::GRAY);
 	dev_tE->setStroke(2, GameManager::Gray20);
+	dev_tE->setAction(GameManager::pushCommand, "G:EDIT:ARTMAP");
 	dev_tE->setTooltip("Edit the main world artistic tiles", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	dev_bE->setForeground(GameManager::LGRAY);
 	dev_bE->setBackground(GameManager::DGRAY);
 	dev_bE->setHover(GameManager::BLACK, GameManager::GRAY);
 	dev_bE->setStroke(2, GameManager::Gray20);
+	dev_bE->setAction(GameManager::pushCommand,"G:EDIT:LOGMAP");
 	dev_bE->setTooltip("Edit the main world logical tiles", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	addComponent(play);
@@ -98,6 +104,8 @@ void MainMenu::render() {
 
 void MainMenu::pollEvents(SDL_Event* e) {
 	__super::pollEvents(e);
-	dev_tE->handleEvents(e);
-	dev_bE->handleEvents(e);
+	if (GameManager::devMode) {
+		dev_tE->handleEvents(e);
+		dev_bE->handleEvents(e);
+	}
 }

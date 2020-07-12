@@ -10,10 +10,12 @@ private:
 	bool borderset, inside, moving, tooltipvisible;
 	int count;
 	int borderwidth, mx, my;
+	std::string command;
 	SDL_Rect border;
 	// Action function
 	void (*m_callback) ();
-	std::string labelstring;
+	void (*callback) (std::string);
+	const char * labelstring;
 protected:
 
 public:
@@ -28,7 +30,9 @@ public:
 	void clean() override;
 	void handleEvents(SDL_Event* e) override;
 
-	void setAction(void (ptr) ());
+	void setAction(void (ptr) ()); 
+	void setAction(void (*ptr) (std::string), std::string s);
+	void sendCommand(std::string s);
 	std::string getLabel();
 	void setLabel(const char* label);
 	void setPosition(int x, int y);

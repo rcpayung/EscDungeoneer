@@ -26,7 +26,7 @@ Button::Button(SDL_Renderer* rd, int x, int y, int w, int h, const char* label) 
 	border = {};
 	tip = nullptr;
 	tooltipvisible = false;
-	this->labelstring = label;
+	labelstring = label;
 }
 
 void Button::setLabel(const char* label) {
@@ -89,6 +89,15 @@ void Button::setAction(void (ptr) ()) {
 	m_callback = ptr;
 }
 
+void Button::setAction(void (*ptr) (std::string),std::string s) {
+	this->callback = ptr;
+	this->command = s;
+}
+
+void Button::sendCommand(std::string s) {
+	GameManager::pushCommand(s);
+}
+
 void Button::update() {
 	SDL_GetMouseState(&mx, &my);
 	if (moving) {
@@ -147,7 +156,12 @@ void Button::handleEvents(SDL_Event* e) {
 		switch (e->button.button) {
 		case SDL_BUTTON_LEFT:
 			if (inside) {
-				if (m_callback != nullptr) m_callback();
+				if (m_callback != nullptr) {
+					m_callback();
+				}
+				else if (this->callback != nullptr) {
+					callback(command);
+				}
 				inside = false;
 			}
 			break;

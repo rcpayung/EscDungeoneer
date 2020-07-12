@@ -4,7 +4,7 @@
 Game::Game(const char *title, int w, int h, int flags) {
 
 	// Initialize Steam API
-	SteamAPI_Init() ? printf("Steam initialization complete\n") : printf("Steam init failed");
+	//SteamAPI_Init() ? printf("Steam initialization complete\n") : printf("Steam init failed");
 
 	// set the screen width and height:
 	GameManager::SCREENWIDTH = w;
@@ -45,7 +45,8 @@ Game::Game(const char *title, int w, int h, int flags) {
 
 		WORLD = new Scene(rd, 0, "Sauresgald", 0, 0, 1000, 1000, GameManager::SCREENWIDTH, GameManager::SCREENHEIGHT, 1.0f);
 		mainmenu = new MainMenu(rd, "assets/escalationDungeoneerBackground.png");
-		pausemenu = new PauseMenu(rd, "Paused");
+		pausemenu = new PauseMenu(rd);
+		settings = new SettingsMenu(rd);
 	}
 
 }
@@ -61,6 +62,8 @@ bool Game::isRunning() {
 
 void Game::update() {
 	// Handle all game updates here.
+	processCommands();
+
 	if (!GameManager::isPlaying) {
 		// game is not active:
 		if (activeScene != nullptr) {
@@ -90,6 +93,68 @@ void Game::update() {
 			}
 		}
 	}
+}
+
+void Game::processCommands() {
+	for (std::string command : GameManager::commands) {
+		// process commands
+		cargs.push_back(command.substr(0, 1));
+		cargs.push_back(command.substr(2, 4));
+		cargs.push_back(command.substr(7, 6));
+
+		printf("%s:%s:%s", cargs.at(0).c_str(), cargs.at(1).c_str(), cargs.at(2).c_str());
+	
+		if (cargs.at(0) == "G") {
+			if (cargs.at(1) == "LOAD") {
+				if (cargs.at(2) == "_NEWGM") {
+					this->amenu = nullptr;
+					this->activeScene = WORLD;
+					GameManager::setPlaying();
+				}
+			}
+			else if (cargs.at(1) == "EDIT") {
+				if (cargs.at(2) == "ARTMAP") {
+					GameManager::setPlaying();
+					GameManager::setEditing();
+					//edit = new Editor(&WORLD,"Art");
+				}
+				if (cargs.at(2) == "LOGMAP") {
+					GameManager::setPlaying();
+					GameManager::setEditing();
+					//edit = new Editor(&WORLD,"logic");
+				}
+			}
+		}
+		else if (cargs.at(0) == "M") {
+			// MENUS
+			if (cargs.at(1) == "LOAD") {
+				if (cargs.at(2) == "SETTIN") {
+					GameManager::inSettings = true;
+					this->amenu = nullptr;
+					this->amenu = settings;
+				}
+				else if (cargs.at(2) == "__MAIN") {
+					this->amenu = nullptr;
+					this->amenu = mainmenu;
+				}
+			}
+			else if (cargs.at(1) == "CLOS") {
+				if (cargs.at(2) == "SETTIN") {
+					GameManager::inSettings = false;
+					GameManager::isPlaying ? amenu = pausemenu : amenu = mainmenu; // If playing, change to the pause menu, if not, return to main menu.
+				}
+				else if (cargs.at(2) == "_PAUSE") {
+					GameManager::Pause();
+					amenu = nullptr;
+				}
+
+			}
+		}
+
+
+		cargs.clear();
+	}
+	GameManager::commands.clear();
 }
 
 void Game::render() {

@@ -7,7 +7,7 @@ private:
 protected:
 
 public:
-	PauseMenu(SDL_Renderer* rd, const char* title);
+	PauseMenu(SDL_Renderer* rd);
 	void update();
 	void render();
 	void clean();

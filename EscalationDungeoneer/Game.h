@@ -8,9 +8,9 @@
 #include "GameObject.h"
 #include "Scene.h"
 #include "Button.h"
-#include "Menu.h"
 #include "MainMenu.h"
 #include "PauseMenu.h"
+#include "SettingsMenu.h"
 
 
 class Game {
@@ -23,11 +23,15 @@ private:
 	std::string ascene;
 	Scene* activeScene; // Currently active scene.
 	std::vector<Scene*> scenes; // Scene archive.
+	std::vector<std::string> cargs;
 	Scene* WORLD; // World scene
+	//Editor edit;
+	Menu* amenu;
 
 	Button *exitbutton, *resume, *savegame, *loadgame, *options; // menu buttons.
 	PauseMenu* pausemenu; // menus
 	MainMenu *mainmenu;
+	SettingsMenu* settings;
 
 public:
 
@@ -37,6 +41,7 @@ public:
 	bool isRunning();
 	void update();
 	void render();
+	void processCommands();
 	void handleEvents();
 	void cleanup();
 };

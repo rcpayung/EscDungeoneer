@@ -19,16 +19,16 @@ void Menu::setTitle(const char* title) {
 
 void Menu::render() {
 	// Rendered backwards to properly show the tooltip, however, thinking about making this into a z-index renderer.
-	for (int i = labels.size()-1; i >= 0; i--) {
+	for (int i = static_cast<int>(labels.size()-1); i >= 0; i--) {
 		labels[i]->render();
 	}
-	for (int i = options.size()-1; i >= 0; i--) {
+	for (int i = static_cast<int>(options.size()-1); i >= 0; i--) {
 		options[i]->render();
 	}
 }
 
 void Menu::update() {
-	for (int i = options.size()-1; i >= 0; i--) {
+	for (int i = static_cast<int>(options.size()-1); i >= 0; i--) {
 		options[i]->update();
 	}
 }
@@ -43,6 +43,20 @@ void Menu::clean() {
 }
 
 void Menu::pollEvents(SDL_Event* e) {
+	switch (e->type) {
+	case SDL_KEYDOWN:
+		switch (e->key.keysym.sym) {
+		case SDLK_ESCAPE:
+			if (!GameManager::onMain)
+				GameManager::pushCommand("M:CLOS:__LAST");
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
 	for (UIComponent* c : options) {
 		c->handleEvents(e);
 	}

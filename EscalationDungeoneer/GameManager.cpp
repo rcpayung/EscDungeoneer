@@ -4,6 +4,13 @@ bool GameManager::running = true;
 bool GameManager::isPlaying = false;
 bool GameManager::paused = false;
 bool GameManager::devMode = false;
+bool GameManager::editing = false;
+bool GameManager::onMain = true;
+
+bool GameManager::inSettings = false;
+bool GameManager::inInventory = false;
+const char* GameManager::versionNum = "p-a2242.3";
+std::vector<std::string> GameManager::commands = std::vector<std::string>();
 
 SDL_Color GameManager::WHITE = {255,255,255,255};
 SDL_Color GameManager::GREEN{ 100, 200, 100, 255 };
@@ -33,6 +40,10 @@ void GameManager::Pause() {
 }
 
 void GameManager::setPlaying() {
+	!GameManager::onMain ? GameManager::onMain = true : GameManager::onMain = false;
+	if (GameManager::editing) {
+		GameManager::editing = false;
+	}
 	!GameManager::isPlaying ? GameManager::isPlaying = true : GameManager::isPlaying = false;
 }
 /*
@@ -40,3 +51,11 @@ void GameManager::loadGame(const char* file) {
 
 }
 */
+
+void GameManager::setEditing() {
+	!GameManager::editing ? GameManager::editing = true : GameManager::editing = false;
+}
+
+void GameManager::pushCommand(std::string s) {
+	GameManager::commands.push_back(s);
+}

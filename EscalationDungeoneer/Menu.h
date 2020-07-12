@@ -4,6 +4,7 @@
 #include "Text.h"
 #include <iostream>
 #include <vector>
+#include "GameManager.h"
 
 class Menu {
 private:

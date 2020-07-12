@@ -1,7 +1,7 @@
 #include "PauseMenu.h"
 
-PauseMenu::PauseMenu(SDL_Renderer* rd, const char* title) : Menu(rd) {
-	setTitle(title);
+PauseMenu::PauseMenu(SDL_Renderer* rd) : Menu(rd) {
+	setTitle("Paused");
 
 	// Create the buttons of the pause menu
 
@@ -23,18 +23,21 @@ PauseMenu::PauseMenu(SDL_Renderer* rd, const char* title) : Menu(rd) {
 	savegame->setBackground(GameManager::DGRAY);
 	savegame->setHover(GameManager::BLACK, GameManager::GRAY);
 	savegame->setStroke(2, GameManager::Gray20);
+	loadgame->setAction(GameManager::pushCommand, "G:SAVE:SAVEGM");
 	savegame->setTooltip("Save the current game.", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	loadgame->setForeground(GameManager::LGRAY);
 	loadgame->setBackground(GameManager::DGRAY);
 	loadgame->setHover(GameManager::BLACK, GameManager::GRAY);
 	loadgame->setStroke(2, GameManager::Gray20);
+	loadgame->setAction(GameManager::pushCommand, "M:OPEN:LOADGM");
 	loadgame->setTooltip("Load another game. Your current game will be saved.", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	optionsmenu->setForeground(GameManager::LGRAY);
 	optionsmenu->setBackground(GameManager::DGRAY);
 	optionsmenu->setHover(GameManager::BLACK, GameManager::GRAY);
 	optionsmenu->setStroke(2, GameManager::Gray20);
+	optionsmenu->setAction(GameManager::pushCommand, "M:OPEN:SETTIN");
 	optionsmenu->setTooltip("Change Audio, Video, and Game Settings", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	exitToMenu->setForeground(GameManager::LGRAY);
