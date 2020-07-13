@@ -6,11 +6,18 @@ bool GameManager::paused = false;
 bool GameManager::devMode = false;
 bool GameManager::editing = false;
 bool GameManager::onMain = true;
+float GameManager::scale = 1.0f;
+int GameManager::mx = 0;
+int GameManager::my = 0;
+
+SDL_Renderer* GameManager::rd = nullptr;
+
 
 bool GameManager::inSettings = false;
 bool GameManager::inInventory = false;
 const char* GameManager::versionNum = "p-a2242.3";
 std::vector<std::string> GameManager::commands = std::vector<std::string>();
+std::vector<std::string> GameManager::consoleLog = std::vector<std::string>();
 
 SDL_Color GameManager::WHITE = {255,255,255,255};
 SDL_Color GameManager::GREEN{ 100, 200, 100, 255 };
@@ -23,6 +30,12 @@ SDL_Color GameManager::DGRAY{ 25, 25, 25, 255 };
 SDL_Color GameManager::BLACK{ 0, 0, 0, 255 };
 SDL_Color GameManager::GOLD{ 255, 215, 0, 255 };
 SDL_Color GameManager::Gray20{ 45,45,45,255 };
+
+SDL_Color GameManager::COMMON{ 242,242,242,255 };
+SDL_Color GameManager::UNCOMMON{ 215,228,189,255 };
+SDL_Color GameManager::RARE{ 142,180,227,255 };
+SDL_Color GameManager::VERYRARE{ 217,150,148,255 };
+SDL_Color GameManager::LEGENDARY{ 179,162,199,255 };
 
 int GameManager::SCREENWIDTH = 1080;
 int GameManager::SCREENHEIGHT = 820;
@@ -58,4 +71,5 @@ void GameManager::setEditing() {
 
 void GameManager::pushCommand(std::string s) {
 	GameManager::commands.push_back(s);
+	GameManager::consoleLog.push_back(s);
 }

@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(SDL_Renderer* rd, std::string name, Vector2F p, float scale) : GameObject(rd, name, p.X, p.Y, 64, 128, scale, "assets/player.png") {
+Player::Player(std::string name, Vector2F p, float scale) : GameObject(name, Vector2F(p.X, p.Y), Sizer{ 64, 128 }, "assets/player.png") {
 
 }
 
@@ -27,8 +27,7 @@ void Player::setVIT(int amount);
 void Player::setWIS(int amount);
 void Player::setDEX(int amount);
 */
-void Player::update(bool paused) {
-	__super::update(paused);
-
+void Player::update() {
+	__super::update();
 	this->setPosition(this->getPosition().X + VelX, this->getPosition().Y + VelY);
 }

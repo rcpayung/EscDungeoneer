@@ -1,7 +1,7 @@
 #include "Button.h"
 #include "GameManager.h"
 
-Button::Button(SDL_Renderer* rd, int x, int y, int w, int h, const char* label) : UIComponent(rd, x, y, w, h, 1.0f) {
+Button::Button(int x, int y, int w, int h, const char* label) : UIComponent(x, y, w, h, 1.0f) {
 	// Default color black.
 	f = { 0,0,0,255 };
 	b = { 255,255,255,255 };
@@ -13,10 +13,8 @@ Button::Button(SDL_Renderer* rd, int x, int y, int w, int h, const char* label) 
 	inside = false;
 	moving = false;
 	borderwidth = 0;
-	mx = 0;
-	my = 0;
 	if (label != nullptr) {
-		this->label = new Text(rd, label, 15, WNORMAL, f, Vector2F(x, y), Vector2F(w, h));
+		this->label = new Text(label, 15, WNORMAL, f, Vector2F(x, y), Vector2F(w, h));
 		this->label->setBounds(x, y, w, h);
 		this->label->setCenter();
 		this->label->setMiddle();
@@ -63,10 +61,10 @@ void Button::render() {
 	__super::render();
 	if (inside) {
 		// Hover
-		SDL_SetRenderDrawColor(rd, sc.r, sc.g, sc.b, sc.a);
-		SDL_RenderFillRect(rd, &border);
-		SDL_SetRenderDrawColor(rd, bh.r, bh.g, bh.b, bh.a);
-		SDL_RenderFillRect(rd, &dest);
+		SDL_SetRenderDrawColor(GameManager::rd, sc.r, sc.g, sc.b, sc.a);
+		SDL_RenderFillRect(GameManager::rd, &border);
+		SDL_SetRenderDrawColor(GameManager::rd, bh.r, bh.g, bh.b, bh.a);
+		SDL_RenderFillRect(GameManager::rd, &dest);
 		label->setColor(fh);
 		label->render();
 		if (tip != nullptr && tooltipvisible) {
@@ -74,14 +72,14 @@ void Button::render() {
 		}
 	} else {
 		// No Hover
-		SDL_SetRenderDrawColor(rd, sc.r, sc.g, sc.b, sc.a);
-		SDL_RenderFillRect(rd, &border);
-		SDL_SetRenderDrawColor(rd, b.r, b.g, b.b, b.a);
-		SDL_RenderFillRect(rd, &dest);
+		SDL_SetRenderDrawColor(GameManager::rd, sc.r, sc.g, sc.b, sc.a);
+		SDL_RenderFillRect(GameManager::rd, &border);
+		SDL_SetRenderDrawColor(GameManager::rd, b.r, b.g, b.b, b.a);
+		SDL_RenderFillRect(GameManager::rd, &dest);
 		label->setColor(f);
 		label->render();
 	}
-	SDL_SetRenderDrawColor(rd, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(GameManager::rd, 0, 0, 0, 255);
 	
 }
 // Virtual function, mostly for inheritance
@@ -99,9 +97,8 @@ void Button::sendCommand(std::string s) {
 }
 
 void Button::update() {
-	SDL_GetMouseState(&mx, &my);
 	if (moving) {
-		this->setPosition(mx, my);
+		this->setPosition(GameManager::mx, GameManager::my);
 	}
 	if (borderset) {
 		border = { dest.x - borderwidth, dest.y - borderwidth, dest.w + 2 * borderwidth, dest.h + 2 * borderwidth };
@@ -115,18 +112,18 @@ void Button::update() {
 		if (count > 30) {
 			this->tooltipvisible = true;
 			if (tip != nullptr) {
-				if (mx + 10 + tip->getWidth() > GameManager::SCREENWIDTH) {
-					if (my + 50 > GameManager::SCREENHEIGHT) {
-						this->tip->setPosition(GameManager::SCREENWIDTH - tip->getWidth() - 2, my - 40);
+				if (GameManager::mx + 10 + tip->getWidth() > GameManager::SCREENWIDTH) {
+					if (GameManager::my + 50 > GameManager::SCREENHEIGHT) {
+						this->tip->setPosition(GameManager::SCREENWIDTH - tip->getWidth() - 2, GameManager::my - 40);
 					}
 					else {
-						this->tip->setPosition(GameManager::SCREENWIDTH - tip->getWidth() - 2, my + 20);
+						this->tip->setPosition(GameManager::SCREENWIDTH - tip->getWidth() - 2, GameManager::my + 20);
 					}
 				}
-				else if (my + 60 > GameManager::SCREENHEIGHT)
-					this->tip->setPosition(mx + 10, my - 40);
+				else if (GameManager::my + 60 > GameManager::SCREENHEIGHT)
+					this->tip->setPosition(GameManager::mx + 10, GameManager::my - 40);
 				else
-					this->tip->setPosition(mx + 10, my + 20);
+					this->tip->setPosition(GameManager::mx + 10, GameManager::my + 20);
 				this->tip->update();
 			}
 		}
@@ -144,8 +141,8 @@ void Button::handleEvents(SDL_Event* e) {
 	switch (e->type) {
 	case SDL_MOUSEMOTION:
 		// If within the bounds of the button
-		if (mx > this->getPosition().X&& mx < (this->getPosition().X + this->getSize().X) 
-			&& my > this->getPosition().Y&& my < (this->getPosition().Y + this->getSize().Y)) {
+		if (GameManager::mx > this->getPosition().X&& GameManager::mx < (this->getPosition().X + this->getSize().X)
+			&& GameManager::my > this->getPosition().Y&& GameManager::my < (this->getPosition().Y + this->getSize().Y)) {
 			inside = true;
 		}
 		else {
@@ -204,5 +201,5 @@ void Button::setPosition(Vector2F p) {
 }
 
 void Button::setTooltip(std::string tip, int size, SDL_Color fore, SDL_Color back) {
-	this->tip = new Tooltip(rd, size, tip, WNORMAL, fore, back, this->mx,this->my+50);
+	this->tip = new Tooltip(size, tip, WNORMAL, fore, back, GameManager::mx, GameManager::my+50);
 }

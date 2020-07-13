@@ -1,25 +1,24 @@
 #include "Scene.h"
 
-Scene::Scene(SDL_Renderer* rd, int id, std::string name, int openx, int openy, int SceneWidth, int SceneHeight, int SCREENWIDTH, int SCREENHEIGHT, float scale) {
+Scene::Scene(int id, std::string name, int openx, int openy, int SceneWidth, int SceneHeight, float scale) {
 	this->id = id;
 	this->name = name;
-	player = new Player(rd,"Player",Vector2F(openx,openy),scale);
+	player = new Player("Player",Vector2F(openx + GameManager::SCREENWIDTH / 2, openy + GameManager::SCREENHEIGHT / 2),scale);
 	player->setIdle(0, 0);
+	player->setPosition(GameManager::SCREENWIDTH / 2 - player->getSize().W / 2, GameManager::SCREENHEIGHT / 2 - player->getSize().H / 2);
 	player->addAnimation(10, 2, 0, 0, false);
 	camera = {
 		openx,
 		openy,
-		SCREENWIDTH,
-		SCREENHEIGHT
+		GameManager::SCREENWIDTH,
+		GameManager::SCREENHEIGHT
 	};
 
-	this->SCREENWIDTH = SCREENWIDTH;
-	this->SCREENHEIGHT = SCREENHEIGHT;
 	this->SCENEWIDTH = SceneWidth;
 	this->SCENEHEIGHT = SceneHeight;
 
 	if (!loadScene()) {
-		printf("Could Not Load Scene %s", name.c_str());
+		printf("Could Not Load Scene %s\n", name.c_str());
 	}
 }
 
@@ -53,7 +52,7 @@ bool Scene::saveScene(const char * path) {
 		file.write(std::to_string(player->getPosition().X).c_str(), 5);
 		file.write(std::to_string(player->getPosition().Y).c_str(), 5);
 		for (GameObject* obj : objects) {
-			file.write(std::to_string(obj->getID()).append(":").append(std::to_string(obj->getPosition().X)).append(":").append(std::to_string(obj->getPosition().Y)).c_str(), 50);
+			file.write(std::to_string(obj->getGID()).append(":").append(std::to_string(obj->getPosition().X)).append(":").append(std::to_string(obj->getPosition().Y)).c_str(), 50);
 		}
 		file.close();
 		return true;
@@ -62,22 +61,22 @@ bool Scene::saveScene(const char * path) {
 }
 
 void Scene::addObject(GameObject* obj) {
-	printf("adding %d", obj->getID());
+	printf("adding %d", obj->getGID());
 	this->objects.push_back(obj);
 }
 
-void Scene::update(bool paused) {
-	camera.x = player->getPosition().X - SCREENWIDTH / 2;
-	camera.y = player->getPosition().Y - SCREENHEIGHT / 2;
+void Scene::update() {
+	camera.x = player->getPosition().X - GameManager::SCREENWIDTH / 2;
+	camera.y = player->getPosition().Y - GameManager::SCREENHEIGHT / 2;
 
-	player->update(paused);
+	player->update();
 	for (GameObject* object : objects) {
 		if (player->getPosition().X - 1000 < object->getPosition().X &&
 			player->getPosition().X + 1000 > object->getPosition().X&&
 			player->getPosition().Y - 1000 < object->getPosition().Y &&
 			player->getPosition().Y + 1000 > object->getPosition().Y) {
 
-			object->update(paused);
+			object->update();
 		}
 	}
 }
@@ -101,6 +100,7 @@ void Scene::clean() {
 }
 
 void Scene::pollevents(SDL_Event e) {
+	player->handleEvents(&e);
 	switch (e.type) {
 	case SDL_KEYDOWN:
 		switch (e.key.keysym.sym) {

@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "Vector2F.h"
+#include "GameManager.h"
 
 struct Sizer {
 	int W, H;
@@ -14,13 +15,13 @@ class Sprite {
 private:
 	SDL_Surface* atlas;
 	SDL_Texture* texture;
-	SDL_Renderer* rd;
 	SDL_Rect src, dest;
 	float scale;
 	Vector2F position;
 	Sizer size, aSize;
 public:
-	Sprite(SDL_Renderer* rd, std::string path, int x, int y, int w, int h, float scale);
+	Sprite(const char* path, Vector2F pos, Sizer size);
+	Sprite(const char* path, Vector2F pos, Sizer size, float scale);
 	void setScale(float scale);
 	void setPosition(int x, int y);
 	void setImage(int x, int y);

@@ -9,7 +9,7 @@ private:
 	SDL_Color f, b, fh, bh, sc;
 	bool borderset, inside, moving, tooltipvisible;
 	int count;
-	int borderwidth, mx, my;
+	int borderwidth;
 	std::string command;
 	SDL_Rect border;
 	// Action function
@@ -19,7 +19,7 @@ private:
 protected:
 
 public:
-	Button(SDL_Renderer* rd, int x, int y, int w, int h, const char* label);
+	Button(int x, int y, int w, int h, const char* label);
 	void setForeground(SDL_Color color);
 	void setBackground(SDL_Color color);
 	void setHover(SDL_Color fore, SDL_Color back);

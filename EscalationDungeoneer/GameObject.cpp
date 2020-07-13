@@ -2,13 +2,15 @@
 
 int GameObject::ID = 0;
 
-GameObject::GameObject(SDL_Renderer* rd, std::string name, int x, int y, int w, int h, float scale, std::string path) {
-	this->sprite = new Sprite(rd, path, x, y, w, h, scale);
-	this->position = Vector2F(x, y);
-	this->size = Vector2F(w, h);
+GameObject::GameObject(std::string name, Vector2F pos, Sizer size, const char* path) {
+	this->sprite = new Sprite(path, pos, size);
+	this->position = pos;
+	this->size = size;
 	this->rotation = 0.0f;
 	this->scale = scale;
+	this->name = name;
 	ID++;
+	this->tip = new Tooltip(12, "GameObject ID:" + std::to_string(ID) + ": " + this->name + ", X:" + std::to_string(this->position.X) + ", Y:" + std::to_string(this->position.Y), WNORMAL, GameManager::GOLD, GameManager::DGRAY, position.X, position.Y);
 }
 // Play an existing animation with the current id. If over is set to true, it will override any currently playing animation.
 void GameObject::playAnimation(int id, bool over) {
@@ -43,16 +45,19 @@ void GameObject::setIdle(int x, int y) {
 }
 
 void GameObject::setPosition(int x, int y) {
-	if (!paused) {
+	if (!GameManager::paused) {
 		this->position = Vector2F(x, y);
 		sprite->setPosition(x, y);
 	}
 }
 
-void GameObject::update(bool paused) {
-	if (paused) this->paused = true;
-	if (!paused) this->paused = false;
-	if (!paused) {
+void GameObject::update() {
+	if (GameManager::devMode) {
+		tip->setTip("GameObject ID:" + std::to_string(ID) + ": " + this->name + ", X:" + std::to_string(this->getPosition().X / 48) + ", Y:" + std::to_string(this->getPosition().Y / 48));
+		tip->setPosition((this->position.X+this->getSize().W / 2)-(this->tip->getWidth()/2), this->position.Y - 35);
+		tip->update();
+	}
+	if (!GameManager::paused) {
 		if (cAnim != nullptr) {
 			if (cAnim->cTime % (cAnim->tTime / cAnim->sCount) == 0) {
 				if (cAnim->cTime != 0) {
@@ -95,9 +100,13 @@ void GameObject::update(bool paused) {
 
 void GameObject::render() {
 	sprite->render(rotation);
+	if (GameManager::devMode && this->focus) {
+		this->tip->render();
+	}
 }
 
 void GameObject::clean() {
+	tip->clean();
 	cAnim = nullptr;
 	anims.clear();
 	sprite->clean();
@@ -107,12 +116,12 @@ Vector2F GameObject::getPosition() {
 	return this->position;
 }
 
-Vector2F GameObject::getSize() {
+Sizer GameObject::getSize() {
 	return this->size;
 }
 
 void GameObject::setRotation(float theta) {
-	if (!paused)
+	if (!GameManager::paused)
 		this->rotation = theta;
 }
 
@@ -120,6 +129,36 @@ float GameObject::getTheta() {
 	return this->rotation;
 }
 
-int GameObject::getID() {
+int GameObject::getGID() {
 	return GameObject::ID;
+}
+
+void GameObject::handleEvents(SDL_Event* event) {
+	if (GameManager::mx > this->getPosition().X && GameManager::mx < (this->getPosition().X + this->getSize().W)
+		&& GameManager::my > this->getPosition().Y && GameManager::my < (this->getPosition().Y + this->getSize().H)) {
+		hovering = true;
+	}
+	else {
+		hovering = false;
+	}
+	
+	switch (event->type) {
+	case SDL_MOUSEBUTTONDOWN:
+		switch (event->button.button) {
+		case SDL_BUTTON_LEFT:
+			if (hovering && GameManager::devMode) {
+				// Set Focus.
+				focus = true;
+			}
+			else {
+				focus = false;
+			}
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
 }

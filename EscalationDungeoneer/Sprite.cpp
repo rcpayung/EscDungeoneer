@@ -1,29 +1,28 @@
 #include "Sprite.h"
 
-Sprite::Sprite(SDL_Renderer* rd, std::string path, int x, int y, int w, int h, float scale) {
-	position = Vector2F(x,y);
-	this->rd = rd;
-	size = {w, h};
-	// Load atlas
-	atlas = IMG_Load(path.c_str());
-	// set the atlas size to the size of the loaded atlas.
-	aSize = {atlas->w, atlas->h};
-	// Create the texture atlas
-	texture = SDL_CreateTextureFromSurface(rd, atlas);
-	// Free up the atlas surface
+Sprite::Sprite(const char* path, Vector2F pos, Sizer size, float scale) {
+	position = pos;
+	this->size = {int(size.W * scale), int(size.H * scale)};
+	
+	atlas = IMG_Load(path);
+	aSize = { atlas->w,atlas->h };
+	texture = SDL_CreateTextureFromSurface(GameManager::rd, atlas);
 	SDL_FreeSurface(atlas);
-	// set the bounds
-	src = {
-		0,0,
-		w,h
-	};
-	// set the destination and scale.
-	dest = {
-		position.X, position.Y,
-		int(w * scale), int(h * scale)
-	};
+	src = {0,0,size.W,size.H};
+	dest = {position.X,position.Y,this->size.W,this->size.H};
 }
 
+Sprite::Sprite(const char* path, Vector2F pos, Sizer size) {
+	position = pos;
+	this->size = { int(size.W * GameManager::scale), int(size.H * GameManager::scale) };
+
+	atlas = IMG_Load(path);
+	aSize = { atlas->w,atlas->h };
+	texture = SDL_CreateTextureFromSurface(GameManager::rd, atlas);
+	SDL_FreeSurface(atlas);
+	src = { 0,0,size.W,size.H };
+	dest = { position.X,position.Y,this->size.W,this->size.H };
+}
 
 void Sprite::setScale(float scale) {
 	// set the scale of the sprite
@@ -67,7 +66,7 @@ void Sprite::setImage(int x, int y) {
 }
 
 void Sprite::render(float theta) {
-	SDL_RenderCopyEx(rd, texture, &src, &dest,theta,NULL,SDL_FLIP_NONE);
+	SDL_RenderCopyEx(GameManager::rd, texture, &src, &dest,theta,NULL,SDL_FLIP_NONE);
 }
 
 void Sprite::clean() {

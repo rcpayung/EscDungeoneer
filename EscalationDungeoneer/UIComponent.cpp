@@ -1,7 +1,6 @@
 #include "UIComponent.h"
 
-UIComponent::UIComponent(SDL_Renderer* rd, int x, int y, int w, int h, float scale) {
-	this->rd = rd;
+UIComponent::UIComponent(int x, int y, int w, int h, float scale) {
 	this->scale = scale;
 	this->sprite = nullptr;
 	this->dest = { x,y,w,h };
@@ -47,5 +46,5 @@ void UIComponent::setScale(float scale) {
 	this->sprite->setScale(this->scale);
 }
 void UIComponent::setSprite(const char* asset) {
-	this->sprite = new Sprite(rd, asset, dest.x, dest.y, dest.w, dest.h, scale);
+	this->sprite = new Sprite(asset, Vector2F{ dest.x, dest.y }, Sizer{ dest.w, dest.h }, scale);
 }

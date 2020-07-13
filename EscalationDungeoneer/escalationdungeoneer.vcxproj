@@ -143,9 +143,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CreditsMenu.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -165,9 +168,12 @@
     <ClInclude Include="..\..\..\rapidxml\rapidxml_print.hpp" />
     <ClInclude Include="..\..\..\rapidxml\rapidxml_utils.hpp" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CreditsMenu.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="PauseMenu.h" />

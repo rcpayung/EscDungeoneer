@@ -9,7 +9,6 @@ private:
 	Sprite* sprite;
 	float scale;
 protected:
-	SDL_Renderer* rd;
 	SDL_Rect dest;
 public:
 
@@ -24,7 +23,7 @@ public:
 	SDL_Color DGRAY{ 25, 25, 25, 255 };
 	SDL_Color BLACK{ 0,  0,  0, 255 };
 
-	UIComponent(SDL_Renderer* rd, int x, int y, int w, int h, float scale);
+	UIComponent(int x, int y, int w, int h, float scale);
 	virtual void render();
 	virtual void update() = 0;
 	virtual void clean();

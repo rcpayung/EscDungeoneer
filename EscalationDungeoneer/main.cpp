@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
 	Uint32 framestart;
 	float frameTime;
-	while (game->isRunning()) {
+	while (GameManager::running) {
 		
 		framestart = SDL_GetTicks();
 		

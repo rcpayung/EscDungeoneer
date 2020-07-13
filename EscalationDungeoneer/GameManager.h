@@ -14,14 +14,19 @@ public:
 	static bool inSettings;
 	static bool inInventory;
 	static const char* versionNum;
+	static int mx, my;
+	static float scale;
 
 	static std::vector<std::string> commands;
+	static std::vector<std::string> consoleLog;
 
 	static int SCREENWIDTH;
 	static int SCREENHEIGHT;
 
-	static SDL_Color WHITE;
+	static SDL_Renderer* rd;
+
 	// Text Colors	  R   G   B
+	static SDL_Color WHITE;
 	static SDL_Color GREEN;
 	static SDL_Color LGRAY;
 	static SDL_Color L_BLU;
@@ -32,6 +37,8 @@ public:
 	static SDL_Color BLACK;
 	static SDL_Color GOLD;
 	static SDL_Color Gray20;
+
+	static SDL_Color COMMON, UNCOMMON, RARE, VERYRARE, LEGENDARY;
 	
 	static void setDev();
 	static void Pause();

@@ -1,7 +1,13 @@
 #include "Menu.h"
 
-Menu::Menu(SDL_Renderer* rd) {
-	this->rd = rd;
+Menu::Menu() {
+	color = {0,0,0,0};
+	screen = { 0,0,GameManager::SCREENWIDTH,GameManager::SCREENHEIGHT };
+}
+
+void Menu::setBackground(SDL_Color color) {
+	this->color = color;
+	this->drawBackground = true;
 }
 
 void Menu::addComponent(UIComponent* c) {
@@ -13,18 +19,23 @@ void Menu::addComponent(Text* t) {
 }
 
 void Menu::setTitle(const char* title) {
-	Text* t = new Text(rd, title, 48, WBOLD, SDL_Color{200,200,200,255}, Vector2F(100, 50), Vector2F(500, 30));
+	Text* t = new Text(title, 48, WBOLD, SDL_Color{200,200,200,255}, Vector2F(100, 50), Vector2F(500, 30));
 	labels.push_back(t);
 }
 
 void Menu::render() {
 	// Rendered backwards to properly show the tooltip, however, thinking about making this into a z-index renderer.
+	if (this->drawBackground) {
+		SDL_SetRenderDrawColor(GameManager::rd, color.r, color.g, color.b, color.a);
+		SDL_RenderFillRect(GameManager::rd, &screen);
+	}
 	for (int i = static_cast<int>(labels.size()-1); i >= 0; i--) {
 		labels[i]->render();
 	}
 	for (int i = static_cast<int>(options.size()-1); i >= 0; i--) {
 		options[i]->render();
 	}
+	
 }
 
 void Menu::update() {
@@ -48,7 +59,7 @@ void Menu::pollEvents(SDL_Event* e) {
 		switch (e->key.keysym.sym) {
 		case SDLK_ESCAPE:
 			if (!GameManager::onMain)
-				GameManager::pushCommand("M:CLOS:__LAST");
+				GameManager::pushCommand("M:LOAD:__LAST");
 			break;
 		default:
 			break;

@@ -7,7 +7,7 @@ private:
 	int ATT, DEF, VIT, WIS, DEX;
 
 public:
-	Player(SDL_Renderer* rd, std::string name, Vector2F p, float scale);
+	Player(std::string name, Vector2F p, float scale);
 	void setVelocityX(float vel);
 	void setVelocityY(float vel);
 	void setMaxHP(int HP);
@@ -26,7 +26,7 @@ public:
 	void setWIS(int amount);
 	void setDEX(int amount);
 
-	void update(bool paused);
+	void update();
 
 };
 

@@ -1,7 +1,6 @@
 #include "Text.h"
 
-Text::Text(SDL_Renderer* rd, std::string message, short fontSize, int fontWeight,SDL_Color color, Vector2F p, Vector2F s) {
-	this->rd = rd;
+Text::Text(std::string message, short fontSize, int fontWeight,SDL_Color color, Vector2F p, Vector2F s) {
 	this->color = color;
 	this->fontSize = fontSize;
 	this->message = message;
@@ -34,7 +33,7 @@ Text::Text(SDL_Renderer* rd, std::string message, short fontSize, int fontWeight
 }
 
 void Text::render() {
-	SDL_RenderCopy(rd, tex, NULL, &pos);
+	SDL_RenderCopy(GameManager::rd, tex, NULL, &pos);
 }
 
 void Text::setColor(SDL_Color color) {
@@ -60,11 +59,14 @@ SDL_Texture* Text::loadTexture(std::string message, SDL_Color color) {
 		this->pos.h = surf->h;
 	}
 
+	this->width = surf->w;
+	this->height = surf->h;
+
 	if (surf == NULL) {
 		printf("Error in loading surface\n");
 	}
 
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(rd, surf);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(GameManager::rd, surf);
 	SDL_FreeSurface(this->surf);
 	return texture;
 
@@ -84,4 +86,12 @@ void Text::setMiddle() {
 
 void Text::setBounds(int x, int y, int w, int h) {
 	this->bounds = { x, y, w, h };
+}
+
+int Text::getWidth() {
+	return this->width;
+}
+
+int Text::getHeight() {
+	return this->height;
 }

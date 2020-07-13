@@ -9,23 +9,31 @@ Game::Game(const char *title, int w, int h, int flags) {
 	// set the screen width and height:
 	GameManager::SCREENWIDTH = w;
 	GameManager::SCREENHEIGHT = h;
+	amenu = nullptr;
+	lastmenu = nullptr;
+	activeScene = nullptr;
 
 	// Intialize SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 		// Create the window and renderer.
 		this->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, GameManager::SCREENWIDTH, GameManager::SCREENHEIGHT, SDL_WINDOW_SHOWN);
-		this->rd = SDL_CreateRenderer(win, -1, 0);
+		
+		// Create the renderer (Static: see GameManager.h).
+		GameManager::rd = SDL_CreateRenderer(win, -1, 0);
 
-		if (win && rd) {
+		if (win && GameManager::rd) {
 			std::cout << "Done Init." << std::endl;
+		}
+		// Load True type font sdl package
+		if (TTF_Init() == -1) {
+			printf("Error: %s\n", SDL_GetError());
 		}
 
 		// Set the rendering hints, this will change with the settings menu.
-
 		SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 		SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
-		SDL_SetRenderDrawBlendMode(rd, SDL_BLENDMODE_BLEND);
+		SDL_SetRenderDrawBlendMode(GameManager::rd, SDL_BLENDMODE_BLEND);
 		
 		/* SET WINDOW ICON */ {
 			SDL_Surface* icon = IMG_Load("assets/appicon.bmp");
@@ -33,20 +41,21 @@ Game::Game(const char *title, int w, int h, int flags) {
 			SDL_FreeSurface(icon);
 		}
 
-		// Load True type font sdl package
-		if (TTF_Init() == -1) {
-			printf("Error: %s\n", SDL_GetError());
-		}
+		
 
 		worldPort.x = 0;
 		worldPort.y = 0;
 		worldPort.w = GameManager::SCREENWIDTH;
 		worldPort.h = GameManager::SCREENHEIGHT;
 
-		WORLD = new Scene(rd, 0, "Sauresgald", 0, 0, 1000, 1000, GameManager::SCREENWIDTH, GameManager::SCREENHEIGHT, 1.0f);
-		mainmenu = new MainMenu(rd, "assets/escalationDungeoneerBackground.png");
-		pausemenu = new PauseMenu(rd);
-		settings = new SettingsMenu(rd);
+		WORLD = new Scene(0, "Sauresgald", 0, 0, 1000, 1000, 1.0f);
+		mainmenu = new MainMenu("assets/escalationDungeoneerBackground.png");
+		pausemenu = new PauseMenu();
+		settings = new SettingsMenu();
+		creditsmenu = new CreditsMenu();
+
+		GameManager::pushCommand("M:LOAD:__MAIN");
+		devModetext = new Text("dev Mode Enabled", 10, WBOLD, GameManager::GREEN, Vector2F(10, 10), Vector2F(50, 15));
 	}
 
 }
@@ -63,38 +72,22 @@ bool Game::isRunning() {
 void Game::update() {
 	// Handle all game updates here.
 	processCommands();
+	SDL_GetMouseState(&GameManager::mx, &GameManager::my);
+	if (amenu != nullptr) {
+		if (amenu == mainmenu) mainmenu->update();
+		else if (amenu == creditsmenu) creditsmenu->update();
+		else if (amenu == pausemenu) pausemenu->update();
+		else if (amenu == settings) settings->update();
+	}
+	if (GameManager::isPlaying) {
+		activeScene->update();
+	}
 
-	if (!GameManager::isPlaying) {
-		// game is not active:
-		if (activeScene != nullptr) {
-			activeScene = nullptr;
-			if (GameManager::paused) GameManager::Pause();
-			mainmenu->update();
-		}
-		else {
-			mainmenu->update();
-		}
-	}
-	else {
-		// game is active
-		if (activeScene == nullptr) {
-			// NEED TO GET THE ACTIVE SCENE AND DISPLAY IT HERE
-			activeScene = WORLD; // Placeholder until command-version is created.
-		}
-		else {
-			// active scene is not nullptr
-			if (GameManager::paused) {
-				// if we paused the game, update the pause menu.
-				pausemenu->update();
-			}
-			else {
-				// if were not paused, update the active scene.
-				activeScene->update(GameManager::paused);
-			}
-		}
-	}
 }
 
+/*
+Command Handler. This will process all commands sent to it via buttons or triggers.
+*/
 void Game::processCommands() {
 	for (std::string command : GameManager::commands) {
 		// process commands
@@ -102,7 +95,7 @@ void Game::processCommands() {
 		cargs.push_back(command.substr(2, 4));
 		cargs.push_back(command.substr(7, 6));
 
-		printf("%s:%s:%s", cargs.at(0).c_str(), cargs.at(1).c_str(), cargs.at(2).c_str());
+		printf("%s:%s:%s\n", cargs.at(0).c_str(), cargs.at(1).c_str(), cargs.at(2).c_str());
 	
 		if (cargs.at(0) == "G") {
 			if (cargs.at(1) == "LOAD") {
@@ -112,38 +105,82 @@ void Game::processCommands() {
 					GameManager::setPlaying();
 				}
 			}
+			else if (cargs.at(1) == "LASTGM") {
+				// Load the last game.
+				//loadGame("LAST");
+				activeScene = WORLD;
+				amenu = nullptr;
+				GameManager::setPlaying();
+			}
 			else if (cargs.at(1) == "EDIT") {
 				if (cargs.at(2) == "ARTMAP") {
 					GameManager::setPlaying();
 					GameManager::setEditing();
+					amenu = nullptr;
+					activeScene = WORLD;
 					//edit = new Editor(&WORLD,"Art");
 				}
 				if (cargs.at(2) == "LOGMAP") {
 					GameManager::setPlaying();
 					GameManager::setEditing();
+					amenu = nullptr;
+					activeScene = WORLD;
 					//edit = new Editor(&WORLD,"logic");
 				}
 			}
+			else if (cargs.at(1) == "EXIT") {
+				if (cargs.at(2) == "__MAIN") {
+					GameManager::setPlaying();
+					if (GameManager::editing) GameManager::editing = false;
+					if (GameManager::paused) GameManager::Pause();
+					amenu = mainmenu;
+				}
+				else if (cargs.at(2) == "__DESK") {
+					GameManager::setRunning();
+				}
+			}
+			// END OF "G"
 		}
 		else if (cargs.at(0) == "M") {
 			// MENUS
-			if (cargs.at(1) == "LOAD") {
+			// LOAD COMMAND (OPEN)
+			if (cargs.at(1) == "LOAD" || cargs.at(1) == "OPEN") {
 				if (cargs.at(2) == "SETTIN") {
 					GameManager::inSettings = true;
-					this->amenu = nullptr;
+					this->lastmenu = amenu;
 					this->amenu = settings;
 				}
+				else if (cargs.at(2) == "PAUSED") {
+					this->lastmenu = nullptr;
+					this->amenu = pausemenu;
+					GameManager::Pause();
+				}
 				else if (cargs.at(2) == "__MAIN") {
-					this->amenu = nullptr;
+					if (GameManager::isPlaying) GameManager::setPlaying();
+					if (GameManager::paused) GameManager::Pause();
+					this->lastmenu = nullptr;
 					this->amenu = mainmenu;
 				}
+				// LOADS THE LAST MENU ON THE SCREEN. CAN BE NULLPTR
+				else if (cargs.at(2) == "__LAST") {
+					amenu = lastmenu;
+
+					// This needs some work
+				}
+				else if (cargs.at(2) == "CREDIT") {
+					lastmenu = amenu;
+					amenu = creditsmenu;
+				}
+				
 			}
+			// CLOSE COMMAND
 			else if (cargs.at(1) == "CLOS") {
 				if (cargs.at(2) == "SETTIN") {
 					GameManager::inSettings = false;
-					GameManager::isPlaying ? amenu = pausemenu : amenu = mainmenu; // If playing, change to the pause menu, if not, return to main menu.
+					GameManager::isPlaying ? amenu = pausemenu : amenu = mainmenu; 
+					// If playing, change to the pause menu, if not, return to main menu.
 				}
-				else if (cargs.at(2) == "_PAUSE") {
+				else if (cargs.at(2) == "PAUSED") {
 					GameManager::Pause();
 					amenu = nullptr;
 				}
@@ -158,43 +195,38 @@ void Game::processCommands() {
 }
 
 void Game::render() {
-	SDL_RenderClear(rd);
-	SDL_RenderSetViewport(rd, &worldPort);
+	SDL_RenderClear(GameManager::rd);
+	SDL_RenderSetViewport(GameManager::rd, &worldPort);
 	// Render World Elements Here:
 
-	if (!GameManager::isPlaying) {
-		// if were not playing, we are in the menus, so render the menu
-		mainmenu->render();
-	}
-	else {
-		// if we are playing, if the active scene is not nullptr, we render the active scene.
-		if (activeScene != nullptr) {
+	if (GameManager::isPlaying) {
+		if (activeScene != nullptr)
 			activeScene->render();
-			if (GameManager::paused) {
-				// if we paused the game, we also render the pause menu.
-				pausemenu->render();
-			}
-		}
 	}
-	SDL_SetRenderDrawColor(rd, 0,0,0, 255);
-	SDL_RenderPresent(rd);
+	if (amenu != nullptr) {
+		if (amenu == mainmenu) mainmenu->render();
+		else if (amenu == creditsmenu) creditsmenu->render();
+		else if (amenu == pausemenu) pausemenu->render();
+		else if (amenu == settings) settings->render();
+	}
+	if (GameManager::devMode)
+		devModetext->render();
+
+	SDL_SetRenderDrawColor(GameManager::rd, 0,0,0, 255);
+	SDL_RenderPresent(GameManager::rd);
 }
 
 void Game::handleEvents() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
-		if (GameManager::isPlaying) {
-			// if were playing the game
-			if (GameManager::paused) {
-				// if were paused then poll the events of the pause menu.
-				pausemenu->pollEvents(&event);
-			}
-			// If were not paused and the scene is active, then we poll the events of the scene.
-			if (activeScene != nullptr) activeScene->pollevents(event);
+		if (amenu != nullptr) {
+			if (amenu == mainmenu) mainmenu->pollEvents(&event);
+			else if (amenu == creditsmenu) creditsmenu->pollEvents(&event);
+			else if (amenu == pausemenu) pausemenu->pollEvents(&event);
+			else if (amenu == settings) settings->pollEvents(&event);
 		}
-		else {
-			// if were not playing, were in the menus so poll the events of the main menu.
-			mainmenu->pollEvents(&event);
+		if (GameManager::isPlaying) {
+			activeScene->pollevents(event);
 		}
 		
 		switch (event.type) {
@@ -203,8 +235,15 @@ void Game::handleEvents() {
 
 			switch (event.key.keysym.sym) {
 			case SDLK_ESCAPE:
+				if (GameManager::isPlaying) {
+					if (!GameManager::paused) {
+						GameManager::pushCommand("M:LOAD:PAUSED");
+					}
+					else {
+						GameManager::pushCommand("M:CLOS:PAUSED");
+					}
+				}
 				break;
-
 			case SDLK_END:
 				GameManager::setDev();
 				break;
@@ -214,19 +253,15 @@ void Game::handleEvents() {
 			break;
 
 		case SDL_KEYUP:
-
 			switch (event.key.keysym.sym) {
 			case SDLK_ESCAPE:
-				if (activeScene != nullptr && GameManager::isPlaying) {
-					GameManager::Pause();
-				}
 				break;
 			default:
 				break;
 			};
 			break;
 		case SDL_QUIT:
-			GameManager::setRunning();
+			GameManager::pushCommand("G:EXIT:__DESK");
 			break;
 
 		default:
@@ -237,12 +272,11 @@ void Game::handleEvents() {
 
 void Game::cleanup() {
 	SDL_DestroyWindow(win);
-	SDL_DestroyRenderer(rd);
+	SDL_DestroyRenderer(GameManager::rd);
 
-	WORLD->clean();
-	mainmenu->clean();
+	amenu->clean();
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
-	SteamAPI_Shutdown();
+	//SteamAPI_Shutdown();
 }

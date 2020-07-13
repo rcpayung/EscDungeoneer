@@ -1,0 +1,20 @@
+COMMANDS:
+GAME (G:)
+	-----SUBCOM-----
+	load	(LOAD:) // Loads a specified game.
+	save	(SAVE:)	// Saves the current game.
+	create	(CREA:) // Creates a specified type
+	item	(ITEM:)	// Gives an item to the player
+	setspawn(SPAW:)	// Sets player spawn point.
+	location(SLOC:) // sets location text.
+MENU (M:)
+	-----SUBCOM-----
+	close	(CLOS:)
+	load 	(LOAD:)(OPEN:) // loads specified menu.
+	
+		------CARGS------
+		Settings (SETTIN)
+		Main	 (__MAIN)
+		Pause	 (PAUSED)
+		Credits	 (CREDIT)
+		Inventory(INVENT)

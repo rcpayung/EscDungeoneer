@@ -6,11 +6,10 @@ private:
 	Button * play, * loadlast, * loadother, * optionsmenu, * credits, * quit;
 	Button* dev_tE, * dev_bE;
 	Sprite* background;
-	Text* devModetext;
 protected:
 
 public:
-	MainMenu(SDL_Renderer* rd, const char * backgroundLoc);
+	MainMenu(const char * backgroundLoc);
 	void update();
 	void render();
 	void clean();

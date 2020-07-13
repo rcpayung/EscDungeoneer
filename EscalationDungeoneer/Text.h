@@ -6,6 +6,7 @@
 #include "Vector2F.h"
 #include <iostream>
 #include <stdio.h>
+#include "GameManager.h"
 
 enum weight {
 	WNORMAL,
@@ -20,12 +21,12 @@ private:
 	SDL_Color color;
 	SDL_Texture* tex;
 	SDL_Rect pos, bounds;
-	SDL_Renderer* rd;
 	SDL_Surface* surf;
 	short fontSize;
 	std::string message;
+	int width, height;
 public:
-	Text(SDL_Renderer* rd, std::string message, short fontsize, int fontWeight, SDL_Color color, Vector2F pos, Vector2F size);
+	Text(std::string message, short fontsize, int fontWeight, SDL_Color color, Vector2F pos, Vector2F size);
 	void render();
 	void clean();
 	void setColor(SDL_Color color);
@@ -34,6 +35,7 @@ public:
 	void setCenter();
 	void setMiddle();
 	void setBounds(int x, int y, int w, int h);
+	int getWidth(), getHeight();
 
 };
 

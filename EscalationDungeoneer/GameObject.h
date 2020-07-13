@@ -3,6 +3,8 @@
 #include <vector>
 #include <stdio.h>
 #include <iostream>
+#include "GameManager.h"
+#include "Tooltip.h"
 
 struct Animation {
 	int tTime;
@@ -22,15 +24,16 @@ private:
 	// Animation Attributes:
 	std::vector<Animation> anims;
 	Animation* cAnim;
-
+	bool hovering, focus;
 	// Other Attributes:
 	std::string name;
-	Vector2F position, size;
+	Vector2F position; 
+	Sizer size;
 	float rotation, scale;
-	bool paused;
+	Tooltip* tip;
 public:
 	static int ID;
-	GameObject(SDL_Renderer* rd, std::string name, int x, int y, int w, int h, float scale, std::string path);
+	GameObject(std::string name, Vector2F pos, Sizer size, const char* path);
 	
 	// Animation Functions
 	void playAnimation(int id,bool over);
@@ -38,7 +41,7 @@ public:
 	void setIdle(int x, int y);
 
 	// Game Functions
-	void update(bool paused);
+	void update();
 	void render();
 	void clean();
 
@@ -48,9 +51,10 @@ public:
 	void setScale(float scale);
 
 	Vector2F getPosition();
-	Vector2F getSize();
+	Sizer getSize();
 	float getTheta();
 	
-	static int getID();
+	static int getGID();
+	void handleEvents(SDL_Event* event);
 };
 

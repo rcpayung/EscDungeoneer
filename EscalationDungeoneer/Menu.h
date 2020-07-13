@@ -10,10 +10,13 @@ class Menu {
 private:
 	std::vector<UIComponent*> options;
 	std::vector<Text*> labels;
+	bool drawBackground = false;
+	SDL_Color color;
+	SDL_Rect screen;
 protected:
-	SDL_Renderer* rd;
 public:
-	Menu(SDL_Renderer* rd);
+	Menu();
+	void setBackground(SDL_Color color);
 	void addComponent(UIComponent* c);
 	void addComponent(Text* tex);
 	void setTitle(const char* title);

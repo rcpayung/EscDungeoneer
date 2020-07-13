@@ -1,18 +1,18 @@
 #include "MainMenu.h"
 
-MainMenu::MainMenu(SDL_Renderer* rd, const char * backgroundLoc) : Menu(rd) {
-	this->background = new Sprite(rd, backgroundLoc, 0, 0, 1920, 1080, 0.8f);
+MainMenu::MainMenu(const char * backgroundLoc) : Menu() {
+	this->background = new Sprite(backgroundLoc, Vector2F(0, 0), Sizer{ 1920, 1080 }, 0.8f);
 	
-	play = new Button(rd, GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 300, 200, 30, "New Game");
-	loadlast = new Button(rd, GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 260, 200, 30, "Continue");
-	loadother = new Button(rd, GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 220, 200, 30, "Load Game");
-	optionsmenu = new Button(rd, GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 180, 200, 30, "Settings");
-	credits = new Button(rd, GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 140, 200, 30, "Credits");
-	quit = new Button(rd, GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 100, 200, 30, "Exit Game");
+	play = new Button(GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 300, 200, 30, "New Game");
+	loadlast = new Button(GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 260, 200, 30, "Resume Last Game");
+	loadother = new Button(GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 220, 200, 30, "Load Game");
+	optionsmenu = new Button(GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 180, 200, 30, "Settings");
+	credits = new Button(GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 140, 200, 30, "Credits");
+	quit = new Button(GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 100, 200, 30, "Exit Game");
 	
-	devModetext = new Text(rd, "dev Mode Enabled", 10, WBOLD, GameManager::GREEN, Vector2F(10, 10), Vector2F(50, 15));
-	dev_tE = new Button(rd, 200, GameManager::SCREENHEIGHT - 300, 200, 30, "Art Tile Editor");
-	dev_bE = new Button(rd, 200, GameManager::SCREENHEIGHT - 260, 200, 30, "Logic Tile Editor");
+	
+	dev_tE = new Button(200, GameManager::SCREENHEIGHT - 300, 200, 30, "Art Tile Editor");
+	dev_bE = new Button(200, GameManager::SCREENHEIGHT - 260, 200, 30, "Logic Tile Editor");
 
 	play->setForeground(GameManager::LGRAY);
 	play->setBackground(GameManager::DGRAY);
@@ -46,7 +46,7 @@ MainMenu::MainMenu(SDL_Renderer* rd, const char * backgroundLoc) : Menu(rd) {
 	credits->setBackground(GameManager::DGRAY);
 	credits->setHover(GameManager::BLACK, GameManager::GRAY);
 	credits->setStroke(2, GameManager::Gray20);
-	credits->setAction(GameManager::pushCommand, "M:OPEN:CREDITS");
+	credits->setAction(GameManager::pushCommand, "M:OPEN:CREDIT");
 	credits->setTooltip("Credits of Escalation Dungeoneer", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	quit->setForeground(GameManager::LGRAY);
@@ -80,26 +80,27 @@ MainMenu::MainMenu(SDL_Renderer* rd, const char * backgroundLoc) : Menu(rd) {
 
 void MainMenu::update() {
 	__super::update();
-	dev_tE->update();
-	dev_bE->update();
+	if (GameManager::devMode) {
+		dev_tE->update();
+		dev_bE->update();
+	}
 }
 
 void MainMenu::clean() {
 	background->clean();
+	dev_tE->clean();
+	dev_bE->clean();
 	__super::clean();
 }
 
 void MainMenu::render() {
 	background->render(0.0f);
 	if (GameManager::devMode) {
-		devModetext->render();
-	}
-	__super::render();
-	if (GameManager::devMode) {
-
 		dev_bE->render();
 		dev_tE->render();
 	}
+	__super::render();
+	
 }
 
 void MainMenu::pollEvents(SDL_Event* e) {

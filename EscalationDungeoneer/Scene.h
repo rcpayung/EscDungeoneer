@@ -13,17 +13,17 @@ private:
 	int** tileMap; // two dimensional tilemap
 	int** logicMap; // two dimensional logical map. All walls will be considered here.
 	Player* player;
-	int SCREENWIDTH, SCREENHEIGHT, SCENEWIDTH, SCENEHEIGHT;
+	int SCENEWIDTH, SCENEHEIGHT;
 	float scale;
 public:
-	Scene(SDL_Renderer* rd, int id, std::string name, int openx, int openy, int SceneWidth, int SceneHeight, int SCREENWIDTH, int SCREENHEIGHT, float scale);
+	Scene(int id, std::string name, int openx, int openy, int SceneWidth, int SceneHeight, float scale);
 	bool loadScene();
 	bool saveScene(const char* path);
 	void addObject(GameObject* obj);
 
 	void setScale(float scale);
 
-	void update(bool paused);
+	void update();
 	void render();
 	void clean();
 	void handleCollisions(GameObject* a, GameObject* b);

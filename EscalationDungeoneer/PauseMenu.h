@@ -7,7 +7,7 @@ private:
 protected:
 
 public:
-	PauseMenu(SDL_Renderer* rd);
+	PauseMenu();
 	void update();
 	void render();
 	void clean();

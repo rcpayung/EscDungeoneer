@@ -11,11 +11,11 @@
 #include "MainMenu.h"
 #include "PauseMenu.h"
 #include "SettingsMenu.h"
+#include "CreditsMenu.h"
 
 
 class Game {
 private:
-	SDL_Renderer* rd; // renderer, render all elements to this
 	SDL_Window* win; // window, this is what the renderer renders to
 
 	SDL_Rect worldPort;	// this is the viewport
@@ -26,11 +26,12 @@ private:
 	std::vector<std::string> cargs;
 	Scene* WORLD; // World scene
 	//Editor edit;
-	Menu* amenu;
+	Menu* amenu, *lastmenu;
+	Text* devModetext;
 
-	Button *exitbutton, *resume, *savegame, *loadgame, *options; // menu buttons.
 	PauseMenu* pausemenu; // menus
 	MainMenu *mainmenu;
+	CreditsMenu* creditsmenu;
 	SettingsMenu* settings;
 
 public:
