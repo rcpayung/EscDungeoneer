@@ -9,9 +9,9 @@ SettingsMenu::SettingsMenu() : Menu(){
 	back->setHover(GameManager::BLACK, GameManager::GRAY);
 	back->setStroke(2, GameManager::Gray20);
 	back->setAction(GameManager::pushCommand, "M:LOAD:__LAST");
-	back->setTooltip("Go back.", 12, GameManager::GOLD, GameManager::DGRAY);
+	back->setTooltip("Go back", 12, GameManager::GOLD, GameManager::DGRAY);
+	this->setBackground(GameManager::DGRAY);
 
-	setBackground(GameManager::DGRAY);
 	addComponent(back);
 }
 

@@ -12,7 +12,6 @@ int GameManager::my = 0;
 
 SDL_Renderer* GameManager::rd = nullptr;
 
-
 bool GameManager::inSettings = false;
 bool GameManager::inInventory = false;
 const char* GameManager::versionNum = "p-a2242.3";

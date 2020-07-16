@@ -12,7 +12,7 @@ struct Animation {
 	int sCount;
 	int counted;
 	int sX, sY, oX, oY;
-	bool loop = false;
+	bool loop = false; 
 };
 
 

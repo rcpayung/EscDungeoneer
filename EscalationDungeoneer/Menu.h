@@ -20,10 +20,10 @@ public:
 	void addComponent(UIComponent* c);
 	void addComponent(Text* tex);
 	void setTitle(const char* title);
-	void render();
-	void update();
-	void clean();
-	void pollEvents(SDL_Event* e);
+	virtual void render();
+	virtual void update();
+	virtual void clean();
+	virtual void pollEvents(SDL_Event* e);
 
 };
 

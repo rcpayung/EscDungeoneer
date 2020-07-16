@@ -29,13 +29,12 @@ void Menu::render() {
 		SDL_SetRenderDrawColor(GameManager::rd, color.r, color.g, color.b, color.a);
 		SDL_RenderFillRect(GameManager::rd, &screen);
 	}
-	for (int i = static_cast<int>(labels.size()-1); i >= 0; i--) {
+	for (int i = static_cast<int>(labels.size() - 1); i >= 0; i--) {
 		labels[i]->render();
 	}
-	for (int i = static_cast<int>(options.size()-1); i >= 0; i--) {
+	for (int i = static_cast<int>(options.size() - 1); i >= 0; i--) {
 		options[i]->render();
 	}
-	
 }
 
 void Menu::update() {
@@ -54,12 +53,13 @@ void Menu::clean() {
 }
 
 void Menu::pollEvents(SDL_Event* e) {
+	for (UIComponent* c : options) {
+		c->handleEvents(e);
+	}
 	switch (e->type) {
 	case SDL_KEYDOWN:
 		switch (e->key.keysym.sym) {
 		case SDLK_ESCAPE:
-			if (!GameManager::onMain)
-				GameManager::pushCommand("M:LOAD:__LAST");
 			break;
 		default:
 			break;
@@ -68,8 +68,6 @@ void Menu::pollEvents(SDL_Event* e) {
 	default:
 		break;
 	}
-	for (UIComponent* c : options) {
-		c->handleEvents(e);
-	}
+	
 }
 

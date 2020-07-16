@@ -12,7 +12,7 @@
 #include "PauseMenu.h"
 #include "SettingsMenu.h"
 #include "CreditsMenu.h"
-
+#include "Inventory.h"
 
 class Game {
 private:
@@ -33,6 +33,7 @@ private:
 	MainMenu *mainmenu;
 	CreditsMenu* creditsmenu;
 	SettingsMenu* settings;
+	Inventory* inventory;
 
 public:
 

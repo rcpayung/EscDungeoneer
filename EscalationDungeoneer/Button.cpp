@@ -3,16 +3,16 @@
 
 Button::Button(int x, int y, int w, int h, const char* label) : UIComponent(x, y, w, h, 1.0f) {
 	// Default color black.
-	f = { 0,0,0,255 };
-	b = { 255,255,255,255 };
-	fh = f;
-	bh = b;
-	sc = { 255,255,255,0 };
+	this->f = { 0,0,0,255 };
+	this->b = { 255,255,255,255 };
+	this->fh = f;
+	this->bh = b;
+	this->sc = { 255,255,255,0 };
 
-	borderset = false;
-	inside = false;
-	moving = false;
-	borderwidth = 0;
+	this->borderset = false;
+	this->inside = false;
+	this->moving = false;
+	this->borderwidth = 0;
 	if (label != nullptr) {
 		this->label = new Text(label, 15, WNORMAL, f, Vector2F(x, y), Vector2F(w, h));
 		this->label->setBounds(x, y, w, h);
@@ -20,11 +20,11 @@ Button::Button(int x, int y, int w, int h, const char* label) : UIComponent(x, y
 		this->label->setMiddle();
 	}
 	this->m_callback = nullptr;
-	count = 0;
-	border = {};
-	tip = nullptr;
-	tooltipvisible = false;
-	labelstring = label;
+	this->count = 0;
+	this->border = {};
+	this->tip = nullptr;
+	this->tooltipvisible = false;
+	this->labelstring = label;
 }
 
 void Button::setLabel(const char* label) {
@@ -59,28 +59,26 @@ void Button::setStroke(int width, SDL_Color borderColor) {
 
 void Button::render() {
 	__super::render();
+	SDL_SetRenderDrawColor(GameManager::rd, sc.r, sc.g, sc.b, sc.a);
+	SDL_RenderFillRect(GameManager::rd, &border);
 	if (inside) {
 		// Hover
-		SDL_SetRenderDrawColor(GameManager::rd, sc.r, sc.g, sc.b, sc.a);
-		SDL_RenderFillRect(GameManager::rd, &border);
 		SDL_SetRenderDrawColor(GameManager::rd, bh.r, bh.g, bh.b, bh.a);
 		SDL_RenderFillRect(GameManager::rd, &dest);
-		label->setColor(fh);
-		label->render();
-		if (tip != nullptr && tooltipvisible) {
-			tip->render();
+		this->label->setColor(fh);
+		this->label->render();
+		if (this->tip != nullptr && tooltipvisible) {
+			this->tip->render();
 		}
 	} else {
 		// No Hover
-		SDL_SetRenderDrawColor(GameManager::rd, sc.r, sc.g, sc.b, sc.a);
-		SDL_RenderFillRect(GameManager::rd, &border);
+		
 		SDL_SetRenderDrawColor(GameManager::rd, b.r, b.g, b.b, b.a);
 		SDL_RenderFillRect(GameManager::rd, &dest);
-		label->setColor(f);
-		label->render();
+		this->label->setColor(f);
+		this->label->render();
 	}
 	SDL_SetRenderDrawColor(GameManager::rd, 0, 0, 0, 255);
-	
 }
 // Virtual function, mostly for inheritance
 void Button::setAction(void (ptr) ()) {
@@ -141,29 +139,29 @@ void Button::handleEvents(SDL_Event* e) {
 	switch (e->type) {
 	case SDL_MOUSEMOTION:
 		// If within the bounds of the button
-		if (GameManager::mx > this->getPosition().X&& GameManager::mx < (this->getPosition().X + this->getSize().X)
-			&& GameManager::my > this->getPosition().Y&& GameManager::my < (this->getPosition().Y + this->getSize().Y)) {
-			inside = true;
+		if (GameManager::mx > this->getPosition().X && GameManager::mx < (this->getPosition().X + this->getSize().X)
+			&& GameManager::my > this->getPosition().Y && GameManager::my < (this->getPosition().Y + this->getSize().Y)) {
+			this->inside = true;
 		}
 		else {
-			inside = false;
+			this->inside = false;
 		}
 		break;
 	case SDL_MOUSEBUTTONUP:
 		switch (e->button.button) {
 		case SDL_BUTTON_LEFT:
-			if (inside) {
+			if (this->inside) {
 				if (m_callback != nullptr) {
 					m_callback();
 				}
 				else if (this->callback != nullptr) {
 					callback(command);
 				}
-				inside = false;
+				this->inside = false;
 			}
 			break;
 		case SDL_BUTTON_RIGHT:
-			moving = false;
+			this->moving = false;
 			break;
 		default:
 			break;
@@ -172,7 +170,7 @@ void Button::handleEvents(SDL_Event* e) {
 	case SDL_MOUSEBUTTONDOWN:
 		switch (e->button.button) {
 		case SDL_BUTTON_RIGHT:
-			if (inside && GameManager::devMode) moving = true;
+			if (this->inside && GameManager::devMode) this->moving = true;
 			break;
 		default:
 			break;

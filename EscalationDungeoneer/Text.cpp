@@ -1,6 +1,9 @@
 #include "Text.h"
 
 Text::Text(std::string message, short fontSize, int fontWeight,SDL_Color color, Vector2F p, Vector2F s) {
+	if (message == "") {
+		throw nullptr;
+	}
 	this->color = color;
 	this->fontSize = fontSize;
 	this->message = message;

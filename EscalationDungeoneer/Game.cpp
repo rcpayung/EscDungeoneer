@@ -53,6 +53,7 @@ Game::Game(const char *title, int w, int h, int flags) {
 		pausemenu = new PauseMenu();
 		settings = new SettingsMenu();
 		creditsmenu = new CreditsMenu();
+		inventory = new Inventory();
 
 		GameManager::pushCommand("M:LOAD:__MAIN");
 		devModetext = new Text("dev Mode Enabled", 10, WBOLD, GameManager::GREEN, Vector2F(10, 10), Vector2F(50, 15));
@@ -78,6 +79,7 @@ void Game::update() {
 		else if (amenu == creditsmenu) creditsmenu->update();
 		else if (amenu == pausemenu) pausemenu->update();
 		else if (amenu == settings) settings->update();
+		else if (amenu == inventory) inventory->update();
 	}
 	if (GameManager::isPlaying) {
 		activeScene->update();
@@ -171,6 +173,11 @@ void Game::processCommands() {
 					lastmenu = amenu;
 					amenu = creditsmenu;
 				}
+				else if (cargs.at(2) == "INVENT" && !GameManager::onMain && !GameManager::paused) {
+					lastmenu = amenu;
+					amenu = inventory;
+					GameManager::inInventory = true;
+				}
 				
 			}
 			// CLOSE COMMAND
@@ -184,11 +191,13 @@ void Game::processCommands() {
 					GameManager::Pause();
 					amenu = nullptr;
 				}
-
+				else if (cargs.at(2) == "INVENT") {
+					lastmenu = inventory;
+					amenu = nullptr;
+					GameManager::inInventory = false;
+				}
 			}
 		}
-
-
 		cargs.clear();
 	}
 	GameManager::commands.clear();
@@ -208,12 +217,12 @@ void Game::render() {
 		else if (amenu == creditsmenu) creditsmenu->render();
 		else if (amenu == pausemenu) pausemenu->render();
 		else if (amenu == settings) settings->render();
+		else if (amenu == inventory) inventory->render();
 	}
 	if (GameManager::devMode)
 		devModetext->render();
-
-	SDL_SetRenderDrawColor(GameManager::rd, 0,0,0, 255);
 	SDL_RenderPresent(GameManager::rd);
+	SDL_RenderClear(GameManager::rd);
 }
 
 void Game::handleEvents() {
@@ -224,6 +233,7 @@ void Game::handleEvents() {
 			else if (amenu == creditsmenu) creditsmenu->pollEvents(&event);
 			else if (amenu == pausemenu) pausemenu->pollEvents(&event);
 			else if (amenu == settings) settings->pollEvents(&event);
+			else if (amenu == inventory) inventory->pollEvents(&event);
 		}
 		if (GameManager::isPlaying) {
 			activeScene->pollevents(event);
@@ -232,15 +242,18 @@ void Game::handleEvents() {
 		switch (event.type) {
 
 		case SDL_KEYDOWN:
-
 			switch (event.key.keysym.sym) {
+			case SDLK_e:
+				// Open inventory.
+				if (!GameManager::inInventory)
+					GameManager::pushCommand("M:LOAD:INVENT");
+				else
+					GameManager::pushCommand("M:CLOS:INVENT");
+				break;
 			case SDLK_ESCAPE:
 				if (GameManager::isPlaying) {
-					if (!GameManager::paused) {
-						GameManager::pushCommand("M:LOAD:PAUSED");
-					}
-					else {
-						GameManager::pushCommand("M:CLOS:PAUSED");
+					if (!GameManager::inInventory) {
+						!GameManager::paused ? GameManager::pushCommand("M:LOAD:PAUSED") : GameManager::pushCommand("M:CLOS:PAUSED");
 					}
 				}
 				break;

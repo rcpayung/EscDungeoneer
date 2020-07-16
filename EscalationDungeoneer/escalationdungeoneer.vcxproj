@@ -142,13 +142,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Armor.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CreditsMenu.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Glyph.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemSlot.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -161,19 +164,19 @@
     <ClCompile Include="Tooltip.cpp" />
     <ClCompile Include="UIComponent.cpp" />
     <ClCompile Include="Vector2F.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\rapidxml\rapidxml.hpp" />
-    <ClInclude Include="..\..\..\rapidxml\rapidxml_iterators.hpp" />
-    <ClInclude Include="..\..\..\rapidxml\rapidxml_print.hpp" />
-    <ClInclude Include="..\..\..\rapidxml\rapidxml_utils.hpp" />
+    <ClInclude Include="Armor.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CreditsMenu.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Glyph.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="PauseMenu.h" />
@@ -185,6 +188,7 @@
     <ClInclude Include="Tooltip.h" />
     <ClInclude Include="UIComponent.h" />
     <ClInclude Include="Vector2F.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
