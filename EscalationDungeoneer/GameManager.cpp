@@ -31,10 +31,10 @@ SDL_Color GameManager::GOLD{ 255, 215, 0, 255 };
 SDL_Color GameManager::Gray20{ 45,45,45,255 };
 
 SDL_Color GameManager::COMMON{ 242,242,242,255 };
-SDL_Color GameManager::UNCOMMON{ 215,228,189,255 };
-SDL_Color GameManager::RARE{ 142,180,227,255 };
-SDL_Color GameManager::VERYRARE{ 217,150,148,255 };
-SDL_Color GameManager::LEGENDARY{ 179,162,199,255 };
+SDL_Color GameManager::UNCOMMON{ 185,208,159,255 };
+SDL_Color GameManager::RARE{ 122,160,207,255 };
+SDL_Color GameManager::VERYRARE{ 197,130,128,255 };
+SDL_Color GameManager::LEGENDARY{ 159,142,179,255 };
 
 int GameManager::SCREENWIDTH = 1080;
 int GameManager::SCREENHEIGHT = 820;

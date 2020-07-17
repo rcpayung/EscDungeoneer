@@ -36,6 +36,11 @@ void UIComponent::clean() {
 	}
 }
 
+void UIComponent::setSize(int x, int y) {
+	this->dest.w = x;
+	this->dest.h = y;
+}
+
 // NON-VIRTUAL FUNCTIONS (NON-OVERRIDE)
 
 float UIComponent::getScale() {

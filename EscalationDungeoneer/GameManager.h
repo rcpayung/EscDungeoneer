@@ -3,6 +3,11 @@
 #include <vector>
 #include <string>
 
+enum ITEMID {
+	EMPTY,
+	WORMSPTITER
+};
+
 class GameManager {
 public:
 	static bool paused;

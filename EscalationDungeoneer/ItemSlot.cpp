@@ -5,11 +5,36 @@ ItemSlot::ItemSlot(int x, int y, int w, int h, float scale) : UIComponent(x,y,w,
 
 void ItemSlot::update() {
 	__super::update();
+	if (item != nullptr) {
+		item->setPosition(dest.x, dest.y);
+		item->update();
+	}
 	border = { dest.x - 2, dest.y - 2, dest.w + 4, dest.h + 4 };
 }
 
 void ItemSlot::render() {
 	SDL_SetRenderDrawColor(GameManager::rd, 45, 45, 45, 255);
+	if (item != nullptr) {
+		switch (item->getRarity()) {
+		case Rarity::UNCOMMON:
+			SDL_SetRenderDrawColor(GameManager::rd, GameManager::UNCOMMON.r, GameManager::UNCOMMON.g, GameManager::UNCOMMON.b, GameManager::UNCOMMON.a);
+			break;
+		case Rarity::RARE:
+			SDL_SetRenderDrawColor(GameManager::rd, GameManager::RARE.r, GameManager::RARE.g, GameManager::RARE.b, GameManager::RARE.a);
+			break;
+		case Rarity::VERY_RARE:
+			SDL_SetRenderDrawColor(GameManager::rd, GameManager::VERYRARE.r, GameManager::VERYRARE.g, GameManager::VERYRARE.b, GameManager::VERYRARE.a);
+			break;
+		case Rarity::LEGENDARY:
+			SDL_SetRenderDrawColor(GameManager::rd, GameManager::LEGENDARY.r, GameManager::LEGENDARY.g, GameManager::LEGENDARY.b, GameManager::LEGENDARY.a);
+			break;
+		case Rarity::GODLY:
+			SDL_SetRenderDrawColor(GameManager::rd, GameManager::GOLD.r, GameManager::GOLD.g, GameManager::GOLD.b, GameManager::GOLD.a);
+			break;
+		default:
+			break;
+		}
+	}
 	SDL_RenderFillRect(GameManager::rd, &border);
 	if (inside) {
 		SDL_SetRenderDrawColor(GameManager::rd, 20, 20, 20, 255);
@@ -21,6 +46,9 @@ void ItemSlot::render() {
 	}
 	if (item != nullptr) {
 		item->render();
+		if (inside) {
+			item->showToolTip();
+		}
 	}
 	SDL_SetRenderDrawColor(GameManager::rd, 0, 0, 0, 255);
 }

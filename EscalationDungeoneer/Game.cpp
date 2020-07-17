@@ -85,6 +85,7 @@ void Game::update() {
 		activeScene->update();
 	}
 
+	std::srand((unsigned) SDL_GetTicks() * time(0));
 }
 
 /*
@@ -106,13 +107,24 @@ void Game::processCommands() {
 					this->activeScene = WORLD;
 					GameManager::setPlaying();
 				}
+				else if (cargs.at(1) == "LASTGM") {
+					// Load the last game.
+					//loadGame("LAST");
+					activeScene = WORLD;
+					amenu = nullptr;
+					GameManager::setPlaying();
+				}
+
 			}
-			else if (cargs.at(1) == "LASTGM") {
-				// Load the last game.
-				//loadGame("LAST");
-				activeScene = WORLD;
-				amenu = nullptr;
-				GameManager::setPlaying();
+			// GIVE COMMAND - GIVE THE PLAYER AN ITEM:
+			else if (cargs.at(1) == "GIVE") {
+				switch (std::stoi(cargs.at(2))) {
+				case ITEMID::WORMSPTITER:
+					Item* item = new Item("Worm Spitter", 1.0f, "assets/wormspitter.bmp", false);
+					item->generateRarity(1.0f);
+					item->setTooltip((item->getRarityString() + " Worm Spitter").c_str());
+					inventory->pushItem(item);
+				}
 			}
 			else if (cargs.at(1) == "EDIT") {
 				if (cargs.at(2) == "ARTMAP") {
@@ -178,7 +190,6 @@ void Game::processCommands() {
 					amenu = inventory;
 					GameManager::inInventory = true;
 				}
-				
 			}
 			// CLOSE COMMAND
 			else if (cargs.at(1) == "CLOS") {
@@ -195,6 +206,17 @@ void Game::processCommands() {
 					lastmenu = inventory;
 					amenu = nullptr;
 					GameManager::inInventory = false;
+				}
+			}
+			else if (cargs.at(1) == "SORT") {
+				if (cargs.at(2) == "INBYID") {
+					inventory->sortinventory("ID");
+				}
+				else if (cargs.at(2) == "INBYRR") {
+					inventory->sortinventory("RARITY");
+				}
+				else if (cargs.at(2) == "INBYAL") {
+					inventory->sortinventory("ALPHA");
 				}
 			}
 		}

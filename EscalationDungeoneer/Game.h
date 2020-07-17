@@ -13,6 +13,7 @@
 #include "SettingsMenu.h"
 #include "CreditsMenu.h"
 #include "Inventory.h"
+#include <ctime>
 
 class Game {
 private:
