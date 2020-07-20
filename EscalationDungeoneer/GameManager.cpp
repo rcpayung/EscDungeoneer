@@ -9,12 +9,13 @@ bool GameManager::onMain = true;
 float GameManager::scale = 1.0f;
 int GameManager::mx = 0;
 int GameManager::my = 0;
+bool GameManager::leftLock = false;
 
 SDL_Renderer* GameManager::rd = nullptr;
 
 bool GameManager::inSettings = false;
 bool GameManager::inInventory = false;
-const char* GameManager::versionNum = "p-a2242.3";
+const char* GameManager::versionNum = "v. PRE_ALPHA 0.5";
 std::vector<std::string> GameManager::commands = std::vector<std::string>();
 std::vector<std::string> GameManager::consoleLog = std::vector<std::string>();
 
@@ -71,4 +72,8 @@ void GameManager::setEditing() {
 void GameManager::pushCommand(std::string s) {
 	GameManager::commands.push_back(s);
 	GameManager::consoleLog.push_back(s);
+}
+
+void GameManager::setDrawColor(SDL_Color color) {
+	SDL_SetRenderDrawColor(GameManager::rd, color.r, color.g, color.b, color.a);
 }

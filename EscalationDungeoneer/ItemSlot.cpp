@@ -1,15 +1,17 @@
 #include "ItemSlot.h"
 ItemSlot::ItemSlot(int x, int y, int w, int h, float scale) : UIComponent(x,y,w,h,scale) {
 	this->itemID = 0;
+	this->dest = { x,y,w,h };
+	this->border = { x - 2,y - 2,w + 4,h + 4 };
+	this->inside = false;
+	this->item = nullptr;
 }
 
 void ItemSlot::update() {
 	__super::update();
 	if (item != nullptr) {
-		item->setPosition(dest.x, dest.y);
 		item->update();
 	}
-	border = { dest.x - 2, dest.y - 2, dest.w + 4, dest.h + 4 };
 }
 
 void ItemSlot::render() {

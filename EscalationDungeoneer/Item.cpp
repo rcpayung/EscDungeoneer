@@ -12,6 +12,23 @@ Item::Item(std::string name, float scale, const char* spritepath, bool stackable
 	this->name = name;
 }
 
+
+void Item::setPosition(Vector2F p) {
+	__super::setPosition(p.X, p.Y);
+}
+
+void Item::setPosition(int x, int y) {
+	__super::setPosition(x, y);
+}
+
+void Item::setStats(Statistics stats) {
+	this->stats = stats;
+}
+
+Statistics Item::getstats() {
+	return this->stats;
+}
+
 void Item::setTooltip(std::string message) {
 	SDL_Color color = GameManager::LGRAY;
 	
@@ -77,7 +94,9 @@ void Item::handleEvents(SDL_Event* e) {
 	case SDL_MOUSEBUTTONDOWN:
 		switch (e->button.button) {
 		case SDL_BUTTON_LEFT:
-
+			break;
+		default:
+			break;
 		}
 		break;
 	default:

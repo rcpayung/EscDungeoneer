@@ -1,7 +1,6 @@
 #pragma once
 #include "Item.h"
-class Armor :
-	public Item
-{
+class Armor : public Item {
+
 };
 

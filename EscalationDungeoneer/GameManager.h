@@ -17,6 +17,7 @@ public:
 	static bool onMain;
 	static bool isPlaying;
 	static bool inSettings;
+	static bool leftLock;
 	static bool inInventory;
 	static const char* versionNum;
 	static int mx, my;
@@ -51,5 +52,6 @@ public:
 	static void setPlaying();
 	static void setEditing();
 	static void pushCommand(std::string s);
+	static void setDrawColor(SDL_Color color);
 };
 

@@ -186,7 +186,8 @@ void Button::setPosition(int x, int y) {
 	this->label->setBounds(this->getPosition().X, this->getPosition().Y, this->getSize().X,this->getSize().Y);
 	this->label->setCenter();
 	this->label->setMiddle();
-	this->tip->setPosition(x, y+20);
+	if (tip != nullptr)
+		this->tip->setPosition(x, y+20);
 }
 
 
@@ -195,7 +196,8 @@ void Button::setPosition(Vector2F p) {
 	this->label->setBounds(p.X,p.Y, this->getSize().X, this->getSize().Y);
 	this->label->setCenter();
 	this->label->setMiddle();
-	this->tip->setPosition(p.X, p.Y + 20);
+	if (tip != nullptr)
+		this->tip->setPosition(p.X, p.Y + 20);
 }
 
 void Button::setTooltip(std::string tip, int size, SDL_Color fore, SDL_Color back) {

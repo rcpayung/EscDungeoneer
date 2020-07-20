@@ -56,7 +56,10 @@ Game::Game(const char *title, int w, int h, int flags) {
 		inventory = new Inventory();
 
 		GameManager::pushCommand("M:LOAD:__MAIN");
-		devModetext = new Text("dev Mode Enabled", 10, WBOLD, GameManager::GREEN, Vector2F(10, 10), Vector2F(50, 15));
+		devModetext = new Text("DEV MODE ENABLED", 10, WBOLD, GameManager::GREEN, Vector2F(5, 15), Vector2F(150, 15));
+		devModetext->setMiddle();
+		version = new Text(GameManager::versionNum, 10, WBOLD, GameManager::GRAY, Vector2F(5,0), Vector2F(150, 15));
+		version->setMiddle();
 	}
 
 }
@@ -99,7 +102,7 @@ void Game::processCommands() {
 		cargs.push_back(command.substr(7, 6));
 
 		printf("%s:%s:%s\n", cargs.at(0).c_str(), cargs.at(1).c_str(), cargs.at(2).c_str());
-	
+		
 		if (cargs.at(0) == "G") {
 			if (cargs.at(1) == "LOAD") {
 				if (cargs.at(2) == "_NEWGM") {
@@ -123,6 +126,8 @@ void Game::processCommands() {
 					Item* item = new Item("Worm Spitter", 1.0f, "assets/wormspitter.bmp", false);
 					item->generateRarity(1.0f);
 					item->setTooltip((item->getRarityString() + " Worm Spitter").c_str());
+					Statistics wormspitterStats{25,25,25,25,25,25,25,25,2.5f}; // Placeholder.
+					item->setStats(wormspitterStats);
 					inventory->pushItem(item);
 				}
 			}
@@ -207,6 +212,9 @@ void Game::processCommands() {
 					amenu = nullptr;
 					GameManager::inInventory = false;
 				}
+				else if (cargs.at(2) == "INVPMT") {
+					inventory->closePrompt();
+				}
 			}
 			else if (cargs.at(1) == "SORT") {
 				if (cargs.at(2) == "INBYID") {
@@ -218,6 +226,13 @@ void Game::processCommands() {
 				else if (cargs.at(2) == "INBYAL") {
 					inventory->sortinventory("ALPHA");
 				}
+			}
+		}
+		else if (cargs.at(0) == "I") {
+			if (cargs.at(1) == "delI") {
+				int id = std::stoi(cargs.at(2));
+				inventory->removeItemAt(id);
+				inventory->closePrompt();
 			}
 		}
 		cargs.clear();
@@ -243,6 +258,7 @@ void Game::render() {
 	}
 	if (GameManager::devMode)
 		devModetext->render();
+	version->render();
 	SDL_RenderPresent(GameManager::rd);
 	SDL_RenderClear(GameManager::rd);
 }
@@ -306,10 +322,30 @@ void Game::handleEvents() {
 }
 
 void Game::cleanup() {
+	for (std::string i : GameManager::consoleLog) {
+		printf("%s\n",i.c_str());
+	}
+
 	SDL_DestroyWindow(win);
 	SDL_DestroyRenderer(GameManager::rd);
 
-	amenu->clean();
+	for (Scene* i : scenes) {
+		i->clean();
+	}
+	scenes.clear();
+	devModetext->clean();
+	pausemenu->clean();
+	mainmenu->clean();
+	creditsmenu->clean();
+	settings->clean();
+	inventory->clean();
+	WORLD->clean();
+	version->clean();
+	if (amenu != nullptr)
+		amenu->clean();
+	if (lastmenu != nullptr)
+		lastmenu->clean();
+	
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();

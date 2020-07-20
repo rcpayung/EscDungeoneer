@@ -28,7 +28,7 @@ private:
 	Scene* WORLD; // World scene
 	//Editor edit;
 	Menu* amenu, *lastmenu;
-	Text* devModetext;
+	Text* devModetext, *version;
 
 	PauseMenu* pausemenu; // menus
 	MainMenu *mainmenu;
