@@ -229,7 +229,6 @@ void Inventory::render() {
 	if (prompt != nullptr) {
 		prompt->render();
 	}
-	if (showDetails) details->render();
 
 }
 
@@ -255,8 +254,6 @@ void Inventory::update() {
 	if (prompt != nullptr) {
 		prompt->update();
 	}
-	if (showDetails)
-		details->update();
 }
 
 void Inventory::clean() {
@@ -296,15 +293,10 @@ void Inventory::pollEvents(SDL_Event* e) {
 				&& slots.at(i)->getPosition().Y < GameManager::my && (slots.at(i)->getSize().Y + slots.at(i)->getPosition().Y) > GameManager::my) {
 				if (slots.at(i)->getItem() != nullptr) {
 					// Show the slot item stats.
-					if (!showDetails) {
-						details->setItem(slots.at(i)->getItem());
-						this->showDetails = true;
-					}
 					break;
 				}
 				else {
 					this->showDetails = false;
-					details->setItem(nullptr);
 				}
 				break;
 			}
@@ -339,7 +331,6 @@ void Inventory::pollEvents(SDL_Event* e) {
 					if (slots.at(i)->getPosition().X < GameManager::mx && (slots.at(i)->getSize().X + slots.at(i)->getPosition().X) > GameManager::mx
 						&& slots.at(i)->getPosition().Y < GameManager::my && (slots.at(i)->getSize().Y + slots.at(i)->getPosition().Y) > GameManager::my) {
 						Item* temp;
-
 						if (slots.at(i)->getItem() != nullptr) {
 							temp = slots.at(i)->getItem();
 							slots.at(i)->setItem(selectedSlot->getItem());
@@ -388,7 +379,7 @@ void Inventory::pollEvents(SDL_Event* e) {
 			if (GameManager::devMode) this->coins += 777;
 			break;
 		case SDLK_i:
-			if (GameManager::devMode) GameManager::pushCommand("G:GIVE:000001");
+			if (GameManager::devMode) GameManager::pushCommand("G:GIVE:1");
 		default:
 			break;
 		}
