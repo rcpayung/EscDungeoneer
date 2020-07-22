@@ -35,6 +35,7 @@ public:
 	void sendCommand(std::string s);
 	std::string getLabel();
 	void setLabel(const char* label);
+	void runCommand();
 	void setPosition(int x, int y);
 	void setPosition(Vector2F p);
 	void setTooltip(std::string tip, int size, SDL_Color fore, SDL_Color back);

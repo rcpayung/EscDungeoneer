@@ -217,10 +217,12 @@ void Inventory::render() {
 	for (int i = static_cast<int>(slots.size() - 1); i >= 0; i--) {
 		if (slots.at(i) != selectedSlot) {
 			slots.at(i)->render();
+			slots.at(i)->renderItem();
 		}
 	}
 	if (selectedSlot != nullptr) {
 		selectedSlot->render();
+		selectedSlot->renderItem();
 	}
 
 	sort_by_id->render();
@@ -367,6 +369,11 @@ void Inventory::pollEvents(SDL_Event* e) {
 		break;
 	case SDL_KEYDOWN:
 		switch (e->key.keysym.sym) {
+		case SDLK_RETURN:
+			if (prompt != nullptr) {
+				prompt->runConfirm();
+			}
+			break;
 		case SDLK_ESCAPE:
 			if (prompt == nullptr) {
 				GameManager::pushCommand("M:CLOS:INVENT");

@@ -29,6 +29,10 @@ void Prompt::setCancel(void(*ptr) (std::string), std::string action) {
 	this->close->setAction(ptr, action);
 }
 
+void Prompt::runConfirm() {
+	confirm->runCommand();
+}
+
 void Prompt::render() {
 	GameManager::setDrawColor(GameManager::Gray20);
 	SDL_RenderFillRect(GameManager::rd, &border);

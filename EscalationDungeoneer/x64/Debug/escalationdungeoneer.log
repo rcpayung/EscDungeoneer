@@ -1,2 +1,12 @@
-﻿  Inventory.cpp
+﻿  Button.cpp
+  CreditsMenu.cpp
+  Game.cpp
+  Inventory.cpp
+  MainMenu.cpp
+  Menu.cpp
+  PauseMenu.cpp
+  Prompt.cpp
+  SettingsMenu.cpp
+  main.cpp
+  Generating Code...
   escalationdungeoneer.vcxproj -> C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\x64\Debug\escalationdungeoneer.exe

@@ -46,13 +46,17 @@ void ItemSlot::render() {
 		SDL_SetRenderDrawColor(GameManager::rd, 40, 40, 40, 255);
 		SDL_RenderFillRect(GameManager::rd, &dest);
 	}
+	
+	SDL_SetRenderDrawColor(GameManager::rd, 0, 0, 0, 255);
+}
+
+void ItemSlot::renderItem() {
 	if (item != nullptr) {
 		item->render();
 		if (inside) {
 			item->showToolTip();
 		}
 	}
-	SDL_SetRenderDrawColor(GameManager::rd, 0, 0, 0, 255);
 }
 
 void ItemSlot::clean() {

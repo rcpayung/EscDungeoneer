@@ -15,7 +15,7 @@ SDL_Renderer* GameManager::rd = nullptr;
 
 bool GameManager::inSettings = false;
 bool GameManager::inInventory = false;
-const char* GameManager::versionNum = "v. PRE_ALPHA 0.5";
+const char* GameManager::versionNum = "PRE_ALPHA 0.1";
 std::vector<std::string> GameManager::commands = std::vector<std::string>();
 std::vector<std::string> GameManager::consoleLog = std::vector<std::string>();
 

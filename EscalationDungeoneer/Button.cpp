@@ -135,6 +135,12 @@ void Button::clean() {
 		tip->clean();
 }
 
+void Button::runCommand() {
+	if (this->callback != nullptr) {
+		callback(command);
+	}
+}
+
 void Button::handleEvents(SDL_Event* e) {
 	switch (e->type) {
 	case SDL_MOUSEMOTION:
@@ -154,9 +160,8 @@ void Button::handleEvents(SDL_Event* e) {
 				if (m_callback != nullptr) {
 					m_callback();
 				}
-				else if (this->callback != nullptr) {
-					callback(command);
-				}
+				else
+					runCommand();
 				this->inside = false;
 			}
 			break;

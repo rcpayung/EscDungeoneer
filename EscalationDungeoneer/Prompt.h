@@ -15,5 +15,6 @@ public:
 	void update();
 	void clean();
 	void handleEvents(SDL_Event* e);
+	void runConfirm();
 };
 

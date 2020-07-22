@@ -2,7 +2,7 @@
 #include "UIComponent.h"
 #include "Item.h"
 class ItemSlot : public UIComponent {
-private:
+protected:
 	int itemID;
 	Item* item;
 	SDL_Rect border;
@@ -11,6 +11,7 @@ public:
 	ItemSlot(int x, int y, int w, int h, float scale);
 	void update();
 	void render();
+	void renderItem();
 	void clean();
 	int getItemID();
 	void setItemID(int id);
