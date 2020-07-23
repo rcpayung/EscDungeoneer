@@ -1,8 +1,22 @@
 #include "Inventory.h"
 
 Inventory::Inventory() : Menu() {
-	
+
+	// Setup bounds.
+
 	back = { 300, 200, GameManager::SCREENWIDTH - 600,GameManager::SCREENHEIGHT - 400 };
+	borders.push_back(SDL_Rect{ back.x - 2,back.y - 2,back.w + 4,2 });
+	borders.push_back(SDL_Rect{ back.x - 2,back.y,2,back.h + 2 });
+	borders.push_back(SDL_Rect{ back.x - 2,back.y + back.h,back.w + 4,2 });
+	borders.push_back(SDL_Rect{ back.x + back.w, back.y, 2, back.h + 2 });
+	// Draw borders of inner tables
+	borders.push_back(SDL_Rect{ back.x + 575, back.y, 2, back.h });
+	borders.push_back(SDL_Rect{ back.x, back.y + 50, back.w,2 });
+	borders.push_back(SDL_Rect{ back.x + 575, back.y + back.h - 70, back.w - 575, 2 });
+	borders.push_back(SDL_Rect{ back.x + 575, back.y + back.h - 120, back.w - 575, 2});
+
+
+	// Setup buttons.
 
 	sort_alpha = new Button(GameManager::SCREENWIDTH / 2 + 10, 215, 20, 20, "A");
 	sort_alpha->setForeground(GameManager::GOLD);
@@ -10,15 +24,15 @@ Inventory::Inventory() : Menu() {
 	sort_alpha->setHover(GameManager::BLACK, GameManager::GRAY);
 	sort_alpha->setStroke(2, GameManager::Gray20);
 	sort_alpha->setAction(GameManager::pushCommand,"M:SORT:INBYAL"); // Menu: Sort: Inventory by alpha.
-	sort_alpha->setTooltip("Sort items by their name.", 12, GameManager::GOLD, GameManager::DGRAY);
+	sort_alpha->setTooltip("Sort items by their Name", 12, GameManager::GOLD, GameManager::DGRAY);
 
-	sort_by_id = new Button(GameManager::SCREENWIDTH / 2 + 70, 215, 20, 20, "ID");
+	sort_by_id = new Button(GameManager::SCREENWIDTH / 2 + 70, 215, 20, 20, "T");
 	sort_by_id->setForeground(GameManager::GOLD);
 	sort_by_id->setBackground(GameManager::DGRAY);
 	sort_by_id->setHover(GameManager::BLACK, GameManager::GRAY);
 	sort_by_id->setStroke(2, GameManager::Gray20);
-	sort_by_id->setAction(GameManager::pushCommand,"M:SORT:INBYID"); // Menu: Sort: Inventory by ID.
-	sort_by_id->setTooltip("Sort items by their ID.", 12, GameManager::GOLD, GameManager::DGRAY);
+	sort_by_id->setAction(GameManager::pushCommand,"M:SORT:INBYTY"); // Menu: Sort: Inventory by ID.
+	sort_by_id->setTooltip("Sort items by their Type", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	sort_by_rarity = new Button(GameManager::SCREENWIDTH / 2 + 40, 215, 20, 20, "R");
 	sort_by_rarity->setForeground(GameManager::GOLD);
@@ -28,7 +42,7 @@ Inventory::Inventory() : Menu() {
 	sort_by_rarity->setAction(GameManager::pushCommand, "M:SORT:INBYRR"); // Menu: Sort: Inventory by ID.
 	sort_by_rarity->setTooltip("Sort items by their Rarity", 12, GameManager::GOLD, GameManager::DGRAY);
 
-	close = new Button(back.x + back.w - 30, back.y + 10, 20, 20, "X");
+	close = new Button(back.x + back.w - 30, back.y + 15, 20, 20, "X");
 	close->setForeground(GameManager::GOLD);
 	close->setBackground(GameManager::DGRAY);
 	close->setHover(GameManager::BLACK, GameManager::GRAY);
@@ -36,7 +50,7 @@ Inventory::Inventory() : Menu() {
 	close->setAction(GameManager::pushCommand, "M:CLOS:INVENT"); // Menu: Sort: Inventory by alpha.
 	close->setTooltip("Close the Inventory", 12, GameManager::GOLD, GameManager::DGRAY);
 
-	help = new Button(back.x + back.w - 60, back.y + 10, 20, 20, "?");
+	help = new Button(back.x + back.w - 60, back.y + 15, 20, 20, "?");
 	help->setForeground(GameManager::GOLD);
 	help->setBackground(GameManager::DGRAY);
 	help->setHover(GameManager::BLACK, GameManager::GRAY);
@@ -44,35 +58,45 @@ Inventory::Inventory() : Menu() {
 	help->setAction(GameManager::pushCommand, "M:OPEN:INVHEL"); // Menu: Sort: Inventory by alpha.
 	help->setTooltip("Help Me", 12, GameManager::GOLD, GameManager::DGRAY);
 
+	// Setup labels.
 
 	L_inv = new Text("Inventory", 18, WBOLD, GameManager::GRAY, Vector2F(back.x + 15, 200), Vector2F(100, 50));
 	L_inv->setMiddle();
 	L_equip = new Text("Equipment", 18, WBOLD, GameManager::GRAY, Vector2F(back.x + (back.w / 2) + 120, 200), Vector2F(100, 50));
 	L_equip->setMiddle();
-	L_coins = new Text("44,543,768", 15, WNORMAL, GameManager::GOLD, Vector2F(back.x + 640, back.y + back.h - 70-16), Vector2F(120, 32));
-	L_coins->setMiddle();
-	L_level = new Text("Level 54 Warlock", 15, WBOLD, GameManager::LGRAY, Vector2F(back.x + 570, back.y + 300), Vector2F(350, 50));
+	L_level = new Text("Level 54", 18, WBOLD, GameManager::LGRAY, Vector2F(back.x + 570, back.y + back.h - 120), Vector2F(350, 50));
 	L_level->setCenter();
 	L_level->setMiddle();
 
-	I_glyph_tri = new ItemSlot(back.x + 600, back.y+200, 48, 48, 1.0f);	
-	I_glyph_sqr = new ItemSlot(back.x + 600, back.y + 200, 48, 48, 1.0f);
-	I_glyph_PENT = new ItemSlot(back.x + 600, back.y + 200, 48, 48, 1.0f);
-	/*head = new Armor();
-	neck = new Armor();
-	cape = new Armor();
-	torso = new Armor();
-	feet = new Armor();
-	lefthand = new Armor();
-	righthand = new Weapon();
+	// Setup glyph slots:
+	
+	I_glyph_tri = new GlyphSlot((back.x + back.w) - 275, back.y+back.h - 175, 48, 48);
+	I_glyph_tri->setGlyphType(GlyphType::TRIANGLE);
+	I_glyph_tri->setBackground("assets/triangleGlyphbg.bmp",0,0);
+	I_glyph_sqr = new GlyphSlot((back.x + back.w) - 215, back.y + back.h - 175, 48, 48);
+	I_glyph_sqr->setGlyphType(GlyphType::SQUARE);
+	I_glyph_sqr->setBackground("assets/sqrGlyphbg.bmp",0,0);
+	I_glyph_PENT = new GlyphSlot((back.x + back.w) - 155, back.y + back.h - 175, 48, 48);
+	I_glyph_PENT->setGlyphType(GlyphType::PENTAGRAM);
+	I_glyph_PENT->setBackground("assets/octoGlyphbg.bmp",0,0);
+
+	// Setup armor slots:
+
+	head = new ArmorSlot(back.x + back.w - 300, back.y + 100, 48, 48);
+	head->setBackground("assets/inventoryslots.bmp",0,0);
+	torso = new ArmorSlot(back.x + back.w - 300, back.y + 160, 48, 48);
+	torso->setBackground("assets/inventoryslots.bmp",32,0);
+
+		/*
+		, * neck, * cape, * torso, * legs, * feet, * lefthand;
+	ArmorSlot* leftring, * rightring;
+	WeaponSlot* righthand;
 	*/
-	S_glyphTRI_bg = new Sprite("assets/TriangleGlyphbg.bmp", Vector2F(I_glyph_tri->getPosition().X, I_glyph_tri->getPosition().Y), Sizer{ 50,50 }, 1.0f);
-	S_coins = new Sprite("assets/coins.png", Vector2F(back.x + 600, back.y + back.h - 70 - 16), Sizer{ 32,32 }, 1.0f);
 
 	details = new ItemDetails(0, 0, 250, 360);
 
 	short int x = back.x + 15;
-	short int y = back.y + 50;
+	short int y = back.y + 65;
 
 	for (Uint8 i = 0; i < Uint8(MAX_ITEMS / 10); i++) {
 		for (Uint8 j = 0; j < Uint8(MAX_ITEMS / 7); j++) {
@@ -82,6 +106,9 @@ Inventory::Inventory() : Menu() {
 		y += 7;
 		x = back.x + 15;
 	}
+	S_coins = new Sprite("assets/coins.png", Vector2F(back.x + 600, back.y+back.h-50), Sizer{ 32,32 }, 1.0f);
+	L_coins = new Text("44,543,768", 15, WNORMAL, GameManager::GOLD, Vector2F(back.x + 640, back.y + back.h - 50), Vector2F(120, 32));
+	L_coins->setMiddle();
 
 	selectedSlot = nullptr;
 
@@ -207,23 +234,31 @@ bool Inventory::closePrompt() {
 void Inventory::render() {
 	SDL_SetRenderDrawColor(GameManager::rd, GameManager::DGRAY.r, GameManager::DGRAY.g, GameManager::DGRAY.b, GameManager::DGRAY.a);
 	SDL_RenderFillRect(GameManager::rd, &back);
+	GameManager::setDrawColor(GameManager::Gray20);
+	for (SDL_Rect i : borders) {
+		SDL_RenderFillRect(GameManager::rd, &i);
+	}
+	
 	S_coins->render(0.0f);
-	S_glyphTRI_bg->render(0.0f);
 
 	__super::render();
 
+	I_glyph_PENT->render();
+	I_glyph_sqr->render();
 	I_glyph_tri->render();
-	S_glyphTRI_bg->render(0.0f);
+	head->render();
+	torso->render();
+	/*
+	
+	*/
+
 	for (int i = static_cast<int>(slots.size() - 1); i >= 0; i--) {
 		if (slots.at(i) != selectedSlot) {
 			slots.at(i)->render();
 			slots.at(i)->renderItem();
 		}
 	}
-	if (selectedSlot != nullptr) {
-		selectedSlot->render();
-		selectedSlot->renderItem();
-	}
+
 
 	sort_by_id->render();
 	sort_by_rarity->render();
@@ -231,12 +266,22 @@ void Inventory::render() {
 	if (prompt != nullptr) {
 		prompt->render();
 	}
-
+	if (selectedSlot != nullptr) {
+		selectedSlot->render();
+		selectedSlot->renderItem();
+	}
 }
 
 void Inventory::update() {
 	this->L_coins->setText(std::to_string(coins));
 	this->L_coins->setMiddle();
+
+	I_glyph_tri->update();
+	I_glyph_PENT->update();
+	I_glyph_sqr->update();
+	head->update();
+	torso->update();
+	
 	for (ItemSlot* i : slots) {
 		i->update();
 		if (i->getItem() != nullptr && i == selectedSlot) {
@@ -248,7 +293,10 @@ void Inventory::update() {
 			}
 		}
 	}
-	I_glyph_tri->update();
+	if (selectedSlot != nullptr && selectedSlot->getItem() != nullptr) {
+		selectedSlot->getItem()->setPosition(GameManager::mx, GameManager::my);
+	}
+
 	__super::update();
 	sort_by_id->update();
 	sort_by_rarity->update();
@@ -264,7 +312,12 @@ void Inventory::clean() {
 		i->clean();
 	}
 	I_glyph_tri->clean();
-	S_glyphTRI_bg->clean();
+	I_glyph_PENT->clean();
+	I_glyph_sqr->clean();
+
+	head->clean();
+	torso->clean();
+
 	details->setItem(nullptr);
 	details->clean();
 
@@ -272,6 +325,104 @@ void Inventory::clean() {
 	__super::clean();
 	if (prompt != nullptr) {
 		prompt->clean();
+	}
+}
+bool Inventory::checkItem(ItemSlot* a) {
+	bool result = false;
+	// Check the allowed item type:
+	switch (a->getAllowedItemType()) {
+	case ItemType::UNSET:
+		result = true;
+		break;
+	case ItemType::ARMOR:
+		if (selectedSlot->getItem()->getType() == ItemType::ARMOR) {
+			//if (selectedSlot.getAllowedArmorType() == ArmorType::
+			break;
+		}
+		break;
+	case ItemType::CONSUMABLE:
+		if (selectedSlot->getItem()->getType() == ItemType::CONSUMABLE) {
+			break;
+		}
+		break;
+		// If the item type is a glyph:
+	case ItemType::GLYPH:
+		// Check that the item is a glyph:
+		if (selectedSlot->getItem()->getType() == ItemType::GLYPH) {
+			// If the item is in fact a glyph, check what type of glyph that the glyphslot can hold:
+			switch (((GlyphSlot*)a)->getGType()) {
+				// If its unset, can hold any:
+			case GlyphType::UNSET:
+				result = true;
+				break;
+			case GlyphType::PENTAGRAM:
+				(selectedSlot->getItem())->getGType() == GlyphType::PENTAGRAM ? (result = true) : (result = false);
+				break;
+			case GlyphType::TRIANGLE:
+				(selectedSlot->getItem())->getGType() == GlyphType::TRIANGLE ? (result = true) : (result = false);
+				break;
+			case GlyphType::SQUARE:
+				(selectedSlot->getItem())->getGType() == GlyphType::SQUARE ? (result = true) : (result = false);
+				break;
+			default:
+				break;
+			}
+			break;
+		}
+	case ItemType::WEAPON:
+		break;
+	case ItemType::MISC:
+		break;
+	default:
+		break;
+
+	}
+	return result;
+}
+
+void Inventory::swapItems(ItemSlot* a) {
+	Item* temp;
+	if (a->getItem() != nullptr) {
+		// check the item type:
+		if (checkItem(a)) {
+			temp = a->getItem();
+			a->setItem(selectedSlot->getItem());
+			a->getItem()->setPosition(a->getPosition().X, a->getPosition().Y);
+			selectedSlot->setItem(temp);
+			selectedSlot->getItem()->setPosition(selectedSlot->getPosition().X, selectedSlot->getPosition().Y);
+			selectedSlot = nullptr;
+			selectedSlotID = -1;
+		}
+		else {
+			selectedSlot->getItem()->setPosition(selectedSlot->getPosition().X, selectedSlot->getPosition().Y);
+			selectedSlot = nullptr;
+			selectedSlotID = -1;
+		}
+		
+	}
+	else {
+		if (checkItem(a)) {
+			a->setItem(selectedSlot->getItem());
+			a->getItem()->setPosition(a->getPosition().X, a->getPosition().Y);
+			selectedSlot->setItem(nullptr);
+			selectedSlot = nullptr;
+			selectedSlotID = -1;
+		}
+		else {
+			selectedSlot->getItem()->setPosition(selectedSlot->getPosition().X, selectedSlot->getPosition().Y);
+			selectedSlot = nullptr;
+			selectedSlotID = -1;
+		}
+	}
+}
+
+bool checkBounds(ItemSlot* slot) {
+	if (slot->getPosition().X < GameManager::mx && (slot->getSize().X + slot->getPosition().X) > GameManager::mx
+		&& slot->getPosition().Y < GameManager::my && (slot->getSize().Y + slot->getPosition().Y) > GameManager::my) {
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
@@ -283,6 +434,11 @@ void Inventory::pollEvents(SDL_Event* e) {
 		i->handleEvents(e);
 	}
 	I_glyph_tri->handleEvents(e);
+	I_glyph_PENT->handleEvents(e);
+	I_glyph_sqr->handleEvents(e);
+
+	head->handleEvents(e);
+	torso->handleEvents(e);
 	__super::pollEvents(e);
 	if (prompt != nullptr) {
 		prompt->handleEvents(e);
@@ -291,8 +447,7 @@ void Inventory::pollEvents(SDL_Event* e) {
 	case SDL_MOUSEMOTION:
 		// ItemInformation (If hovering over an item, show the item information).
 		for (int i = 0; i < slots.size(); i++) {
-			if (slots.at(i)->getPosition().X < GameManager::mx && (slots.at(i)->getSize().X + slots.at(i)->getPosition().X) > GameManager::mx
-				&& slots.at(i)->getPosition().Y < GameManager::my && (slots.at(i)->getSize().Y + slots.at(i)->getPosition().Y) > GameManager::my) {
+			if (checkBounds(slots.at(i))) {
 				if (slots.at(i)->getItem() != nullptr) {
 					// Show the slot item stats.
 					break;
@@ -307,15 +462,34 @@ void Inventory::pollEvents(SDL_Event* e) {
 	case SDL_MOUSEBUTTONDOWN:
 		switch (e->button.button) {
 		case SDL_BUTTON_LEFT:
-			if (!GameManager::leftLock) {
-				for (int i = 0; i < slots.size(); i++) {
-					if (slots.at(i)->getPosition().X < GameManager::mx && (slots.at(i)->getSize().X + slots.at(i)->getPosition().X) > GameManager::mx 
-						&& slots.at(i)->getPosition().Y < GameManager::my && (slots.at(i)->getSize().Y + slots.at(i)->getPosition().Y) > GameManager::my) {
-						if (slots.at(i)->getItem() != nullptr) {
-							this->selectedSlot = slots.at(i);
-							selectedSlotID = i;
-							GameManager::leftLock = true;
+			if (this->prompt == nullptr) {
+				if (!GameManager::leftLock) {
+					for (int i = 0; i < slots.size(); i++) {
+						if (checkBounds(slots.at(i))) {
+							if (slots.at(i)->getItem() != nullptr) {
+								this->selectedSlot = slots.at(i);
+								selectedSlotID = i;
+								GameManager::leftLock = true;
+								break;
+							}
 						}
+					}
+					if (checkBounds(I_glyph_PENT) && I_glyph_PENT->getItem() != nullptr) {
+						this->selectedSlot = I_glyph_PENT;
+						selectedSlotID = 73;
+						GameManager::leftLock = true;
+						break;
+					}
+					else if (checkBounds(I_glyph_sqr) && I_glyph_sqr->getItem() != nullptr) {
+						this->selectedSlot = I_glyph_sqr;
+						selectedSlotID = 74;
+						GameManager::leftLock = true;
+						break;
+					}
+					else if (checkBounds(I_glyph_tri) && I_glyph_tri->getItem() != nullptr) {
+						this->selectedSlot = I_glyph_tri;
+						selectedSlotID = 75;
+						GameManager::leftLock = true;
 						break;
 					}
 				}
@@ -330,28 +504,37 @@ void Inventory::pollEvents(SDL_Event* e) {
 		case SDL_BUTTON_LEFT:
 			if (GameManager::leftLock) {
 				for (int i = 0; i < slots.size(); i++) {
-					if (slots.at(i)->getPosition().X < GameManager::mx && (slots.at(i)->getSize().X + slots.at(i)->getPosition().X) > GameManager::mx
-						&& slots.at(i)->getPosition().Y < GameManager::my && (slots.at(i)->getSize().Y + slots.at(i)->getPosition().Y) > GameManager::my) {
-						Item* temp;
-						if (slots.at(i)->getItem() != nullptr) {
-							temp = slots.at(i)->getItem();
-							slots.at(i)->setItem(selectedSlot->getItem());
-							selectedSlot->setItem(temp);
-							selectedSlot->getItem()->setPosition(selectedSlot->getPosition().X, selectedSlot->getPosition().Y);
-							selectedSlot = nullptr;
-							selectedSlotID = -1;
-						}
-						else {
-							slots.at(i)->setItem(selectedSlot->getItem());
-							selectedSlot->setItem(nullptr);
-							selectedSlot = nullptr;
-							selectedSlotID = -1;
-						}
+					if (checkBounds(slots.at(i))) {
+						swapItems(slots.at(i));
+						GameManager::leftLock = false;
 						break;
 					}
 				}
 				if (selectedSlot != nullptr) {
+					if (checkBounds(I_glyph_PENT)) {
+						swapItems(I_glyph_PENT);
+						GameManager::leftLock = false;
+						break;
+					}
+					if (checkBounds(I_glyph_tri)) {
+						swapItems(I_glyph_tri);
+						GameManager::leftLock = false;
+						break;
+					}
+					if (checkBounds(I_glyph_sqr)) {
+						swapItems(I_glyph_sqr);
+						GameManager::leftLock = false;
+						break;
+					}
 					//Check here for item dropping and itemslot dropping to other slots than the inventory.
+					if (GameManager::mx > back.x&& GameManager::mx < (back.x + back.w) && GameManager::my > back.y&& GameManager::my < (back.y + back.h)) {
+						selectedSlot->getItem()->setPosition(selectedSlot->getPosition().X, selectedSlot->getPosition().Y);
+						selectedSlot = nullptr;
+						selectedSlotID = -1;
+
+						GameManager::leftLock = false;
+						break;
+					}
 					prompt = new Prompt(GameManager::SCREENWIDTH / 2 - 200, GameManager::SCREENHEIGHT / 2 - 100, 400, 250, "Are you sure you want to delete: " + selectedSlot->getItem()->getRarityString() + " " + selectedSlot->getItem()->getName() +"?");
 					prompt->setConfirm(GameManager::pushCommand, "I:delI:" + std::to_string(selectedSlotID));
 					prompt->setCancel(GameManager::pushCommand,"M:CLOS:INVPMT");

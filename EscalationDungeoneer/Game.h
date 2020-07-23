@@ -14,6 +14,7 @@
 #include "CreditsMenu.h"
 #include "Inventory.h"
 #include <ctime>
+#include "GameManager.h"
 
 class Game {
 private:

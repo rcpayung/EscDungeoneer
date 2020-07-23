@@ -12,6 +12,42 @@ enum class Rarity {
 	GODLY
 };
 
+enum class ItemType {
+	UNSET,
+	WEAPON,
+	ARMOR,
+	CONSUMABLE,
+	MISC,
+	GLYPH
+};
+
+enum class ArmorType {
+	UNSET,
+	HELMET,
+	BODY,
+	LEGS,
+	BOOTS,
+	SHIELD,
+	GLOVES,
+	RING,
+	AMULET
+};
+
+enum class WeaponType {
+	UNSET,
+	GUN,
+	BOW,
+	SWORD,
+	DAGGER,
+	TH_KNIVES
+};
+enum class GlyphType {
+	UNSET,
+	SQUARE,
+	PENTAGRAM,
+	TRIANGLE
+};
+
 struct Statistics { /*MODIFIERS*/
 	short MP; // MP
 	short HP; // HP
@@ -34,6 +70,10 @@ private:
 	Rarity rarity;
 	Tooltip* t;
 	Statistics stats;
+	ItemType type;
+	ArmorType a_type;
+	WeaponType w_type;
+	GlyphType g_type;
 public:
 	Item(std::string name, float scale, const char* spritepath, bool stackable);
 	Item();
@@ -62,6 +102,33 @@ public:
 
 	Statistics getstats();
 	void setStats(Statistics stats);
+	
+	WeaponType getWType() {
+		if (this->type == ItemType::WEAPON) {
+			return w_type;
+		}
+		return WeaponType::UNSET;
+	}
+	ArmorType getAType() {
+		if (this->type == ItemType::ARMOR) {
+			return a_type;
+		}
+		return ArmorType::UNSET;
+	}
+	ItemType getType() {
+		return this->type;
+	}
+
+	GlyphType getGType() {
+		return this->g_type;
+	}
+
+	void setItemType(ItemType type);
+	void setWeaponType(WeaponType type);
+	void setArmorType(ArmorType type);
+	
 	void handleEvents(SDL_Event* e);
+
+
 };
 

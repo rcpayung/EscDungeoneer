@@ -189,3 +189,16 @@ std::string Item::getRarityString() {
 Rarity Item::getRarity() {
 	return this->rarity;
 }
+
+
+void Item::setItemType(ItemType type) {
+	this->type = type;
+}
+
+void Item::setWeaponType(WeaponType type) {
+	this->w_type = type;
+}
+
+void Item::setArmorType(ArmorType type) {
+	this->a_type = type;
+}

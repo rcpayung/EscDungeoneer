@@ -86,7 +86,13 @@
     <ClCompile Include="ItemDetails.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Text2D.cpp">
+    <ClCompile Include="GlyphSlot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponSlot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmorSlot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -163,7 +169,13 @@
     <ClInclude Include="ItemDetails.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Text2D.h">
+    <ClInclude Include="GlyphSlot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponSlot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmorSlot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

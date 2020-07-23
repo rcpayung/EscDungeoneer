@@ -14,6 +14,11 @@ void ItemSlot::update() {
 	}
 }
 
+void ItemSlot::setBackground(const char* fileloc, int x, int y) {
+	this->background = new Sprite(fileloc, Vector2F(this->getPosition().X+8,this->getPosition().Y+8), Sizer{ 32,32 });
+	this->background->setImage(x, y);
+}
+
 void ItemSlot::render() {
 	SDL_SetRenderDrawColor(GameManager::rd, 45, 45, 45, 255);
 	if (item != nullptr) {
@@ -37,6 +42,7 @@ void ItemSlot::render() {
 			break;
 		}
 	}
+
 	SDL_RenderFillRect(GameManager::rd, &border);
 	if (inside) {
 		SDL_SetRenderDrawColor(GameManager::rd, 20, 20, 20, 255);
@@ -47,6 +53,10 @@ void ItemSlot::render() {
 		SDL_RenderFillRect(GameManager::rd, &dest);
 	}
 	
+	if (background != nullptr) {
+		background->render(0.0f);
+	}
+
 	SDL_SetRenderDrawColor(GameManager::rd, 0, 0, 0, 255);
 }
 
@@ -61,6 +71,9 @@ void ItemSlot::renderItem() {
 
 void ItemSlot::clean() {
 	__super::clean();
+	if (background != nullptr) {
+		background->clean();
+	}
 }
 
 int ItemSlot::getItemID() {
@@ -94,4 +107,12 @@ void ItemSlot::handleEvents(SDL_Event* e) {
 	default:
 		break;
 	}
+}
+
+ItemType ItemSlot::getAllowedItemType() {
+	return this->type;
+}
+
+void ItemSlot::setAllowedItemType(ItemType t) {
+	this->type = t;
 }

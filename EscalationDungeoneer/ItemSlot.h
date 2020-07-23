@@ -7,8 +7,11 @@ protected:
 	Item* item;
 	SDL_Rect border;
 	bool inside;
+	ItemType type = ItemType::UNSET;
+	Sprite* background;
 public:
 	ItemSlot(int x, int y, int w, int h, float scale);
+	void setBackground(const char* fileloc, int x, int y);
 	void update();
 	void render();
 	void renderItem();
@@ -16,7 +19,9 @@ public:
 	int getItemID();
 	void setItemID(int id);
 	Item* getItem();
-	void setItem(Item* item);
+	virtual void setItem(Item* item);
 	void handleEvents(SDL_Event* e);
+	ItemType getAllowedItemType();
+	void setAllowedItemType(ItemType t);
 };
 

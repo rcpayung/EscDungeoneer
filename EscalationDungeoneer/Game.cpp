@@ -1,8 +1,6 @@
 #include "Game.h"
-#include "GameManager.h"
 
 Game::Game(const char *title, int w, int h, int flags) {
-
 	// Initialize Steam API
 	//SteamAPI_Init() ? printf("Steam initialization complete\n") : printf("Steam init failed");
 
@@ -17,7 +15,7 @@ Game::Game(const char *title, int w, int h, int flags) {
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 		// Create the window and renderer.
 		this->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, GameManager::SCREENWIDTH, GameManager::SCREENHEIGHT, SDL_WINDOW_SHOWN);
-		
+
 		// Create the renderer (Static: see GameManager.h).
 		GameManager::rd = SDL_CreateRenderer(win, -1, 0);
 
@@ -34,33 +32,32 @@ Game::Game(const char *title, int w, int h, int flags) {
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 		SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
 		SDL_SetRenderDrawBlendMode(GameManager::rd, SDL_BLENDMODE_BLEND);
-		
+
 		/* SET WINDOW ICON */ {
 			SDL_Surface* icon = IMG_Load("assets/appicon.bmp");
 			SDL_SetWindowIcon(win, icon);
 			SDL_FreeSurface(icon);
+			icon = nullptr;
 		}
-
 		
-
-		worldPort.x = 0;
-		worldPort.y = 0;
-		worldPort.w = GameManager::SCREENWIDTH;
-		worldPort.h = GameManager::SCREENHEIGHT;
-
-		WORLD = new Scene(0, "Sauresgald", 0, 0, 1000, 1000, 1.0f);
-		mainmenu = new MainMenu("assets/escalationDungeoneerBackground.png");
-		pausemenu = new PauseMenu();
-		settings = new SettingsMenu();
-		creditsmenu = new CreditsMenu();
-		inventory = new Inventory();
-
-		GameManager::pushCommand("M:LOAD:__MAIN");
-		devModetext = new Text("DEV MODE ENABLED", 10, WBOLD, GameManager::GREEN, Vector2F(5, 15), Vector2F(150, 15));
-		devModetext->setMiddle();
-		version = new Text(GameManager::versionNum, 10, WBOLD, GameManager::GRAY, Vector2F(5,0), Vector2F(150, 15));
-		version->setMiddle();
 	}
+	else {
+		throw nullptr;
+	}
+	worldPort = { 0,0,GameManager::SCREENWIDTH, GameManager::SCREENHEIGHT };
+
+	WORLD = new Scene(0, "Sauresgald", 0, 0, 1000, 1000, 1.0f);
+	mainmenu = new MainMenu("assets/escalationDungeoneerBackground.png");
+	pausemenu = new PauseMenu();
+	settings = new SettingsMenu();
+	creditsmenu = new CreditsMenu();
+	inventory = new Inventory();
+
+	GameManager::pushCommand("M:LOAD:__MAIN");
+	devModetext = new Text("DEV MODE ENABLED", 10, WBOLD, GameManager::GREEN, Vector2F(5, 15), Vector2F(150, 15));
+	devModetext->setMiddle();
+	version = new Text(GameManager::versionNum, 10, WBOLD, GameManager::GRAY, Vector2F(5,0), Vector2F(150, 15));
+	version->setMiddle();
 
 }
 
@@ -125,6 +122,7 @@ void Game::processCommands() {
 				case ITEMID::WORMSPTITER:
 					Item* item = new Item("Worm Spitter", 1.0f, "assets/wormspitter.bmp", false);
 					item->generateRarity(1.0f);
+					item->setItemType(ItemType::GLYPH);
 					item->setTooltip((item->getRarityString() + " Worm Spitter").c_str());
 					Statistics wormspitterStats{25,25,25,25,25,25,25,25,2.5f}; // Placeholder.
 					item->setStats(wormspitterStats);

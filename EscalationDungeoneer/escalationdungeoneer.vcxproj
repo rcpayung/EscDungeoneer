@@ -143,12 +143,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Armor.cpp" />
+    <ClCompile Include="ArmorSlot.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CreditsMenu.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Glyph.cpp" />
+    <ClCompile Include="GlyphSlot.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemDetails.cpp" />
@@ -163,20 +165,22 @@
     <ClCompile Include="SettingsMenu.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Text.cpp" />
-    <ClCompile Include="Text2D.cpp" />
     <ClCompile Include="Tooltip.cpp" />
     <ClCompile Include="UIComponent.cpp" />
     <ClCompile Include="Vector2F.cpp" />
     <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="WeaponSlot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Armor.h" />
+    <ClInclude Include="ArmorSlot.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CreditsMenu.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Glyph.h" />
+    <ClInclude Include="GlyphSlot.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemDetails.h" />
@@ -190,11 +194,11 @@
     <ClInclude Include="SettingsMenu.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Text.h" />
-    <ClInclude Include="Text2D.h" />
     <ClInclude Include="Tooltip.h" />
     <ClInclude Include="UIComponent.h" />
     <ClInclude Include="Vector2F.h" />
     <ClInclude Include="Weapon.h" />
+    <ClInclude Include="WeaponSlot.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

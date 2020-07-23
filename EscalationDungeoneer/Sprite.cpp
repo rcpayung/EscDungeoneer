@@ -57,12 +57,8 @@ void Sprite::setPosition(int x, int y) {
 }
 
 void Sprite::setImage(int x, int y) {
-	this->src = {
-		x,
-		y,
-		size.W,
-		size.H
-	};
+	src.x = x;
+	src.y = y;
 }
 
 void Sprite::render(float theta) {

@@ -7,32 +7,38 @@
 #include "ItemSlot.h"
 #include "Prompt.h"
 #include "ItemDetails.h"
+#include "GlyphSlot.h"
+#include "ArmorSlot.h"
+#include "WeaponSlot.h"
 
 
 class Inventory : public Menu {
 private:
 	std::vector<ItemSlot*> slots;
-	std::vector<ItemSlot*> armorslots;
 	bool showDetails = false;
 	const int MAX_ITEMS = 70;
 	int numItems;
 	long coins;
 	ItemSlot* selectedSlot;
 	int selectedSlotID;
+	void swapItems(ItemSlot* a);
+	bool checkItem(ItemSlot* a);
+	std::vector<SDL_Rect> borders;
 
 	// EQUIPMENT
-	Armor* head, * neck, * cape, * torso, * legs, * feet, * lefthand;
-	Armor* leftring, * rightring;
-	Weapon* righthand;
+	ArmorSlot* head, * neck, * cape, * torso, * legs, * feet, * lefthand;
+	ArmorSlot* leftring, * rightring;
+	WeaponSlot* righthand;
 	Item* item;
 	ItemDetails* details;
-	
-	// GLYPHS
-	Glyph* triangle, * square, * diamond;
-	ItemSlot* I_glyph_tri, * I_glyph_sqr, * I_glyph_PENT;
+
+	GlyphSlot* I_glyph_tri, * I_glyph_sqr, * I_glyph_PENT;
 	Button* sort_alpha, * sort_by_id, * sort_by_rarity, * close, * help;
-	Sprite* S_coins, * S_glyphPENT_bg, * S_glyphTRI_bg, * S_glyphSQR_bg, * S_equipback, * S_invback;
+
+	Sprite* S_coins;
+	
 	SDL_Rect back;
+	
 	Prompt* prompt;
 protected:
 	
