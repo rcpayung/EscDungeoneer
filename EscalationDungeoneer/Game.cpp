@@ -121,8 +121,9 @@ void Game::processCommands() {
 				switch (std::stoi(cargs.at(2))) {
 				case ITEMID::WORMSPTITER:
 					Item* item = new Item("Worm Spitter", 1.0f, "assets/wormspitter.bmp", false);
-					item->generateRarity(1.0f);
-					item->setItemType(ItemType::GLYPH);
+					item->generateRarity(0.7f);
+					item->setItemType(ItemType::WEAPON);
+					item->setWeaponType(WeaponType::GUN);
 					item->setTooltip((item->getRarityString() + " Worm Spitter").c_str());
 					Statistics wormspitterStats{25,25,25,25,25,25,25,25,2.5f}; // Placeholder.
 					item->setStats(wormspitterStats);

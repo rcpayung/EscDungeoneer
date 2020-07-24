@@ -26,10 +26,9 @@ private:
 	std::vector<SDL_Rect> borders;
 
 	// EQUIPMENT
-	ArmorSlot* head, * neck, * cape, * torso, * legs, * feet, * lefthand;
+	ArmorSlot* head, /* neck,*/ * torso, * legs, * feet, * lefthand;
 	ArmorSlot* leftring, * rightring;
 	WeaponSlot* righthand;
-	Item* item;
 	ItemDetails* details;
 
 	GlyphSlot* I_glyph_tri, * I_glyph_sqr, * I_glyph_PENT;

@@ -53,7 +53,7 @@ void ItemSlot::render() {
 		SDL_RenderFillRect(GameManager::rd, &dest);
 	}
 	
-	if (background != nullptr) {
+	if (background != nullptr && item == nullptr) {
 		background->render(0.0f);
 	}
 
