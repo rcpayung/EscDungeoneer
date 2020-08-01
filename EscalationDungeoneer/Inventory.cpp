@@ -519,8 +519,10 @@ void Inventory::pollEvents(SDL_Event* e) {
 	sort_by_id->handleEvents(e);
 	sort_by_rarity->handleEvents(e);
 	sort_alpha->handleEvents(e);
-	for (ItemSlot* i : slots) {
-		i->handleEvents(e);
+	if (prompt == nullptr) {
+		for (ItemSlot* i : slots) {
+			i->handleEvents(e);
+		}
 	}
 	I_glyph_tri->handleEvents(e);
 	I_glyph_PENT->handleEvents(e);
