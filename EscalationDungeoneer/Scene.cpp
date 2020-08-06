@@ -3,10 +3,9 @@
 Scene::Scene(int id, std::string name, int openx, int openy, int SceneWidth, int SceneHeight, float scale) {
 	this->id = id;
 	this->name = name;
-	player = new Player("Player",Vector2F(openx + GameManager::SCREENWIDTH / 2, openy + GameManager::SCREENHEIGHT / 2),scale);
+	player = new Player("Player",Vector2F(openx + GameManager::SCREENWIDTH / 2, openy + GameManager::SCREENHEIGHT / 2),1.0f);
 	player->setIdle(0, 0);
 	player->setPosition(GameManager::SCREENWIDTH / 2 - player->getSize().W / 2, GameManager::SCREENHEIGHT / 2 - player->getSize().H / 2);
-	player->addAnimation(10, 2, 0, 0, false);
 	camera = {
 		openx,
 		openy,

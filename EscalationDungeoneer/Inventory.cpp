@@ -23,8 +23,6 @@ Inventory::Inventory() : Menu() {
 	borders.push_back(SDL_Rect{ back.x + back.w - 260 + 23, back.y + 120, 2, 80 }); // Equip Down - Left
 	borders.push_back(SDL_Rect{ back.x + back.w - 250, back.y + 115 + 23, 150, 2 }); // Equip Across
 
-
-
 	// Setup buttons.
 
 	sort_alpha = new Button(GameManager::SCREENWIDTH / 2 + 10, 215, 20, 20, "A");
@@ -33,7 +31,7 @@ Inventory::Inventory() : Menu() {
 	sort_alpha->setHover(GameManager::BLACK, GameManager::GRAY);
 	sort_alpha->setStroke(2, GameManager::Gray20);
 	sort_alpha->setAction(GameManager::pushCommand,"M:SORT:INBYAL"); // Menu: Sort: Inventory by alpha.
-	sort_alpha->setTooltip("Sort items by their Name", 12, GameManager::GOLD, GameManager::DGRAY);
+	sort_alpha->setTooltip("Sort items by name", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	sort_by_id = new Button(GameManager::SCREENWIDTH / 2 + 70, 215, 20, 20, "T");
 	sort_by_id->setForeground(GameManager::GOLD);
@@ -41,7 +39,7 @@ Inventory::Inventory() : Menu() {
 	sort_by_id->setHover(GameManager::BLACK, GameManager::GRAY);
 	sort_by_id->setStroke(2, GameManager::Gray20);
 	sort_by_id->setAction(GameManager::pushCommand,"M:SORT:INBYTY"); // Menu: Sort: Inventory by ID.
-	sort_by_id->setTooltip("Sort items by their Type", 12, GameManager::GOLD, GameManager::DGRAY);
+	sort_by_id->setTooltip("Sort items by type", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	sort_by_rarity = new Button(GameManager::SCREENWIDTH / 2 + 40, 215, 20, 20, "R");
 	sort_by_rarity->setForeground(GameManager::GOLD);
@@ -49,7 +47,7 @@ Inventory::Inventory() : Menu() {
 	sort_by_rarity->setHover(GameManager::BLACK, GameManager::GRAY);
 	sort_by_rarity->setStroke(2, GameManager::Gray20);
 	sort_by_rarity->setAction(GameManager::pushCommand, "M:SORT:INBYRR"); // Menu: Sort: Inventory by ID.
-	sort_by_rarity->setTooltip("Sort items by their Rarity", 12, GameManager::GOLD, GameManager::DGRAY);
+	sort_by_rarity->setTooltip("Sort items by rarity", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	close = new Button(back.x + back.w - 30, back.y + 15, 20, 20, "X");
 	close->setForeground(GameManager::GOLD);
@@ -57,7 +55,7 @@ Inventory::Inventory() : Menu() {
 	close->setHover(GameManager::BLACK, GameManager::GRAY);
 	close->setStroke(2, GameManager::Gray20);
 	close->setAction(GameManager::pushCommand, "M:CLOS:INVENT"); // Menu: Sort: Inventory by alpha.
-	close->setTooltip("Close the Inventory", 12, GameManager::GOLD, GameManager::DGRAY);
+	close->setTooltip("Close the inventory", 12, GameManager::GOLD, GameManager::DGRAY);
 
 	help = new Button(back.x + back.w - 60, back.y + 15, 20, 20, "?");
 	help->setForeground(GameManager::GOLD);
@@ -115,11 +113,6 @@ Inventory::Inventory() : Menu() {
 	rightring = new ArmorSlot(back.x + back.w - 150, back.y + 170, 48, 48);
 	rightring->setBackground("assets/inventoryslots.bmp", 192, 0);
 	rightring->setArmorType(ArmorType::RING);
-	/*
-		, * neck, * cape, * torso, * legs, * feet, * lefthand;
-	ArmorSlot* leftring, * rightring;
-	WeaponSlot* righthand;
-	*/
 
 	details = new ItemDetails(0, 0, 250, 360);
 
@@ -168,9 +161,9 @@ void Inventory::render() {
 	rightring->render();
 	legs->render();
 	leftring->render();
-	lefthand->render();
-	torso->render(); 
 	righthand->render();
+	torso->render(); 
+	lefthand->render();
 	head->render();
 	/*
 
@@ -268,7 +261,19 @@ void Inventory::clean() {
 void Inventory::sortinventory(std::string sort) {
 	Item* temp;
 	if (sort == "ALPHA") {
-
+		for (ItemSlot* i : slots) {
+			if (i->getItem() == nullptr) continue;
+			for (ItemSlot* j : slots) {
+				if (j->getItem() == nullptr) continue;
+				if (j->getItem()->getName().at(0) > i->getItem()->getName().at(0) && j->getItem()->getName().at(0) != i->getItem()->getName().at(0)) {
+					temp = j->getItem();
+					j->setItem(i->getItem());
+					i->setItem(temp);
+					i->update();
+					j->update();
+				}
+			}
+		}
 	}
 	else if (sort == "RARITY") {
 		for (ItemSlot* i : slots) {
@@ -355,14 +360,73 @@ bool Inventory::removeItem(Item* item) {
 */
 
 bool Inventory::removeItemAt(int index) {
-	if (this->slots.at(index)->getItem() != nullptr) {
+	if (index > 70) {
+		switch (index) {
+		case 71:
+			I_glyph_PENT->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		case 72:
+			I_glyph_sqr->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		case 73:
+			I_glyph_tri->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		case 74:
+			lefthand->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		case 75:
+			righthand->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		case 76:
+			head->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		case 77:
+			torso->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		case 78:
+			legs ->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		case 79:
+			feet->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		case 80:
+			rightring->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		case 81:
+			leftring->setItem(nullptr);
+			numItems--;
+			return true;
+			break;
+		default:
+			break;
+		}
+	}
+	else if (this->slots.at(index)->getItem() != nullptr) {
 		this->slots.at(index)->setItem(nullptr);
 		numItems--;
 		return true;
 	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 bool Inventory::closePrompt() {
@@ -404,6 +468,9 @@ bool Inventory::checkItem(ItemSlot* a) {
 			case ArmorType::SHIELD:
 				// If the item inside the weapon slot is a gun or a bow, we dont want to allow the shield to be placed in the slot.
 				if (righthand->getItem() != nullptr && (righthand->getItem()->getWType() == WeaponType::GUN || righthand->getItem()->getWType() == WeaponType::BOW)) {
+					prompt = new Prompt(GameManager::SCREENWIDTH / 2 - 200, GameManager::SCREENHEIGHT / 2 - 100, 400, 250,"You can't wear a shield with a gun or bow.");
+					prompt->setConfirm(GameManager::pushCommand, "M:CLOS:INVPMT");
+					prompt->setCancel(GameManager::pushCommand, "M:CLOS:INVPMT");
 					result = false;
 					break;
 				}
@@ -454,7 +521,15 @@ bool Inventory::checkItem(ItemSlot* a) {
 		}
 		break;
 	case ItemType::WEAPON:
-		result = true;
+		if (selectedSlot->getItem()->getType() == ItemType::WEAPON) {
+			if (lefthand->getItem() != nullptr && (selectedSlot->getItem()->getWType() == WeaponType::GUN || selectedSlot->getItem()->getWType() == WeaponType::BOW)) {
+				prompt = new Prompt(GameManager::SCREENWIDTH / 2 - 200, GameManager::SCREENHEIGHT / 2 - 100, 400, 250, "You can't wear a shield with a gun or bow.");
+				prompt->setConfirm(GameManager::pushCommand, "M:CLOS:INVPMT");
+				result = false;
+				break;
+			}
+			result = true;
+		}
 		break;
 	case ItemType::MISC:
 		break;
@@ -462,6 +537,35 @@ bool Inventory::checkItem(ItemSlot* a) {
 		break;
 
 	}
+	// Armor slots, basically moving the other direction.
+	if (a->getItem() != nullptr) {
+		if (selectedSlotID > MAX_ITEMS) {
+			// if were moving from the armor slots to the inventory (Removing armors or glyphs, etc.)
+			if (selectedSlot->getItem()->getType() == a->getItem()->getType()) {
+				switch (a->getItem()->getType()) {
+				case ItemType::ARMOR:
+					selectedSlot->getItem()->getAType() == a->getItem()->getAType() ? result = true : result = false;
+					break;
+				case ItemType::CONSUMABLE:
+					result = true;
+					break;
+				case ItemType::GLYPH:
+					selectedSlot->getItem()->getGType() == a->getItem()->getGType() ? result = true : result = false;
+					break;
+				case ItemType::WEAPON:
+					result = true;
+					break;
+				default:
+					break;
+
+				}
+			}
+			else {
+				result = false;
+			}
+		}
+	}
+
 	return result;
 }
 
@@ -575,68 +679,68 @@ void Inventory::pollEvents(SDL_Event* e) {
 					}
 					if (checkBounds(I_glyph_PENT) && I_glyph_PENT->getItem() != nullptr) {
 						this->selectedSlot = I_glyph_PENT;
-						selectedSlotID = 73;
+						selectedSlotID = 71;
 						GameManager::leftLock = true;
 						break;
 					}
 					else if (checkBounds(I_glyph_sqr) && I_glyph_sqr->getItem() != nullptr) {
 						this->selectedSlot = I_glyph_sqr;
-						selectedSlotID = 74;
+						selectedSlotID = 72;
 						GameManager::leftLock = true;
 						break;
 					}
 					else if (checkBounds(I_glyph_tri) && I_glyph_tri->getItem() != nullptr) {
 						this->selectedSlot = I_glyph_tri;
-						selectedSlotID = 75;
+						selectedSlotID = 73;
 						GameManager::leftLock = true;
 						break;
 					}
 					// ARMOR AND WEAPON SLOTS:
 					if (checkBounds(lefthand) && lefthand->getItem() != nullptr) {
 						this->selectedSlot = lefthand;
-						selectedSlotID = 76;
+						selectedSlotID = 74;
 						GameManager::leftLock = true;
 						break;
 					}
 					if (checkBounds(righthand) && righthand->getItem() != nullptr) {
 						this->selectedSlot = righthand;
-						selectedSlotID = 77;
+						selectedSlotID = 75;
 						GameManager::leftLock = true;
 						break;
 					}
 					if (checkBounds(head) && head->getItem() != nullptr) {
 						this->selectedSlot = head;
-						selectedSlotID = 78;
+						selectedSlotID = 76;
 						GameManager::leftLock = true;
 						break;
 					}
 					if (checkBounds(torso) && torso->getItem() != nullptr) {
 						this->selectedSlot = torso;
-						selectedSlotID = 79;
+						selectedSlotID = 77;
 						GameManager::leftLock = true;
 						break;
 					}
 					if (checkBounds(legs) && legs->getItem() != nullptr) {
 						this->selectedSlot = legs;
-						selectedSlotID = 80;
+						selectedSlotID = 78;
 						GameManager::leftLock = true;
 						break;
 					}
 					if (checkBounds(feet) && feet->getItem() != nullptr) {
 						this->selectedSlot = feet;
-						selectedSlotID = 81;
+						selectedSlotID = 79;
 						GameManager::leftLock = true;
 						break;
 					}
 					if (checkBounds(rightring) && rightring->getItem() != nullptr) {
 						this->selectedSlot = rightring;
-						selectedSlotID = 82;
+						selectedSlotID = 80;
 						GameManager::leftLock = true;
 						break;
 					}
 					if (checkBounds(leftring) && leftring->getItem() != nullptr) {
 						this->selectedSlot = leftring;
-						selectedSlotID = 83;
+						selectedSlotID = 81;
 						GameManager::leftLock = true;
 						break;
 					}
@@ -759,6 +863,13 @@ void Inventory::pollEvents(SDL_Event* e) {
 			break;
 		case SDLK_i:
 			if (GameManager::devMode) GameManager::pushCommand("G:GIVE:1");
+			break;
+		case SDLK_u:
+			if (GameManager::devMode) GameManager::pushCommand("G:GIVE:2");
+			break;
+		case SDLK_y:
+			if (GameManager::devMode) GameManager::pushCommand("G:GIVE:3");
+			break;
 		default:
 			break;
 		}

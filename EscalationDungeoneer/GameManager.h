@@ -5,7 +5,9 @@
 
 enum ITEMID {
 	EMPTY,
-	WORMSPTITER
+	WORMSPTITER,
+	BLOODBONEPIKE,
+	WOODENSHIELD
 };
 
 class GameManager {

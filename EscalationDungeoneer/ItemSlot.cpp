@@ -5,6 +5,7 @@ ItemSlot::ItemSlot(int x, int y, int w, int h, float scale) : UIComponent(x,y,w,
 	this->border = { x - 2,y - 2,w + 4,h + 4 };
 	this->inside = false;
 	this->item = nullptr;
+	this->background = nullptr;
 }
 
 void ItemSlot::update() {

@@ -23,14 +23,17 @@ Prompt::Prompt(int x, int y, int w, int h, std::string alert) : UIComponent(x, y
 
 void Prompt::setConfirm(void(*ptr) (std::string), std::string action) {
 	this->confirm->setAction(ptr, action);
+	this->confirmSet = true;
 }
 
 void Prompt::setCancel(void(*ptr) (std::string), std::string action) {
 	this->close->setAction(ptr, action);
+	this->cancelSet = true;
 }
 
 void Prompt::runConfirm() {
-	confirm->runCommand();
+	if (confirmSet)
+		confirm->runCommand();
 }
 
 void Prompt::render() {
@@ -41,8 +44,12 @@ void Prompt::render() {
 	GameManager::setDrawColor(GameManager::BLACK);
 
 	message->render();
-	confirm->render();
-	close->render();
+
+	if (this->confirmSet)
+		confirm->render();
+	
+	if (this->cancelSet)
+		close->render();
 
 	__super::render();
 }
@@ -51,8 +58,14 @@ void Prompt::update() {
 	confirm->update();
 	close->update();
 
-	confirm->setPosition(dest.x + 20, dest.y + dest.h - 50);
-	close->setPosition(dest.x + dest.w - 170, dest.y + dest.h - 50);
+	if (confirmSet && !cancelSet)
+		confirm->setPosition(dest.x + (dest.w / 2) - confirm->getSize().X / 2, dest.y + dest.h - 50);
+	else if (!confirmSet && cancelSet)
+		close->setPosition(dest.x + (dest.w / 2) - close->getSize().X / 2, dest.y + dest.h - 50);
+	else {
+		confirm->setPosition(dest.x + 20, dest.y + dest.h - 50);
+		close->setPosition(dest.x + dest.w - 170, dest.y + dest.h - 50);
+	}
 }
 
 void Prompt::clean() {

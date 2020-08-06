@@ -6,6 +6,7 @@ class Prompt : public UIComponent {
 private:
 	Text * message;
 	Button * confirm, * close;
+	bool confirmSet = false, cancelSet = false;
 	SDL_Rect border;
 public:
 	Prompt(int x, int y, int w, int h, std::string alert);

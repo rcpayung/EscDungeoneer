@@ -81,7 +81,7 @@ void Game::update() {
 		else if (amenu == settings) settings->update();
 		else if (amenu == inventory) inventory->update();
 	}
-	if (GameManager::isPlaying) {
+	if (GameManager::isPlaying && amenu == nullptr) {
 		activeScene->update();
 	}
 
@@ -119,15 +119,43 @@ void Game::processCommands() {
 			// GIVE COMMAND - GIVE THE PLAYER AN ITEM:
 			else if (cargs.at(1) == "GIVE") {
 				switch (std::stoi(cargs.at(2))) {
+				Item* item;
+				Statistics itemstats;
 				case ITEMID::WORMSPTITER:
-					Item* item = new Item("Worm Spitter", 1.0f, "assets/wormspitter.bmp", false);
-					item->generateRarity(0.7f);
+					item = new Item("Worm Spitter", 1.0f, "assets/wormspitter.bmp", false);
+					item->generateRarity(1.0f);
 					item->setItemType(ItemType::WEAPON);
 					item->setWeaponType(WeaponType::GUN);
 					item->setTooltip((item->getRarityString() + " Worm Spitter").c_str());
-					Statistics wormspitterStats{25,25,25,25,25,25,25,25,2.5f}; // Placeholder.
-					item->setStats(wormspitterStats);
+					itemstats = {25,25,25,25,25,25,25,25,2.5f}; // Placeholder.
+					item->setStats(itemstats);
 					inventory->pushItem(item);
+					item = nullptr;
+					break;
+				case ITEMID::BLOODBONEPIKE:
+					item = new Item("Bloodbone Pike", 1.0f, "assets/BloodbonePike.png", false);
+					item->generateRarity(1.0f);
+					item->setItemType(ItemType::WEAPON);
+					item->setWeaponType(WeaponType::SWORD);
+					item->setTooltip((item->getRarityString() + " Bloodbone Pike").c_str());
+					itemstats = { 25,25,25,25,25,25,25,25,0.0f }; // Placeholder.
+					item->setStats(itemstats);
+					inventory->pushItem(item);
+					item = nullptr;
+					break;
+				case ITEMID::WOODENSHIELD:
+					item = new Item("Wooden Shield", 1.0f, "assets/woodenShield.bmp", false);
+					item->generateRarity(1.0f);
+					item->setItemType(ItemType::ARMOR);
+					item->setArmorType(ArmorType::SHIELD);
+					item->setTooltip((item->getRarityString() + " Wooden Shield").c_str());
+					itemstats = { 25,25,25,25,25,25,25,25,0.0f }; // Placeholder.
+					item->setStats(itemstats);
+					inventory->pushItem(item);
+					item = nullptr;
+					break;
+				default:
+					break;
 				}
 			}
 			else if (cargs.at(1) == "EDIT") {
@@ -304,7 +332,7 @@ void Game::handleEvents() {
 
 		case SDL_KEYUP:
 			switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
+			case SDLK_ESCAPE: 
 				break;
 			default:
 				break;

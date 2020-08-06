@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(std::string name, Vector2F p, float scale) : GameObject(name, Vector2F(p.X, p.Y), Sizer{ 64, 128 }, "assets/player.png") {
+Player::Player(std::string name, Vector2F p, float scale) : GameObject(name, Vector2F(p.X, p.Y), Sizer{ int(38*scale), int(100*scale) }, "assets/playernew.bmp") {
 
 }
 
