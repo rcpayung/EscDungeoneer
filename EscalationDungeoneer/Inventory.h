@@ -42,6 +42,8 @@ private:
 protected:
 	
 public:
+	bool unequipShield();
+	ItemSlot* findEmptySlot();
 	Text* L_coins, * L_inv, * L_equip, * L_level;
 	Inventory();
 	bool removeItemAt(int index);

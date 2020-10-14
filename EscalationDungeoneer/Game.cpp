@@ -204,6 +204,7 @@ void Game::processCommands() {
 				else if (cargs.at(2) == "__MAIN") {
 					if (GameManager::isPlaying) GameManager::setPlaying();
 					if (GameManager::paused) GameManager::Pause();
+					if (GameManager::editing) GameManager::editing = false;
 					this->lastmenu = nullptr;
 					this->amenu = mainmenu;
 				}

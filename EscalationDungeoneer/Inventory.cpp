@@ -439,6 +439,34 @@ bool Inventory::closePrompt() {
 
 }
 
+ItemSlot* Inventory::findEmptySlot() {
+	for (ItemSlot* i : slots) {
+		if (i->getItem() == nullptr) {
+			return i;
+		}
+	}
+	return nullptr;
+}
+
+bool Inventory::unequipShield() {
+	if (lefthand->getItem() != nullptr) {
+		ItemSlot* slot = findEmptySlot();
+		if (slot != nullptr) {
+			slot->setItem(lefthand->getItem());
+			lefthand->setItem(nullptr);
+			return true;
+		}
+		else {
+			printf("INV::unequipShield(): Error with nullptr slots or slot not available to move item.");
+			return false;
+		}
+	}
+	else {
+		printf("INV::unequpShield(): Either has error or item in slot is not set.\n");
+		return false;
+	}
+}
+
 
 bool Inventory::checkItem(ItemSlot* a) {
 	bool result = false;
@@ -470,8 +498,12 @@ bool Inventory::checkItem(ItemSlot* a) {
 				if (righthand->getItem() != nullptr && (righthand->getItem()->getWType() == WeaponType::GUN || righthand->getItem()->getWType() == WeaponType::BOW)) {
 					prompt = new Prompt(GameManager::SCREENWIDTH / 2 - 200, GameManager::SCREENHEIGHT / 2 - 100, 400, 250,"You can't wear a shield with a gun or bow.");
 					prompt->setConfirm(GameManager::pushCommand, "M:CLOS:INVPMT");
-					prompt->setCancel(GameManager::pushCommand, "M:CLOS:INVPMT");
-					result = false;
+					if (unequipShield()) {
+						result = true;
+					}
+					else {
+						result = false;
+					}
 					break;
 				}
 				(selectedSlot->getItem())->getAType() == ArmorType::SHIELD ? (result = true) : (result = false);
@@ -525,7 +557,10 @@ bool Inventory::checkItem(ItemSlot* a) {
 			if (lefthand->getItem() != nullptr && (selectedSlot->getItem()->getWType() == WeaponType::GUN || selectedSlot->getItem()->getWType() == WeaponType::BOW)) {
 				prompt = new Prompt(GameManager::SCREENWIDTH / 2 - 200, GameManager::SCREENHEIGHT / 2 - 100, 400, 250, "You can't wear a shield with a gun or bow.");
 				prompt->setConfirm(GameManager::pushCommand, "M:CLOS:INVPMT");
-				result = false;
+				if (unequipShield())
+					result = true;
+				else
+					result = false;
 				break;
 			}
 			result = true;
@@ -568,6 +603,19 @@ bool Inventory::checkItem(ItemSlot* a) {
 
 	return result;
 }
+/*
+bool swapItems(ItemSlot* a, ItemSlot* b) {
+	Item temp;
+	if (a->getItem() != nullptr) {
+		if (checkItem(a)) {
+			temp = *a->getItem();
+			a->setItem(b->getItem());
+			b->setItem(&temp);
+
+		}
+	}
+}
+*/
 
 void Inventory::swapItems(ItemSlot* a) {
 	Item* temp;

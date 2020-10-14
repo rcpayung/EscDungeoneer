@@ -164,6 +164,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SettingsMenu.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Sprite2D.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Tooltip.cpp" />
     <ClCompile Include="UIComponent.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SettingsMenu.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Sprite2D.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Tooltip.h" />
     <ClInclude Include="UIComponent.h" />
