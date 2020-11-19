@@ -12,6 +12,7 @@ enum ITEMID {
 
 class GameManager {
 public:
+	static Uint32 GameTick;
 	static bool paused;
 	static bool running;
 	static bool editing;
@@ -46,13 +47,14 @@ public:
 	static SDL_Color GOLD;
 	static SDL_Color Gray20;
 
-	static SDL_Color COMMON, UNCOMMON, RARE, VERYRARE, LEGENDARY;
+	static SDL_Color COMMON, UNCOMMON, RARE, VERYRARE, LEGENDARY, GODLY;
 	
 	static void setDev();
 	static void Pause();
 	static void setRunning();
 	static void setPlaying();
 	static void setEditing();
+	static void updateGameTick(Uint32 gameTick);
 	static void pushCommand(std::string s);
 	static void setDrawColor(SDL_Color color);
 };

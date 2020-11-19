@@ -10,6 +10,7 @@ float GameManager::scale = 1.0f;
 int GameManager::mx = 0;
 int GameManager::my = 0;
 bool GameManager::leftLock = false;
+Uint32 GameManager::GameTick = 0;
 
 SDL_Renderer* GameManager::rd = nullptr;
 
@@ -30,12 +31,13 @@ SDL_Color GameManager::DGRAY{ 25, 25, 25, 255 };
 SDL_Color GameManager::BLACK{ 0, 0, 0, 255 };
 SDL_Color GameManager::GOLD{ 255, 215, 0, 255 };
 SDL_Color GameManager::Gray20{ 45,45,45,255 };
-
+ // RARITY COLORS
 SDL_Color GameManager::COMMON{ 242,242,242,255 };
 SDL_Color GameManager::UNCOMMON{ 185,208,159,255 };
 SDL_Color GameManager::RARE{ 122,160,207,255 };
 SDL_Color GameManager::VERYRARE{ 197,130,128,255 };
 SDL_Color GameManager::LEGENDARY{ 159,142,179,255 };
+SDL_Color GameManager::GODLY{ 235,195,50,255 };
 
 int GameManager::SCREENWIDTH = 1080;
 int GameManager::SCREENHEIGHT = 820;
@@ -67,6 +69,10 @@ void GameManager::loadGame(const char* file) {
 
 void GameManager::setEditing() {
 	!GameManager::editing ? GameManager::editing = true : GameManager::editing = false;
+}
+
+void GameManager::updateGameTick(Uint32 GameTick) {
+	GameManager::GameTick = GameTick;
 }
 
 void GameManager::pushCommand(std::string s) {

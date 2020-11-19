@@ -25,19 +25,19 @@ void ItemSlot::render() {
 	if (item != nullptr) {
 		switch (item->getRarity()) {
 		case Rarity::UNCOMMON:
-			SDL_SetRenderDrawColor(GameManager::rd, GameManager::UNCOMMON.r, GameManager::UNCOMMON.g, GameManager::UNCOMMON.b, GameManager::UNCOMMON.a);
+			GameManager::setDrawColor(GameManager::UNCOMMON);
 			break;
 		case Rarity::RARE:
-			SDL_SetRenderDrawColor(GameManager::rd, GameManager::RARE.r, GameManager::RARE.g, GameManager::RARE.b, GameManager::RARE.a);
+			GameManager::setDrawColor(GameManager::RARE);
 			break;
 		case Rarity::VERY_RARE:
-			SDL_SetRenderDrawColor(GameManager::rd, GameManager::VERYRARE.r, GameManager::VERYRARE.g, GameManager::VERYRARE.b, GameManager::VERYRARE.a);
+			GameManager::setDrawColor(GameManager::VERYRARE);
 			break;
 		case Rarity::LEGENDARY:
-			SDL_SetRenderDrawColor(GameManager::rd, GameManager::LEGENDARY.r, GameManager::LEGENDARY.g, GameManager::LEGENDARY.b, GameManager::LEGENDARY.a);
+			GameManager::setDrawColor(GameManager::LEGENDARY);
 			break;
 		case Rarity::GODLY:
-			SDL_SetRenderDrawColor(GameManager::rd, GameManager::GOLD.r, GameManager::GOLD.g, GameManager::GOLD.b, GameManager::GOLD.a);
+			GameManager::setDrawColor(GameManager::GODLY);
 			break;
 		default:
 			break;

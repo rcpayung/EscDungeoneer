@@ -86,6 +86,7 @@ void Game::update() {
 	}
 
 	std::srand((unsigned) SDL_GetTicks() * time(0));
+	GameManager::updateGameTick(SDL_GetTicks());
 }
 
 /*

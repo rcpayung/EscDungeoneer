@@ -67,9 +67,9 @@ Inventory::Inventory() : Menu() {
 
 	// Setup labels.
 
-	L_inv = new Text("Inventory", 18, WBOLD, GameManager::GRAY, Vector2F(back.x + 15, 200), Vector2F(100, 50));
+	L_inv = new Text("Inventory", 18, WBOLD, GameManager::LGRAY, Vector2F(back.x + 15, 200), Vector2F(100, 50));
 	L_inv->setMiddle();
-	L_equip = new Text("Equipment", 18, WBOLD, GameManager::GRAY, Vector2F(back.x + (back.w / 2) + 120, 200), Vector2F(100, 50));
+	L_equip = new Text("Equipment", 18, WBOLD, GameManager::LGRAY, Vector2F(back.x + (back.w / 2) + 120, 200), Vector2F(100, 50));
 	L_equip->setMiddle();
 	L_level = new Text("Level 54", 18, WBOLD, GameManager::LGRAY, Vector2F(back.x + 575, back.y + back.h - 120), Vector2F(365, 50));
 	L_level->setCenter();
@@ -143,7 +143,7 @@ Inventory::Inventory() : Menu() {
 }
 
 void Inventory::render() {
-	SDL_SetRenderDrawColor(GameManager::rd, GameManager::DGRAY.r, GameManager::DGRAY.g, GameManager::DGRAY.b, GameManager::DGRAY.a);
+	SDL_SetRenderDrawColor(GameManager::rd, GameManager::DGRAY.r, GameManager::DGRAY.g, GameManager::DGRAY.b, 200);
 	SDL_RenderFillRect(GameManager::rd, &back);
 	GameManager::setDrawColor(GameManager::Gray20);
 	for (SDL_Rect i : borders) {

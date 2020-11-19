@@ -1,6 +1,8 @@
 #pragma once
 #include "Item.h"
 class Glyph : public Item {
+private:
+	GlyphType glyphtype;
 public:
 	Glyph();
 	void render();
