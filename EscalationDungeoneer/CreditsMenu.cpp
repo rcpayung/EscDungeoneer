@@ -11,22 +11,24 @@ CreditsMenu::CreditsMenu() : Menu() {
 	back->setAction(GameManager::pushCommand, "M:LOAD:__LAST");
 	back->setTooltip("Go back.", 12, GameManager::GOLD, GameManager::DGRAY);
 
-	vestinius = new Sprite("assets/banner_wide.png", Vector2F(0, 0), Sizer{ 1299, 471 }, 0.4f);
+	vestinius = new Sprite("banner","assets/banner_wide.png", Vector2F(0, 0), Vector2F( 1299, 471 ), 0.4f);
+	vestinius->setScale(0.4f);
 
 	this->addSpacing(150);
-	this->addText("Programming Completed by:", 18);
-	this->addText("Riley C. Payung", 13);
-	this->addText("Sung Hun Yang", 13);
-	this->addText("Robert Weiner", 13);
-	this->addSpacing(50);
-	this->addText("Art Completed by:", 18);
+	this->addText("Programming", 18);
 	this->addText("Riley C. Payung", 13);
 	this->addSpacing(50);
-	this->addText("Gameplay/Storyline:", 18);
+	this->addText("Concept Art & Level Design", 18);
+	this->addText("Riley C. Payung", 13);
+	this->addSpacing(50);
+	this->addText("Music and Sounds", 18);
+	this->addText("Riley C. Payung", 13);
+	this->addSpacing(50);
+	this->addText("Gameplay/Storyline", 18);
 	this->addText("Riley C. Payung", 13);
 	this->addSpacing(25);
-	vestinius->setPosition(GameManager::SCREENWIDTH / 2 - vestinius->getSize().W / 2, last);
-	last = last + vestinius->getSize().H;
+	vestinius->setPosition(GameManager::SCREENWIDTH / 2 - vestinius->getSize().X / 2, last);
+	last = last + vestinius->getSize().Y;
 	this->addSpacing(25);
 	this->addText("www.vestinius.games || www.vestinius.com/escdun", 13);
 	setBackground(GameManager::DGRAY);
@@ -39,7 +41,7 @@ void CreditsMenu::render() {
 	for (Text* s : this->paras) {
 		s->render();
 	}
-	vestinius->render(0.0f);
+	vestinius->render();
 }
 
 void CreditsMenu::clean() {

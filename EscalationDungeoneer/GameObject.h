@@ -6,55 +6,44 @@
 #include "GameManager.h"
 #include "Tooltip.h"
 
-struct Animation {
-	int tTime;
-	int cTime = 0;
-	int sCount;
-	int counted;
-	int sX, sY, oX, oY;
-	bool loop = false; 
-};
-
-
 class GameObject {
 private:
-	// Sprite Attributes:
-	Sprite* sprite;
-	Vector2F idle;
-	// Animation Attributes:
-	std::vector<Animation> anims;
-	Animation* cAnim;
-	bool hovering, focus;
-	// Other Attributes:
+	std::vector<Sprite*> sprites;
+	Vector2F loc, size;
+	size_t thisID;
 	std::string name;
-	Vector2F position; 
-	Sizer size;
-	float rotation, scale;
+	bool hovering, focused;
 	Tooltip* tip;
+protected:
+	static size_t GameObjectIDS;
 public:
-	static int ID;
-	GameObject(std::string name, Vector2F pos, Sizer size, const char* path);
-	
-	// Animation Functions
-	void playAnimation(int id,bool over);
-	void addAnimation(int tTime, int sCount, int sX, int sY, bool loop);
-	void setIdle(int x, int y);
+	GameObject(const char* name, Vector2F loc, Vector2F size);
+	void pushSprite(Sprite* sprite);
+	bool removeSprite(size_t SpriteID);
+	const Sprite* getSprite(size_t ID) const;
 
-	// Game Functions
+	bool addAnimation(size_t SpriteID, Animation anim);
+	bool removeAnimation(size_t SpriteID, size_t animID);
+	bool playAnimation(size_t SpriteID, size_t animID);
+	bool pauseAnimation(size_t SpriteID);
+	bool cancelAnimation(size_t SpriteID);
+
+	bool setSpritePos(size_t SpriteID, int x, int y);
+	bool setSpritePos(size_t SpriteID, Vector2F loc);
+
+	bool setScale(float scale);
+
 	void update();
 	void render();
 	void clean();
 
-	// Positional Functions
-	void setPosition(int x, int y);
-	void setRotation(float theta);
-	void setScale(float scale);
+	bool setPosition(Vector2F loc);
+	Vector2F getPosition() const;
 
-	Vector2F getPosition();
-	Sizer getSize();
-	float getTheta();
-	
-	static int getGID();
-	void handleEvents(SDL_Event* event);
+	const size_t getID() const;
+	std::string getName() const;
+	const Vector2F getSize() const;
+
+	void handleEvents(SDL_Event e);
+	std::string to_string() const;
 };
-

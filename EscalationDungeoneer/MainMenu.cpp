@@ -1,7 +1,7 @@
 #include "MainMenu.h"
 
 MainMenu::MainMenu(const char * backgroundLoc) : Menu() {
-	this->background = new Sprite(backgroundLoc, Vector2F(0, 0), Sizer{ 1920, 1080 }, 0.8f);
+	this->background = new Sprite("background",backgroundLoc, Vector2F(0, 0), Vector2F{ 1920, 1080 }, 0.8f);
 	
 	play = new Button(GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 300, 200, 30, "New Game");
 	loadlast = new Button(GameManager::SCREENWIDTH - 400, GameManager::SCREENHEIGHT - 260, 200, 30, "Resume Last Game");
@@ -94,7 +94,7 @@ void MainMenu::clean() {
 }
 
 void MainMenu::render() {
-	background->render(0.0f);
+	background->render();
 	if (GameManager::devMode) {
 		dev_bE->render();
 		dev_tE->render();

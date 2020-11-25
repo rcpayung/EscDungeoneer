@@ -4,8 +4,12 @@ Scene::Scene(int id, std::string name, int openx, int openy, int SceneWidth, int
 	this->id = id;
 	this->name = name;
 	player = new Player("Player",Vector2F(openx + GameManager::SCREENWIDTH / 2, openy + GameManager::SCREENHEIGHT / 2),1.0f);
-	player->setIdle(0, 0);
-	player->setPosition(GameManager::SCREENWIDTH / 2 - player->getSize().W / 2, GameManager::SCREENHEIGHT / 2 - player->getSize().H / 2);
+	player->setPosition(Vector2F(GameManager::SCREENWIDTH / 2 - player->getSize().X / 2, GameManager::SCREENHEIGHT / 2 - player->getSize().Y / 2));
+	GameObject* giantHornet = new GameObject("Giant Hornet", Vector2F(500, 500), Vector2F(128, 128));
+	Sprite* sprite = new Sprite("Giant Hornet", "assets/giant_hornet.png", giantHornet->getPosition(), giantHornet->getSize(), 1.0f);
+	giantHornet->setScale(2.0f);
+	giantHornet->pushSprite(sprite);
+	this->objects.push_back(giantHornet);
 	camera = {
 		openx,
 		openy,
@@ -51,7 +55,7 @@ bool Scene::saveScene(const char * path) {
 		file.write(std::to_string(player->getPosition().X).c_str(), 5);
 		file.write(std::to_string(player->getPosition().Y).c_str(), 5);
 		for (GameObject* obj : objects) {
-			file.write(std::to_string(obj->getGID()).append(":").append(std::to_string(obj->getPosition().X)).append(":").append(std::to_string(obj->getPosition().Y)).c_str(), 50);
+			file.write(std::to_string(obj->getID()).append(":").append(std::to_string(obj->getPosition().X)).append(":").append(std::to_string(obj->getPosition().Y)).c_str(), 50);
 		}
 		file.close();
 		return true;
@@ -60,7 +64,7 @@ bool Scene::saveScene(const char * path) {
 }
 
 void Scene::addObject(GameObject* obj) {
-	printf("adding %d", obj->getGID());
+	printf("adding %d", int(obj->getID()));
 	this->objects.push_back(obj);
 }
 
@@ -99,47 +103,7 @@ void Scene::clean() {
 }
 
 void Scene::pollevents(SDL_Event e) {
-	player->handleEvents(&e);
-	switch (e.type) {
-	case SDL_KEYDOWN:
-		switch (e.key.keysym.sym) {
-		case SDLK_w:
-			player->setVelocityY(-5.0f);
-			player->playAnimation(0, false);
-			break;
-		case SDLK_a:
-			player->setVelocityX(-5.0f);
-			player->playAnimation(0, false);
-			break;
-		case SDLK_s:
-			player->setVelocityY(5.0f);
-			player->playAnimation(0, false);
-			break;
-		case SDLK_d:
-			player->setVelocityX(5.0f);
-			player->playAnimation(0, false);
-			break;
-		}
-		break;
-	case SDL_KEYUP:
-		switch (e.key.keysym.sym) {
-		case SDLK_w:
-			player->setVelocityY(0.0f);
-			break;
-		case SDLK_a:
-			player->setVelocityX(0.0f);
-			break;
-		case SDLK_s:
-			player->setVelocityY(0.0f);
-			break;
-		case SDLK_d:
-			player->setVelocityX(0.0f);
-			break;
-		}
-		break;
-	default:
-		break;
-	}
+	player->handleEvents(e);
 }
 
 void Scene::setScale(float scale) {

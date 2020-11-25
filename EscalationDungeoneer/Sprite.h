@@ -6,28 +6,69 @@
 #include "Vector2F.h"
 #include "GameManager.h"
 
-struct Sizer {
-	int W, H;
+struct Animation {
+	Uint16 animtime;
+	bool loop = false;
+	bool playing = false;
+	Vector2F startFrame;
+	Uint16 numFrames;
+	Uint16 duration;
 };
 
 class Sprite {
-
 private:
+	std::vector<Animation> anims;
+	Animation* cAnim;
 	SDL_Surface* atlas;
 	SDL_Texture* texture;
-	SDL_Rect src, dest;
-	float scale;
-	Vector2F position;
-	Sizer size, aSize;
+	const char* name;
+	SDL_Rect source,
+		dest;
+
+	float scale = 1.0f,
+		theta = 0.0f;
+
+	Vector2F loc;
+	Vector2F size,
+		atlasSize;
+
 public:
-	Sprite(const char* path, Vector2F pos, Sizer size);
-	Sprite(const char* path, Vector2F pos, Sizer size, float scale);
-	void setScale(float scale);
-	void setPosition(int x, int y);
-	void setImage(int x, int y);
-	Sizer getSize();
-	Sizer getAtlas();
-	void render(float theta);
+	Sprite(const char* name, const char* file, Vector2F loc, Vector2F size, float scale);
+	//Sprite(const Sprite& sp) : (sp->file, sp->loc, sp->size, sp->scale);
+	~Sprite();
+	
+	Vector2F getSize();
+	Vector2F getASize() const;
+
+	bool addAnimation(Animation anim);
+	bool playAnimation(size_t animID);
+	bool pauseAnimation();
+	bool cancelAnimation();
+	bool removeAnimation(size_t animID);
+	bool resetAnimation();
+
+	bool setImage(Vector2F atlasLoc);
+	bool setScale(float scale);
+	bool setScale(int x, int y);
+
+	bool setPosition(int x, int y);	
+	bool setPosition(Vector2F pos);
+	void setRotation(float theta);
+
+	void update();
+	void render();
 	void clean();
+
+	const char* to_string() const;
 };
+
+
+
+
+
+
+
+
+
+
 

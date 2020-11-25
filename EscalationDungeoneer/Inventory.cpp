@@ -93,25 +93,25 @@ Inventory::Inventory() : Menu() {
 	head->setBackground("assets/inventoryslots.bmp",0,0);
 	head->setArmorType(ArmorType::HELMET);
 	torso = new ArmorSlot(back.x + back.w - 205, back.y + 115, 48, 48);
-	torso->setBackground("assets/inventoryslots.bmp",32,0);
+	torso->setBackground("assets/inventoryslots.bmp",1,0);
 	torso->setArmorType(ArmorType::BODY);
 	legs = new ArmorSlot(back.x + back.w - 205, back.y + 170, 48, 48);
-	legs->setBackground("assets/inventoryslots.bmp", 64, 0);
+	legs->setBackground("assets/inventoryslots.bmp", 2, 0);
 	legs->setArmorType(ArmorType::LEGS);
 	feet = new ArmorSlot(back.x + back.w - 205, back.y + 225, 48, 48);
-	feet->setBackground("assets/inventoryslots.bmp", 96, 0);
+	feet->setBackground("assets/inventoryslots.bmp", 3, 0);
 	feet->setArmorType(ArmorType::BOOTS);
 	righthand = new WeaponSlot(back.x + back.w - 150, back.y + 115, 48, 48);
-	righthand->setBackground("assets/inventoryslots.bmp", 128, 0);
+	righthand->setBackground("assets/inventoryslots.bmp", 4, 0);
 	righthand->setWeaponType(WeaponType::UNSET);
 	lefthand = new ArmorSlot(back.x + back.w - 260, back.y + 115, 48, 48);
-	lefthand->setBackground("assets/inventoryslots.bmp", 160, 0);
+	lefthand->setBackground("assets/inventoryslots.bmp", 5, 0);
 	lefthand->setArmorType(ArmorType::SHIELD);
 	leftring = new ArmorSlot(back.x + back.w - 260, back.y + 170, 48, 48);
-	leftring->setBackground("assets/inventoryslots.bmp", 192, 0);
+	leftring->setBackground("assets/inventoryslots.bmp", 6, 0);
 	leftring->setArmorType(ArmorType::RING);
 	rightring = new ArmorSlot(back.x + back.w - 150, back.y + 170, 48, 48);
-	rightring->setBackground("assets/inventoryslots.bmp", 192, 0);
+	rightring->setBackground("assets/inventoryslots.bmp", 6, 0);
 	rightring->setArmorType(ArmorType::RING);
 
 	details = new ItemDetails(0, 0, 250, 360);
@@ -127,7 +127,7 @@ Inventory::Inventory() : Menu() {
 		y += 7;
 		x = back.x + 15;
 	}
-	S_coins = new Sprite("assets/coins.png", Vector2F(back.x + 600, back.y+back.h-50), Sizer{ 32,32 }, 1.0f);
+	S_coins = new Sprite("inventory_coins","assets/coins.png", Vector2F(back.x + 600, back.y+back.h-50), Vector2F{ 32,32 }, 1.0f);
 	L_coins = new Text("44,543,768", 15, WNORMAL, GameManager::GOLD, Vector2F(back.x + 640, back.y + back.h - 50), Vector2F(120, 32));
 	L_coins->setMiddle();
 
@@ -150,7 +150,7 @@ void Inventory::render() {
 		SDL_RenderFillRect(GameManager::rd, &i);
 	}
 
-	S_coins->render(0.0f);
+	S_coins->render();
 
 	__super::render();
 
@@ -295,7 +295,7 @@ void Inventory::sortinventory(std::string sort) {
 		if (i->getItem() == nullptr) continue;
 		for (ItemSlot* j : slots) {
 			if (j->getItem() == nullptr) continue;
-			if (i->getItem()->getGID() > j->getItem()->getGID()) {
+			if (i->getItem()->getID() > j->getItem()->getID()) {
 				temp = i->getItem();
 				i->setItem(j->getItem());
 				j->setItem(temp);

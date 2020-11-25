@@ -51,18 +51,20 @@ enum class GlyphType {
 struct Statistics { /*MODIFIERS*/
 	short MP; // MP
 	short HP; // HP
+	
 	short ATT; // Attack
 	short DEF; // Defense
 	short DEX; // Dexterity
 	short VIT; // Vitality
 	short WIS; // Wisdom
+	
 	short VIS; // Visibility
+
 	float SPD; // Speed
 };
 
 class Item : public GameObject {
 private:
-	static int ID;
 	int value, stacksize;
 	Text* l_stack;
 	bool stackable;
@@ -95,8 +97,6 @@ public:
 	std::string getRarityString();
 	void generateRarity(float modifier);
 	void setRarity(Rarity rare);
-
-	int getID();
 
 	std::string getName();
 

@@ -1,11 +1,11 @@
 #include "Item.h"
 
-int Item::ID = 0;
-
-Item::Item(std::string name, float scale, const char* spritepath, bool stackable) : GameObject(name, Vector2F{ 0,0 }, Sizer{ int(48*scale), int(48*scale) }, spritepath) {
-	Item::ID++;
+Item::Item(std::string name, float scale, const char* spritepath, bool stackable) : GameObject(name.c_str(), Vector2F( 0,0 ), Vector2F( 48,48 )) {
 	this->stackable = stackable;
 	stacksize = 1;
+	Sprite* sprite = new Sprite(name.c_str(), spritepath, Vector2F(0, 0), Vector2F(64,64),1.0f);
+	sprite->setScale(48, 48);
+	this->pushSprite(sprite);
 	this->l_stack = new Text(std::to_string(stacksize), 10, WBOLD, GameManager::GOLD, Vector2F(this->getPosition().X, this->getPosition().Y), Vector2F(15,15));
 	l_stack->setCenter();
 	l_stack->setMiddle();
@@ -14,11 +14,11 @@ Item::Item(std::string name, float scale, const char* spritepath, bool stackable
 
 
 void Item::setPosition(Vector2F p) {
-	__super::setPosition(p.X, p.Y);
+	__super::setPosition(p);
 }
 
 void Item::setPosition(int x, int y) {
-	__super::setPosition(x, y);
+	__super::setPosition(Vector2F(x,y));
 }
 
 void Item::setStats(Statistics stats) {
@@ -87,7 +87,7 @@ void Item::clean() {
 }
 
 void Item::handleEvents(SDL_Event* e) {
-	__super::handleEvents(e);
+	__super::handleEvents(*e);
 	switch (e->type) {
 	case SDL_MOUSEMOTION:
 		break;
@@ -154,10 +154,6 @@ void Item::generateRarity(float modifier) {
 
 void Item::setRarity(Rarity rare) {
 	this->rarity = rare;
-}
-
-int Item::getID() {
-	return this->ID;
 }
 
 std::string Item::getRarityString() {

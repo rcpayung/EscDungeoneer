@@ -9,7 +9,7 @@ UIComponent::UIComponent(int x, int y, int w, int h, float scale) {
 // Virtual function, mostly for inheritance
 void UIComponent::render() {
 	if (sprite != nullptr) {
-		sprite->render(0.0f);
+		sprite->render();
 	}
 }
 // Virtual function, mostly for inheritance
@@ -51,5 +51,5 @@ void UIComponent::setScale(float scale) {
 	this->sprite->setScale(this->scale);
 }
 void UIComponent::setSprite(const char* asset) {
-	this->sprite = new Sprite(asset, Vector2F{ dest.x, dest.y }, Sizer{ dest.w, dest.h }, scale);
+	this->sprite = new Sprite("UICOMPONENT",asset, Vector2F{ dest.x, dest.y }, Vector2F( dest.w, dest.h ), scale);
 }

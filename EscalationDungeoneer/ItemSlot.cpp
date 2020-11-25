@@ -16,8 +16,8 @@ void ItemSlot::update() {
 }
 
 void ItemSlot::setBackground(const char* fileloc, int x, int y) {
-	this->background = new Sprite(fileloc, Vector2F(this->getPosition().X+8,this->getPosition().Y+8), Sizer{ 32,32 });
-	this->background->setImage(x, y);
+	this->background = new Sprite("Background",fileloc, Vector2F(this->getPosition().X+8,this->getPosition().Y+8), Vector2F{ 32,32 },1.0f);
+	this->background->setImage(Vector2F(x, y));
 }
 
 void ItemSlot::render() {
@@ -55,7 +55,7 @@ void ItemSlot::render() {
 	}
 	
 	if (background != nullptr && item == nullptr) {
-		background->render(0.0f);
+		background->render();
 	}
 
 	SDL_SetRenderDrawColor(GameManager::rd, 0, 0, 0, 255);

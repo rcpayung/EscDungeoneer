@@ -1,11 +1,12 @@
 #pragma once
 #include "GameObject.h"
+#include "Item.h"
 class Player : public GameObject {
 private:
 	int HP, MaxHP, MP, MaxMP, level, TotalXP, LevelXP;
-	float Speed, VelX, VelY;
-	int ATT, DEF, VIT, WIS, DEX;
-
+	float VelX, VelY;
+	Statistics stats;
+	Sprite* sprite;
 public:
 	Player(std::string name, Vector2F p, float scale);
 	void setVelocityX(float vel);
@@ -27,6 +28,7 @@ public:
 	void setDEX(int amount);
 
 	void update();
+	void handleEvents(SDL_Event e);
 
 };
 

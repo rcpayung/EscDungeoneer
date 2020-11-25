@@ -58,6 +58,8 @@ Game::Game(const char *title, int w, int h, int flags) {
 	devModetext->setMiddle();
 	version = new Text(GameManager::versionNum, 10, WBOLD, GameManager::GRAY, Vector2F(5,0), Vector2F(150, 15));
 	version->setMiddle();
+	timeElapsed = new Text("Time Elapsed (s): " + std::to_string(SDL_GetTicks()), 10, WBOLD, GameManager::GRAY, Vector2F(5, 30), Vector2F(150, 15));
+	timeElapsed->setMiddle();
 
 }
 
@@ -87,6 +89,7 @@ void Game::update() {
 
 	std::srand((unsigned) SDL_GetTicks() * time(0));
 	GameManager::updateGameTick(SDL_GetTicks());
+	timeElapsed->setText("Time Elapsed (s): " + std::to_string(int(SDL_GetTicks()/1000)));
 }
 
 /*
@@ -123,7 +126,7 @@ void Game::processCommands() {
 				Item* item;
 				Statistics itemstats;
 				case ITEMID::WORMSPTITER:
-					item = new Item("Worm Spitter", 1.0f, "assets/wormspitter.bmp", false);
+					item = new Item("Worm Spitter", 1.0f, "assets/wormspitter.png", false);
 					item->generateRarity(1.0f);
 					item->setItemType(ItemType::WEAPON);
 					item->setWeaponType(WeaponType::GUN);
@@ -239,6 +242,7 @@ void Game::processCommands() {
 				else if (cargs.at(2) == "INVENT") {
 					lastmenu = inventory;
 					amenu = nullptr;
+					inventory->closePrompt();
 					GameManager::inInventory = false;
 				}
 				else if (cargs.at(2) == "INVPMT") {
@@ -288,6 +292,7 @@ void Game::render() {
 	if (GameManager::devMode)
 		devModetext->render();
 	version->render();
+	timeElapsed->render();
 	SDL_RenderPresent(GameManager::rd);
 	SDL_RenderClear(GameManager::rd);
 }
@@ -370,6 +375,7 @@ void Game::cleanup() {
 	inventory->clean();
 	WORLD->clean();
 	version->clean();
+	timeElapsed->clean();
 	if (amenu != nullptr)
 		amenu->clean();
 	if (lastmenu != nullptr)

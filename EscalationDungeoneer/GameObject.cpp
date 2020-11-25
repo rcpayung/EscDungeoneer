@@ -1,158 +1,173 @@
 #include "GameObject.h"
 
-int GameObject::ID = 0;
+size_t GameObject::GameObjectIDS = 0;
 
-GameObject::GameObject(std::string name, Vector2F pos, Sizer size, const char* path) {
-	this->sprite = new Sprite(path, pos, size);
-	this->position = pos;
-	this->size = size;
-	this->rotation = 0.0f;
-	this->scale = scale;
+GameObject::GameObject(const char* name, Vector2F loc, Vector2F size) {
+	GameObject::GameObjectIDS++;
+	this->thisID = GameObjectIDS;
+	this->loc = loc;
 	this->name = name;
-	ID++;
-	this->tip = new Tooltip(12, "GameObject ID:" + std::to_string(ID) + ": " + this->name + ", X:" + std::to_string(this->position.X) + ", Y:" + std::to_string(this->position.Y), WNORMAL, GameManager::GOLD, GameManager::DGRAY, position.X, position.Y);
-}
-// Play an existing animation with the current id. If over is set to true, it will override any currently playing animation.
-void GameObject::playAnimation(int id, bool over) {
-	if (anims.size() < id || anims.empty() || id < 0 && !over) {
-		printf("No animation of that ID exists for the current gameobject: %s. Either the ID is lower than 1 or there was not an additional added animation. Please verify.",this->name.c_str());
-		return;
-	}
-	else if (cAnim != nullptr) {
-		return;
-	}
-	cAnim = &anims[id];
+	this->size = size;
+	this->hovering = false;
+	this->focused = false;
+	this->tip = new Tooltip(15, "GameObject", WNORMAL, GameManager::WHITE, GameManager::DGRAY, loc.X, loc.Y);
 }
 
-void GameObject::addAnimation(int tTime, int sCount, int sX, int sY, bool loop) {
-	Animation anim;
-	anim.tTime = tTime;
-	anim.cTime = 0;
-	anim.sCount = sCount + 1;
-	anim.counted = 1;
-	anim.sX = sX;
-	anim.sY = sY;
-	anim.oX = sX;
-	anim.oY = sY;
-	anim.loop = loop;
-
-	anims.push_back(anim);
+void GameObject::pushSprite(Sprite* sprite) {
+	this->sprites.push_back(sprite);
 }
 
-void GameObject::setIdle(int x, int y) {
-	this->idle.X = x;
-	this->idle.Y = y;
-}
-
-void GameObject::setPosition(int x, int y) {
-	if (!GameManager::paused) {
-		this->position = Vector2F(x, y);
-		sprite->setPosition(x, y);
-	}
-}
-
-void GameObject::update() {
-	if (GameManager::devMode) {
-		tip->setTip("GameObject ID:" + std::to_string(ID) + ": " + this->name + ", X:" + std::to_string(this->getPosition().X / 48) + ", Y:" + std::to_string(this->getPosition().Y / 48));
-		tip->setPosition((this->position.X+this->getSize().W / 2)-(this->tip->getWidth()/2), this->position.Y - 35);
-		tip->update();
-	}
-	if (!GameManager::paused) {
-		if (cAnim != nullptr) {
-			if (cAnim->cTime % (cAnim->tTime / cAnim->sCount) == 0) {
-				if (cAnim->cTime != 0) {
-					if (cAnim->counted < cAnim->sCount)
-						// If we have not reached the atlas width with our current sprites:
-						if (cAnim->sX + sprite->getSize().W != sprite->getAtlas().W) {
-							cAnim->sX = cAnim->sX + sprite->getSize().W;
-
-						}
-						else {
-							cAnim->sY = cAnim->sY + sprite->getSize().H;
-							cAnim->sX = 0;
-						}
-				}
-				cAnim->counted++;
-				sprite->setImage(cAnim->sX, cAnim->sY);
-			}
-			// Increment current elapsed time on animation:
-			cAnim->cTime++;
-
-			// Reset animation if the loop is true.
-			if (cAnim->cTime >= cAnim->tTime && cAnim->loop) {
-				cAnim->cTime = 0;
-				// Set back to original state.
-				sprite->setImage(idle.X, idle.Y);
-				cAnim->sX = cAnim->oX;
-				cAnim->sY = cAnim->oY;
-				cAnim->counted = 1;
-			}
-			// if animation is finished, set nullptr.
-			if (cAnim->counted == cAnim->sCount && cAnim->loop == false) {
-				// set animation to null.
-				cAnim = nullptr;
-				// Set back to idle sprite.
-				sprite->setImage(idle.X, idle.Y);
+bool GameObject::removeSprite(size_t SpriteID) {
+	if (this->sprites.empty() || SpriteID > this->sprites.size()) return false;
+	else {
+		for (size_t i = 0; i < this->sprites.size(); i++) {
+			if (i >= SpriteID and i < this->sprites.size() - 1) {
+				this->sprites[i] = this->sprites[i + 1];
 			}
 		}
+		this->sprites.pop_back();
+		return true;
+	}
+}
+
+const Sprite* GameObject::getSprite(size_t ID) const {
+	if (sprites.empty() || ID > sprites.size()) return nullptr;
+	else return this->sprites[ID];
+}
+
+bool GameObject::addAnimation(size_t SpriteID, Animation anim) {
+	if (this->sprites.empty() || SpriteID > this->sprites.size()) return false;
+	else return this->sprites[SpriteID]->addAnimation(anim);
+}
+
+bool GameObject::removeAnimation(size_t SpriteID, size_t animID) {
+	if (this->sprites.empty() || SpriteID > this->sprites.size()) return false;
+	else return this->sprites[SpriteID]->removeAnimation(animID);
+}
+
+bool GameObject::playAnimation(size_t SpriteID, size_t animID) {
+	if (this->sprites.empty() || SpriteID > this->sprites.size()) return false;
+	else return this->sprites[SpriteID]->playAnimation(animID);
+}
+
+bool GameObject::pauseAnimation(size_t SpriteID) {
+	if (this->sprites.empty() || SpriteID > this->sprites.size()) return false;
+	else return this->sprites[SpriteID]->pauseAnimation();
+}
+
+bool GameObject::cancelAnimation(size_t SpriteID) {
+	if (this->sprites.empty() || SpriteID > this->sprites.size()) return false;
+	else return this->sprites[SpriteID]->cancelAnimation();
+}
+
+bool GameObject::setSpritePos(size_t SpriteID, int x, int y) {
+	if (this->sprites.empty() || SpriteID > this->sprites.size()) return false;
+	else {
+		this->sprites[SpriteID]->setPosition(Vector2F(x, y));
+		return true;
+	}
+}
+
+bool GameObject::setSpritePos(size_t SpriteID, Vector2F loc) {
+	if (this->sprites.empty() || SpriteID > this->sprites.size()) return false;
+	else {
+		this->sprites[SpriteID]->setPosition(loc);
+		return true;
+	}
+}
+
+bool GameObject::setScale(float scale) {
+	if (scale < 0.25f || scale > 10.0f) return false;
+	else {
+		this->size.X = size.X * scale;
+		this->size.Y = size.Y * scale;
+		for (Sprite* i : sprites) {
+			i->setScale(scale);
+		}
+		return true;
 	}
 }
 
 void GameObject::render() {
-	sprite->render(rotation);
-	if (GameManager::devMode && this->focus) {
-		this->tip->render();
+	for (Sprite* i : this->sprites) {
+		i->render();
+	}
+	if (GameManager::devMode && this->focused) {
+		tip->render();
 	}
 }
 
+void GameObject::update() {
+	for (Sprite* i : this->sprites) {
+		i->update();
+	}
+	this->tip->setTip(this->to_string());
+	this->tip->update();
+}
+
 void GameObject::clean() {
+
+	for (Sprite* i : this->sprites) {
+		i->clean();
+	}
 	tip->clean();
-	cAnim = nullptr;
-	anims.clear();
-	sprite->clean();
+
 }
 
-Vector2F GameObject::getPosition() {
-	return this->position;
+bool GameObject::setPosition(Vector2F loc) {
+	if (loc.X < 0 || loc.Y < 0) return false;
+	else {
+		for (Sprite* i : this->sprites) {
+			i->setPosition(loc);
+		}
+		this->loc = loc;
+		this->tip->setPosition(loc.X - (tip->getWidth() / 2),loc.Y - 40);
+		return true;
+	}
 }
 
-Sizer GameObject::getSize() {
+Vector2F GameObject::getPosition() const {
+	return this->loc;
+}
+
+const size_t GameObject::getID() const {
+	return this->thisID;
+}
+
+std::string GameObject::getName() const {
+	return this->name;
+}
+
+const Vector2F GameObject::getSize() const {
 	return this->size;
 }
 
-void GameObject::setRotation(float theta) {
-	if (!GameManager::paused)
-		this->rotation = theta;
+std::string GameObject::to_string() const {
+	return "GameObject: " + this->getName() + ", ID: " + std::to_string(this->getID()) + ", Loc: " + this->getPosition().to_string() + ", Size: " + this->getSize().to_string();
 }
 
-float GameObject::getTheta() {
-	return this->rotation;
-}
 
-int GameObject::getGID() {
-	return GameObject::ID;
-}
-
-void GameObject::handleEvents(SDL_Event* event) {
-	if (GameManager::mx > this->getPosition().X && GameManager::mx < (this->getPosition().X + this->getSize().W)
-		&& GameManager::my > this->getPosition().Y && GameManager::my < (this->getPosition().Y + this->getSize().H)) {
-		hovering = true;
+void GameObject::handleEvents(SDL_Event e) {
+	if (GameManager::mx > this->getPosition().X && GameManager::mx < (this->getPosition().X + this->getSize().X)) {
+		if (GameManager::my > this->getPosition().Y && GameManager::my < (this->getPosition().Y + this->getSize().Y)) {
+			if (!GameManager::inInventory && !GameManager::paused)
+				this->hovering = true;
+			else {
+				hovering = false;
+			}
+		}
+		else {
+			hovering = false;
+		}
 	}
 	else {
 		hovering = false;
 	}
-	
-	switch (event->type) {
+	switch (e.type) {
 	case SDL_MOUSEBUTTONDOWN:
-		switch (event->button.button) {
+		switch (e.button.button) {
 		case SDL_BUTTON_LEFT:
-			if (hovering && GameManager::devMode) {
-				// Set Focus.
-				focus = true;
-			}
-			else {
-				focus = false;
-			}
+			hovering ? focused = true : focused = false;
 			break;
 		default:
 			break;
