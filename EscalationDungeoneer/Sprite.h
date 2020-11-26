@@ -7,11 +7,12 @@
 #include "GameManager.h"
 
 struct Animation {
-	Uint16 animtime;
+	Uint16 animtime = 1;
 	bool loop = false;
 	bool playing = false;
 	Vector2F startFrame;
 	Uint16 numFrames;
+	Uint16 elapsedFrames = 0;
 	Uint16 duration;
 };
 
@@ -21,7 +22,7 @@ private:
 	Animation* cAnim;
 	SDL_Surface* atlas;
 	SDL_Texture* texture;
-	const char* name;
+	std::string name;
 	SDL_Rect source,
 		dest;
 
@@ -59,7 +60,7 @@ public:
 	void render();
 	void clean();
 
-	const char* to_string() const;
+	std::string to_string() const;
 };
 
 

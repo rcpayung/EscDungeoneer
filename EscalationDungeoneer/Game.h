@@ -37,6 +37,8 @@ private:
 	SettingsMenu* settings;
 	Inventory* inventory;
 
+	GameObject* object;
+
 public:
 
 	Game(const char *title, int w, int h, int flags);

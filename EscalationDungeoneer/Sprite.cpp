@@ -18,8 +18,6 @@ Sprite::~Sprite() {
 
 }
 
-
-
 bool Sprite::setScale(int x, int y) {
 	if (x < 0 || y < 0)
 		return false;
@@ -38,34 +36,28 @@ bool Sprite::setScale(float scale) {
 }
 
 bool Sprite::setImage(Vector2F atlasLoc) {
-	int x = static_cast<int>(atlasLoc.X * size.X);
-	int y = static_cast<int>(atlasLoc.Y * size.Y);
-
-	if (x < 0 || x >(this->atlasSize.X - this->size.X + 1) || y < 0 || y >(this->atlasSize.Y - this->size.Y + 1))
-		return false;
-	else {
-		this->source.x = x;
-		this->source.y = y;
-		return true;
-	}
+	this->source.x = atlasLoc.X;
+	this->source.y = atlasLoc.Y;
+	return true;
 }
 
 void Sprite::update() {
 	if (cAnim != nullptr) {
 		// update Animation here.
-		if (cAnim->animtime != cAnim->duration && cAnim->playing != false) {
-			int currentX = source.x;
-			int currentY = source.y;
-			if ((cAnim->animtime % (cAnim->duration / cAnim->numFrames) == 0)) {
-				if (currentX + size.X < (atlas->w - size.X + 1)) {
-					if (currentY + size.Y < (atlas->h - size.Y + 1)) {
-						currentY += size.Y;
-						currentX = 0;
+		if (cAnim->animtime != cAnim->duration - 1) {
+			if (cAnim->playing) {
+				if (cAnim->animtime % int(cAnim->duration / cAnim->numFrames) == 0 && cAnim->elapsedFrames != cAnim->numFrames) {
+					if (source.x + size.X >= atlasSize.X - size.X + 1) {
+						source.y += size.Y; // Shouldnt need to worry about this since the frames elapsed will reach the maximum before reaching this.
+						source.x = 0;
 					}
+					else {
+						source.x += size.X;
+					}
+					cAnim->elapsedFrames++;
 				}
-				this->setImage(Vector2F(currentX, currentY));
+				cAnim->animtime++;
 			}
-			cAnim->animtime++;
 		}
 		else {
 			cAnim->loop ? resetAnimation() : cancelAnimation();
@@ -75,8 +67,10 @@ void Sprite::update() {
 
 bool Sprite::resetAnimation() {
 	if (this->cAnim != nullptr) {
-		this->cAnim->animtime = 0;
-		this->setImage(this->cAnim->startFrame * this->size);
+		this->cAnim->animtime = 1;
+		this->cAnim->elapsedFrames = 0;
+		source.x = cAnim->startFrame.X * size.X;
+		source.y = cAnim->startFrame.Y * size.Y;
 		return true;
 	}
 	return false;
@@ -107,19 +101,23 @@ bool Sprite::pauseAnimation() {
 }
 
 bool Sprite::playAnimation(size_t animID) {
-	if (animID < 0 || animID > this->anims.size()) {
+	if (cAnim != nullptr) {
+		return false;
+	}
+	if (animID < 0 || animID > this->anims.size() - 1) {
 		return false;
 	}
 	printf("Playing Animation\n");
 	this->cAnim = &this->anims[animID];
 	this->cAnim->playing = true;
+	this->setImage(cAnim->startFrame);
 	return true;
 }
 
 bool Sprite::addAnimation(Animation anim) {
 	for (Animation i : this->anims) {
 		if (i.startFrame == anim.startFrame) {
-			printf("Duplicate Animation. ID: %d\n",i);
+			printf("Duplicate Animation.\n");
 			return false;
 		}
 	}
@@ -128,7 +126,7 @@ bool Sprite::addAnimation(Animation anim) {
 }
 
 bool Sprite::removeAnimation(size_t animID) {
-	if (this->anims.empty() || animID > this->anims.size()) return false;
+	if (this->anims.empty() || animID > this->anims.size() - 1) return false;
 	else {
 		for (size_t i = 0; i < anims.size(); i++) {
 			if (i >= animID and i < anims.size()-1) {
@@ -174,17 +172,6 @@ void Sprite::clean() {
 	SDL_DestroyTexture(texture);
 }
 
-const char* Sprite::to_string() const {
-	std::string result = this->name;
-	result.append(" : ");
-	result.append(this->loc.to_string());
-	result.append(", SIZE: ");
-	result.append(this->size.to_string());
-	result.append(", ATLAS_SIZE: ");
-	result.append(this->atlasSize.to_string());
-	result.append(", SCALE: ");
-	result.append(std::to_string(scale));
-	result.append(", ROTATION: ");
-	result.append(std::to_string(this->theta));
-	return result.c_str();
+std::string Sprite::to_string() const {
+	return this->name + " : " + this->loc.to_string() + ", SIZE: " + this->size.to_string() + ", ATLAS_SIZE: " + this->atlasSize.to_string() + ", SCALE: " + std::to_string(this->scale) + ", ROTATION: " + std::to_string(this->theta) + " degrees.";
 }

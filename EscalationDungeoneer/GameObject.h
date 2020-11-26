@@ -14,6 +14,8 @@ private:
 	std::string name;
 	bool hovering, focused;
 	Tooltip* tip;
+	SDL_Point center;
+	float rotation = 0.0f;
 protected:
 	static size_t GameObjectIDS;
 public:

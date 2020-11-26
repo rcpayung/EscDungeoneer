@@ -1,17 +1,2 @@
-﻿  Armor.cpp
-  ArmorSlot.cpp
-  Game.cpp
-  GameObject.cpp
-  Glyph.cpp
-  GlyphSlot.cpp
-  Inventory.cpp
-  Item.cpp
-  ItemDetails.cpp
-  ItemSlot.cpp
-  Player.cpp
-  Scene.cpp
-  Weapon.cpp
-  WeaponSlot.cpp
-  main.cpp
-  Generating Code...
+﻿  Game.cpp
   escalationdungeoneer.vcxproj -> C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\x64\Debug\escalationdungeoneer.exe

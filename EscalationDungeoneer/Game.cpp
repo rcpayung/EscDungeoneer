@@ -61,6 +61,16 @@ Game::Game(const char *title, int w, int h, int flags) {
 	timeElapsed = new Text("Time Elapsed (s): " + std::to_string(SDL_GetTicks()), 10, WBOLD, GameManager::GRAY, Vector2F(5, 30), Vector2F(150, 15));
 	timeElapsed->setMiddle();
 
+
+	this->object = new GameObject("Diamond", Vector2F(32, 32), Vector2F(64, 128));
+	Sprite* sprite = new Sprite("Diamond", "assets/diamond.png", object->getPosition(), object->getSize(), 1.0f);
+	object->pushSprite(sprite);
+	Animation anim;
+	anim.numFrames = 7;
+	anim.startFrame = Vector2F(0, 0);
+	anim.duration = 21;
+	anim.loop = true;
+	object->addAnimation(0, anim);
 }
 
 
@@ -86,6 +96,9 @@ void Game::update() {
 	if (GameManager::isPlaying && amenu == nullptr) {
 		activeScene->update();
 	}
+
+	object->playAnimation(0, 0);
+	object->update();
 
 	std::srand((unsigned) SDL_GetTicks() * time(0));
 	GameManager::updateGameTick(SDL_GetTicks());
@@ -293,6 +306,7 @@ void Game::render() {
 		devModetext->render();
 	version->render();
 	timeElapsed->render();
+	object->render();
 	SDL_RenderPresent(GameManager::rd);
 	SDL_RenderClear(GameManager::rd);
 }
@@ -380,7 +394,7 @@ void Game::cleanup() {
 		amenu->clean();
 	if (lastmenu != nullptr)
 		lastmenu->clean();
-	
+	object->clean();
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();

@@ -98,6 +98,8 @@ void GameObject::render() {
 }
 
 void GameObject::update() {
+	this->center.x = this->getSize().X / 2;
+	this->center.y = this->getSize().Y / 2;
 	for (Sprite* i : this->sprites) {
 		i->update();
 	}
@@ -145,7 +147,6 @@ const Vector2F GameObject::getSize() const {
 std::string GameObject::to_string() const {
 	return "GameObject: " + this->getName() + ", ID: " + std::to_string(this->getID()) + ", Loc: " + this->getPosition().to_string() + ", Size: " + this->getSize().to_string();
 }
-
 
 void GameObject::handleEvents(SDL_Event e) {
 	if (GameManager::mx > this->getPosition().X && GameManager::mx < (this->getPosition().X + this->getSize().X)) {

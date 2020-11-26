@@ -17,23 +17,7 @@ void Player::setVelocityX(float vel) {
 void Player::setVelocityY(float vel) {
 	this->VelY = vel;
 }
-/*
-void Player::setMaxHP(int HP);
-void Player::setHP(int HP);
 
-void Player::setMaxMP(int MP);
-void Player::setMP(int MP);
-
-void Player::levelUp();
-
-void Player::setSpeed(float speed);
-
-void Player::setATT(int amount);
-void Player::setDEF(int amount);
-void Player::setVIT(int amount);
-void Player::setWIS(int amount);
-void Player::setDEX(int amount);
-*/
 void Player::update() {
 	__super::update();
 	Vector2F vel(VelX, VelY);
@@ -46,19 +30,19 @@ void Player::handleEvents(SDL_Event e) {
 		switch (e.key.keysym.sym) {
 		case SDLK_w:
 			setVelocityY(-5.0f);
-			//player->playAnimation(0, 0);
+			this->playAnimation(0, 0);
 			break;
 		case SDLK_a:
 			setVelocityX(-5.0f);
-			//player->playAnimation(0, 0);
+			this->playAnimation(0, 0);
 			break;
 		case SDLK_s:
 			setVelocityY(5.0f);
-			//player->playAnimation(0, 0);
+			this->playAnimation(0, 0);
 			break;
 		case SDLK_d:
 			setVelocityX(5.0f);
-			//player->playAnimation(0, 0);
+			this->playAnimation(0, 0);
 			break;
 		}
 		break;
@@ -66,15 +50,23 @@ void Player::handleEvents(SDL_Event e) {
 		switch (e.key.keysym.sym) {
 		case SDLK_w:
 			setVelocityY(0.0f);
+			this->cancelAnimation(0);
+			this->playAnimation(0, 1);
 			break;
 		case SDLK_a:
 			setVelocityX(0.0f);
+			this->cancelAnimation(0);
+			this->playAnimation(0, 1);
 			break;
 		case SDLK_s:
 			setVelocityY(0.0f);
+			this->cancelAnimation(0);
+			this->playAnimation(0, 1);
 			break;
 		case SDLK_d:
 			setVelocityX(0.0f);
+			this->cancelAnimation(0);
+			this->playAnimation(0, 1);
 			break;
 		}
 		break;

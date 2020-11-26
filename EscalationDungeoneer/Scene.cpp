@@ -7,6 +7,7 @@ Scene::Scene(int id, std::string name, int openx, int openy, int SceneWidth, int
 	player->setPosition(Vector2F(GameManager::SCREENWIDTH / 2 - player->getSize().X / 2, GameManager::SCREENHEIGHT / 2 - player->getSize().Y / 2));
 	GameObject* giantHornet = new GameObject("Giant Hornet", Vector2F(500, 500), Vector2F(128, 128));
 	Sprite* sprite = new Sprite("Giant Hornet", "assets/giant_hornet.png", giantHornet->getPosition(), giantHornet->getSize(), 1.0f);
+
 	giantHornet->setScale(2.0f);
 	giantHornet->pushSprite(sprite);
 	this->objects.push_back(giantHornet);
@@ -84,7 +85,6 @@ void Scene::update() {
 	}
 }
 
-
 void Scene::render() {
 	// Render tiles here.
 	player->render();
@@ -92,8 +92,6 @@ void Scene::render() {
 		object->render();
 	}
 }
-
-
 
 void Scene::clean() {
 	player->clean();
