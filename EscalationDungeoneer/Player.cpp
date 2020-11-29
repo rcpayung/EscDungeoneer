@@ -23,11 +23,11 @@ void Player::update() {
 	Vector2F vel(VelX, VelY);
 	this->setPosition(Vector2F(this->getPosition() + vel));
 }
-void Player::handleEvents(SDL_Event e) {
+void Player::handleEvents(SDL_Event* e) {
 	__super::handleEvents(e);
-	switch (e.type) {
+	switch (e->type) {
 	case SDL_KEYDOWN:
-		switch (e.key.keysym.sym) {
+		switch (e->key.keysym.sym) {
 		case SDLK_w:
 			setVelocityY(-5.0f);
 			this->playAnimation(0, 0);
@@ -47,7 +47,7 @@ void Player::handleEvents(SDL_Event e) {
 		}
 		break;
 	case SDL_KEYUP:
-		switch (e.key.keysym.sym) {
+		switch (e->key.keysym.sym) {
 		case SDLK_w:
 			setVelocityY(0.0f);
 			this->cancelAnimation(0);

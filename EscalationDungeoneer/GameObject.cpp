@@ -148,7 +148,20 @@ std::string GameObject::to_string() const {
 	return "GameObject: " + this->getName() + ", ID: " + std::to_string(this->getID()) + ", Loc: " + this->getPosition().to_string() + ", Size: " + this->getSize().to_string();
 }
 
-void GameObject::handleEvents(SDL_Event e) {
+bool GameObject::handleCollisions(GameObject* b) {
+	// Bottom Collision:
+	SDL_Rect collRect;
+
+	// Bottom:
+	if (b->getPosition().Y > this->getPosition().Y) {
+		collRect.y = b->getPosition().Y;
+		collRect.w = b->getPosition().Y + (b->getSize().Y - this->getSize().Y) - this->getPosition().Y;
+	}
+	
+	
+}
+
+void GameObject::handleEvents(SDL_Event* e) {
 	if (GameManager::mx > this->getPosition().X && GameManager::mx < (this->getPosition().X + this->getSize().X)) {
 		if (GameManager::my > this->getPosition().Y && GameManager::my < (this->getPosition().Y + this->getSize().Y)) {
 			if (!GameManager::inInventory && !GameManager::paused)
@@ -164,9 +177,9 @@ void GameObject::handleEvents(SDL_Event e) {
 	else {
 		hovering = false;
 	}
-	switch (e.type) {
+	switch (e->type) {
 	case SDL_MOUSEBUTTONDOWN:
-		switch (e.button.button) {
+		switch (e->button.button) {
 		case SDL_BUTTON_LEFT:
 			hovering ? focused = true : focused = false;
 			break;

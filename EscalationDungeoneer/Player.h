@@ -14,7 +14,7 @@ public:
 	void setVelocityY(float vel);
 
 	void update();
-	void handleEvents(SDL_Event e);
+	void handleEvents(SDL_Event* e);
 
 };
 

@@ -46,6 +46,7 @@ public:
 	std::string getName() const;
 	const Vector2F getSize() const;
 
-	void handleEvents(SDL_Event e);
+	void handleEvents(SDL_Event* e);
 	std::string to_string() const;
+	bool handleCollisions(GameObject* b);
 };

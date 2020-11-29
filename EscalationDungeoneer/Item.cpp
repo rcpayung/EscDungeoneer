@@ -87,7 +87,7 @@ void Item::clean() {
 }
 
 void Item::handleEvents(SDL_Event* e) {
-	__super::handleEvents(*e);
+	__super::handleEvents(e);
 	switch (e->type) {
 	case SDL_MOUSEMOTION:
 		break;

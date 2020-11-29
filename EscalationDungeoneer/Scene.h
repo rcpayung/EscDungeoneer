@@ -27,6 +27,6 @@ public:
 	void render();
 	void clean();
 	void handleCollisions(GameObject* a, GameObject* b);
-	void pollevents(SDL_Event e);
+	void pollevents(SDL_Event* e);
 };
 

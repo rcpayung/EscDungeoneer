@@ -100,7 +100,7 @@ void Scene::clean() {
 	}
 }
 
-void Scene::pollevents(SDL_Event e) {
+void Scene::pollevents(SDL_Event* e) {
 	player->handleEvents(e);
 }
 
