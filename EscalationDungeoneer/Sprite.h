@@ -25,12 +25,14 @@ private:
 	std::string name;
 	SDL_Rect source,
 		dest;
+	SDL_Point center;
 
 	float scale = 1.0f,
 		theta = 0.0f;
 
 	Vector2F loc;
 	Vector2F size,
+		scaleSize,
 		atlasSize;
 
 public:
@@ -38,8 +40,9 @@ public:
 	//Sprite(const Sprite& sp) : (sp->file, sp->loc, sp->size, sp->scale);
 	~Sprite();
 	
-	Vector2F getSize();
-	Vector2F getASize() const;
+	const Vector2F getSize() const;
+	const Vector2F getASize() const;
+	const Vector2F getScaledSize() const;
 
 	bool addAnimation(Animation anim);
 	bool playAnimation(size_t animID);

@@ -8,6 +8,7 @@ GameObject::GameObject(const char* name, Vector2F loc, Vector2F size) {
 	this->loc = loc;
 	this->name = name;
 	this->size = size;
+	printf("%s\n", size.to_string().c_str());
 	this->hovering = false;
 	this->focused = false;
 	this->tip = new Tooltip(15, "GameObject", WNORMAL, GameManager::WHITE, GameManager::DGRAY, loc.X, loc.Y);
@@ -77,15 +78,18 @@ bool GameObject::setSpritePos(size_t SpriteID, Vector2F loc) {
 }
 
 bool GameObject::setScale(float scale) {
-	if (scale < 0.25f || scale > 10.0f) return false;
-	else {
-		this->size.X = size.X * scale;
-		this->size.Y = size.Y * scale;
-		for (Sprite* i : sprites) {
-			i->setScale(scale);
-		}
-		return true;
+	if (scale < 0.25f || scale > 10.0f) {
+		printf("Failure to scale.\n");
+		return false;
 	}
+	printf("Reaching this point.\n");
+	this->size.X = static_cast<int>(size.X * scale);
+	this->size.Y = static_cast<int>(size.Y * scale);
+	printf("From GameObject: ID: %d, %s\n", int(this->getID()), this->getSize().to_string().c_str());
+	for (size_t i = 0; i < sprites.size(); i++) {
+		sprites[i]->setScale(scale);
+	}
+	return true;
 }
 
 void GameObject::render() {
@@ -153,11 +157,7 @@ bool GameObject::handleCollisions(GameObject* b) {
 	SDL_Rect collRect;
 
 	// Bottom:
-	if (b->getPosition().Y > this->getPosition().Y) {
-		collRect.y = b->getPosition().Y;
-		collRect.w = b->getPosition().Y + (b->getSize().Y - this->getSize().Y) - this->getPosition().Y;
-	}
-	
+	return false;
 	
 }
 

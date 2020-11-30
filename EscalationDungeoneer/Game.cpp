@@ -101,7 +101,6 @@ void Game::update() {
 	object->update();
 
 	std::srand((unsigned) SDL_GetTicks() * time(0));
-	GameManager::updateGameTick(SDL_GetTicks());
 	timeElapsed->setText("Time Elapsed (s): " + std::to_string(int(SDL_GetTicks()/1000)));
 }
 
@@ -295,6 +294,7 @@ void Game::render() {
 		if (activeScene != nullptr)
 			activeScene->render();
 	}
+	object->render();
 	if (amenu != nullptr) {
 		if (amenu == mainmenu) mainmenu->render();
 		else if (amenu == creditsmenu) creditsmenu->render();
@@ -306,7 +306,6 @@ void Game::render() {
 		devModetext->render();
 	version->render();
 	timeElapsed->render();
-	object->render();
 	SDL_RenderPresent(GameManager::rd);
 	SDL_RenderClear(GameManager::rd);
 }
@@ -322,7 +321,7 @@ void Game::handleEvents() {
 			else if (amenu == inventory) inventory->pollEvents(&event);
 		}
 		if (GameManager::isPlaying) {
-			activeScene->pollevents(event);
+			activeScene->pollevents(&event);
 		}
 		
 		switch (event.type) {

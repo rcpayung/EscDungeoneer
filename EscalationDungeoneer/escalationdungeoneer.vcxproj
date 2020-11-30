@@ -153,7 +153,6 @@
     <ClCompile Include="GlyphSlot.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="ItemDetails.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -184,7 +183,6 @@
     <ClInclude Include="GlyphSlot.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="ItemDetails.h" />
     <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />

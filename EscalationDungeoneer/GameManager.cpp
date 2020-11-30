@@ -10,7 +10,6 @@ float GameManager::scale = 1.0f;
 int GameManager::mx = 0;
 int GameManager::my = 0;
 bool GameManager::leftLock = false;
-Uint32 GameManager::GameTick = 0;
 
 SDL_Renderer* GameManager::rd = nullptr;
 
@@ -71,10 +70,6 @@ void GameManager::setEditing() {
 	!GameManager::editing ? GameManager::editing = true : GameManager::editing = false;
 }
 
-void GameManager::updateGameTick(Uint32 GameTick) {
-	GameManager::GameTick = GameTick;
-}
-
 void GameManager::pushCommand(std::string s) {
 	GameManager::commands.push_back(s);
 	GameManager::consoleLog.push_back(s);
@@ -82,4 +77,13 @@ void GameManager::pushCommand(std::string s) {
 
 void GameManager::setDrawColor(SDL_Color color) {
 	SDL_SetRenderDrawColor(GameManager::rd, color.r, color.g, color.b, color.a);
+}
+
+float GameManager::distance(Vector2F a, Vector2F b) {
+	if (a == b) {
+		return 0.0f;
+	}
+	else {
+		return float(std::sqrt(std::pow(b.X - a.X, 2) + std::pow(b.Y - a.Y,2)));
+	}
 }

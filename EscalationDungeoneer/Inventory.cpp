@@ -114,7 +114,6 @@ Inventory::Inventory() : Menu() {
 	rightring->setBackground("assets/inventoryslots.bmp", 6, 0);
 	rightring->setArmorType(ArmorType::RING);
 
-	details = new ItemDetails(0, 0, 250, 360);
 
 	short int x = back.x + 15;
 	short int y = back.y + 69;
@@ -130,6 +129,8 @@ Inventory::Inventory() : Menu() {
 	S_coins = new Sprite("inventory_coins","assets/coins.png", Vector2F(back.x + 600, back.y+back.h-50), Vector2F{ 32,32 }, 1.0f);
 	L_coins = new Text("44,543,768", 15, WNORMAL, GameManager::GOLD, Vector2F(back.x + 640, back.y + back.h - 50), Vector2F(120, 32));
 	L_coins->setMiddle();
+
+	this->itemCount = new Text(std::to_string(this->numItems) + "/" + std::to_string(this->MAX_ITEMS), 11, WBOLD, GameManager::GRAY, Vector2F(back.x + 400, back.y + 15), Vector2F(50, 20));
 
 	selectedSlot = nullptr;
 
@@ -168,7 +169,7 @@ void Inventory::render() {
 	/*
 
 	*/
-
+	itemCount->render();
 	for (int i = static_cast<int>(slots.size() - 1); i >= 0; i--) {
 		if (slots.at(i) != selectedSlot) {
 			slots.at(i)->render();
@@ -204,6 +205,10 @@ void Inventory::update() {
 	righthand->update();
 	leftring->update();
 	rightring->update();
+
+	this->itemCount->setText(std::to_string(this->numItems) + "/" + std::to_string(this->MAX_ITEMS));
+	this->itemCount->setMiddle();
+	this->itemCount->setCenter();
 
 	for (ItemSlot* i : slots) {
 		i->update();
@@ -246,15 +251,12 @@ void Inventory::clean() {
 	righthand->clean();
 	leftring->clean();
 	rightring->clean();
+	this->itemCount->clean();
 
-	details->setItem(nullptr);
-	details->clean();
-
-
-	__super::clean();
 	if (prompt != nullptr) {
 		prompt->clean();
 	}
+	__super::clean();
 }
 
 
@@ -454,6 +456,7 @@ bool Inventory::unequipShield() {
 		if (slot != nullptr) {
 			slot->setItem(lefthand->getItem());
 			lefthand->setItem(nullptr);
+			numItems++;
 			return true;
 		}
 		else {
@@ -639,8 +642,11 @@ void Inventory::swapItems(ItemSlot* a) {
 	}
 	else {
 		if (checkItem(a)) {
-			if (a->getItem() == nullptr) {
+			if (a->getItem() == nullptr && selectedSlotID < 71) {
 				numItems--;
+			}
+			else {
+				numItems++;
 			}
 			a->setItem(selectedSlot->getItem());
 			a->getItem()->setPosition(a->getPosition().X, a->getPosition().Y);

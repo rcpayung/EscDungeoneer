@@ -8,7 +8,6 @@ Scene::Scene(int id, std::string name, int openx, int openy, int SceneWidth, int
 	GameObject* giantHornet = new GameObject("Giant Hornet", Vector2F(500, 500), Vector2F(128, 128));
 	Sprite* sprite = new Sprite("Giant Hornet", "assets/giant_hornet.png", giantHornet->getPosition(), giantHornet->getSize(), 1.0f);
 
-	giantHornet->setScale(2.0f);
 	giantHornet->pushSprite(sprite);
 	this->objects.push_back(giantHornet);
 	camera = {
@@ -102,6 +101,19 @@ void Scene::clean() {
 
 void Scene::pollevents(SDL_Event* e) {
 	player->handleEvents(e);
+	switch (e->type) {
+	case SDL_KEYDOWN:
+		switch (e->key.keysym.sym) {
+		case SDLK_b:
+
+			break;
+			default:
+				break;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Scene::setScale(float scale) {

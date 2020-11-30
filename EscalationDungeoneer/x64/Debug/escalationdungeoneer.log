@@ -1,23 +1,6 @@
 ﻿  Armor.cpp
-  ArmorSlot.cpp
-  Game.cpp
-C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\Game.cpp(325,33): error C2664: 'void Scene::pollevents(SDL_Event *)': cannot convert argument 1 from 'SDL_Event' to 'SDL_Event *'
-C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\Game.cpp(325,28): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
-C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\Scene.h(30,7): message : see declaration of 'Scene::pollevents'
-  GameObject.cpp
-C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\GameObject.cpp(153,1): error C2589: 'void': illegal token on right side of '::'
-C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\GameObject.cpp(151,6): error C2062: type 'unknown-type' unexpected
-C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\GameObject.cpp(151,45): error C2143: syntax error: missing ';' before '{'
-C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\GameObject.cpp(151,45): error C2447: '{': missing function header (old-style formal list?)
-  Glyph.cpp
-  GlyphSlot.cpp
-  Inventory.cpp
-  Item.cpp
-  ItemDetails.cpp
-  ItemSlot.cpp
   main.cpp
-  Player.cpp
-  Scene.cpp
-  Weapon.cpp
-  WeaponSlot.cpp
+  Sprite.cpp
+  UIComponent.cpp
   Generating Code...
+  escalationdungeoneer.vcxproj -> C:\Users\rcpay\Documents\GitHub\EscDungeoneer\EscalationDungeoneer\x64\Debug\escalationdungeoneer.exe

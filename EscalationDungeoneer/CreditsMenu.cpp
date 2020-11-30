@@ -11,8 +11,9 @@ CreditsMenu::CreditsMenu() : Menu() {
 	back->setAction(GameManager::pushCommand, "M:LOAD:__LAST");
 	back->setTooltip("Go back.", 12, GameManager::GOLD, GameManager::DGRAY);
 
-	vestinius = new Sprite("banner","assets/banner_wide.png", Vector2F(0, 0), Vector2F( 1299, 471 ), 0.4f);
+	vestinius = new Sprite("banner_credits","assets/banner_wide.png", Vector2F(0, 0), Vector2F( 1299, 471 ), 0.4f);
 	vestinius->setScale(0.4f);
+
 
 	this->addSpacing(150);
 	this->addText("Programming", 18);
@@ -27,10 +28,10 @@ CreditsMenu::CreditsMenu() : Menu() {
 	this->addText("Gameplay/Storyline", 18);
 	this->addText("Riley C. Payung", 13);
 	this->addSpacing(25);
-	vestinius->setPosition(GameManager::SCREENWIDTH / 2 - vestinius->getSize().X / 2, last);
-	last = last + vestinius->getSize().Y;
+	vestinius->setPosition((GameManager::SCREENWIDTH / 2) - vestinius->getScaledSize().X / 2, last);
+	last = last + vestinius->getScaledSize().Y;
 	this->addSpacing(25);
-	this->addText("www.vestinius.games || www.vestinius.com/escdun", 13);
+	this->addText("www.vestinius.games | www.vestinius.com/escdun", 13);
 	setBackground(GameManager::DGRAY);
 
 	addComponent(back);

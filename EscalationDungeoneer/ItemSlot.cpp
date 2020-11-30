@@ -17,7 +17,7 @@ void ItemSlot::update() {
 
 void ItemSlot::setBackground(const char* fileloc, int x, int y) {
 	this->background = new Sprite("Background",fileloc, Vector2F(this->getPosition().X+8,this->getPosition().Y+8), Vector2F{ 32,32 },1.0f);
-	this->background->setImage(Vector2F(x, y));
+	this->background->setImage(Vector2F(x * background->getSize().X, y * background->getSize().Y));
 }
 
 void ItemSlot::render() {

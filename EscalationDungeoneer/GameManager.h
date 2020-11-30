@@ -2,6 +2,8 @@
 #include "Text.h"
 #include <vector>
 #include <string>
+#include <math.h>
+#include <stdio.h>
 
 enum ITEMID {
 	EMPTY,
@@ -12,7 +14,6 @@ enum ITEMID {
 
 class GameManager {
 public:
-	static Uint32 GameTick;
 	static bool paused;
 	static bool running;
 	static bool editing;
@@ -54,8 +55,8 @@ public:
 	static void setRunning();
 	static void setPlaying();
 	static void setEditing();
-	static void updateGameTick(Uint32 gameTick);
 	static void pushCommand(std::string s);
 	static void setDrawColor(SDL_Color color);
+	static float distance(Vector2F a, Vector2F b);
 };
 

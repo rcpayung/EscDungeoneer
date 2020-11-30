@@ -6,7 +6,6 @@
 #include "Glyph.h"
 #include "ItemSlot.h"
 #include "Prompt.h"
-#include "ItemDetails.h"
 #include "GlyphSlot.h"
 #include "ArmorSlot.h"
 #include "WeaponSlot.h"
@@ -18,6 +17,9 @@ private:
 	bool showDetails = false;
 	const int MAX_ITEMS = 70;
 	int numItems;
+
+	Text* itemCount;
+
 	long coins;
 	ItemSlot* selectedSlot;
 	int selectedSlotID;
@@ -29,7 +31,6 @@ private:
 	ArmorSlot* head, /* neck,*/ * torso, * legs, * feet, * lefthand;
 	ArmorSlot* leftring, * rightring;
 	WeaponSlot* righthand;
-	ItemDetails* details;
 
 	GlyphSlot* I_glyph_tri, * I_glyph_sqr, * I_glyph_PENT;
 	Button* sort_alpha, * sort_by_id, * sort_by_rarity, * close, * help;

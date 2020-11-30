@@ -11,6 +11,7 @@ public:
 	Vector2F(const Vector2F& b) { X = b.X, Y = b.Y; };
 	Vector2F(int x, int y);
 	std::string to_string() const;
+
 	bool operator==(Vector2F& y) {
 		return (this->X == y.X && this->Y == y.Y) ? true : false;
 	}

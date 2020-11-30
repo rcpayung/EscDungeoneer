@@ -8,10 +8,15 @@ Sprite::Sprite(const char* name, const char* file, Vector2F loc, Vector2F size, 
 	this->atlasSize = Vector2F(atlas->w, atlas->h);
 	this->texture = SDL_CreateTextureFromSurface(GameManager::rd, atlas);
 	SDL_FreeSurface(atlas);
+	this->scaleSize = Vector2F(int(size.X * scale), int(size.Y * scale));
 
 	this->source = { 0, 0, this->size.X, this->size.Y };
 	this->dest = { loc.X,loc.Y,this->size.X,this->size.Y };
 	this->cAnim = nullptr;
+	
+	this->center.x = loc.X + int(size.X / 2);
+	this->center.y = loc.Y + int(size.Y / 2);
+
 }
 
 Sprite::~Sprite() {
@@ -19,19 +24,19 @@ Sprite::~Sprite() {
 }
 
 bool Sprite::setScale(int x, int y) {
-	if (x < 0 || y < 0)
-		return false;
 	this->dest.w = x;
 	this->dest.h = y;
+	this->scaleSize = Vector2F(dest.w, dest.h);
+	printf("(%d, %d)\n", this->dest.w, this->dest.h);
 	return true;
 }
 
 bool Sprite::setScale(float scale) {
-	if (scale < 0.0f || scale > 10.0f)
-		return false;
 	this->scale = scale;
-	this->dest.w = static_cast<int>(this->size.X * scale);
-	this->dest.h = static_cast<int>(this->size.Y * scale);
+	this->dest.w = int(this->size.X * scale);
+	this->dest.h = int(this->size.Y * scale);
+	this->scaleSize = Vector2F(dest.w, dest.h);
+	printf("%s: (%d, %d)\n", this->name.c_str(), this->dest.w, this->dest.h);
 	return true;
 }
 
@@ -42,7 +47,10 @@ bool Sprite::setImage(Vector2F atlasLoc) {
 }
 
 void Sprite::update() {
-	if (cAnim != nullptr) {
+	this->center.x = loc.X + int(scaleSize.X / 2);
+	this->center.y = loc.Y + int(scaleSize.Y / 2);
+
+	if (cAnim != nullptr && !GameManager::paused) {
 		// update Animation here.
 		if (cAnim->animtime != cAnim->duration - 1) {
 			if (cAnim->playing) {
@@ -138,12 +146,16 @@ bool Sprite::removeAnimation(size_t animID) {
 	}
 }
 
-Vector2F Sprite::getASize() const {
+const Vector2F Sprite::getASize() const {
 	return this->atlasSize;
 }
 
-Vector2F Sprite::getSize() {
+const Vector2F Sprite::getSize() const {
 	return this->size;
+}
+
+const Vector2F Sprite::getScaledSize() const {
+	return this->scaleSize;
 }
 
 bool Sprite::setPosition(int x, int y) {
